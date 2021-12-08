@@ -1,10 +1,22 @@
 const { response } = require('express');
+const pool = require('../src/db');
 const formControl = {};
 
-    formControl.postForm = async(req, res)=> {
-
-       res.json({ msg: 'pruba post' });
-        console.log('prueba de enlace');
+    formControl.getForm = async(req, res)=> {
+        const {email,password,rol}=req.body;
+        const newUser={
+            email,
+            password
+        };
+        const reSql= await pool.query('SELECT rol FROM usuarios WHERE (email =?) AND (password=?)',[newUser.email,newUser.password]);
+        if (Object.keys(reSql).length === 0 ){
+           res.json({ msg:false });
+        }
+        else{
+            //console.log(" registrado");
+           res.json({ msg: reSql[0].rol });
+        }
+        
     }
        
  module.exports = formControl;
