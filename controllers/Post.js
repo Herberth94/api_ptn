@@ -11,7 +11,10 @@ const formControl = {};
         };
         await pool.query('INSERT INTO usuarios set ?', [newUser]);
         //res.redirect('/links');
-        res.json({ msg: 'pruba post' });
+        res.json({ 
+            msg: 'Registro',
+            estado: true
+     });
         //console.log('prueba de enlace');
     }
        
