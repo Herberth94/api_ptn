@@ -9,17 +9,24 @@ pool.getConnection((err,connect)=> {
     if(err){
         if (err.code == 'PROTOCOL_CONNECTION_LOST' ) {
             console.log('LA CONEXION DE LA BASE DE DATOS FUE CERRADA');
+            return;
         } 
         if (err.code == 'ECONNREFUSED') {
             console.log('LA CONEXION DE LA BASE DE DATOS FUE RECHASADA');
+            return;
         }
         if (err.code === 'ER_CON_COUNT_ERROR') {
          console.error('Database tiene muchas conexiones');
+         return;
        }
      }
      if(connect) connect.release();
-     console.log('DB esta conectada');
-     return;
+     if(connect){
+        console.log('DB esta conectada');
+        return;
+     }
+       
+    
  });
 // promesa a consultas (query)
 

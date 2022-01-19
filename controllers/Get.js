@@ -10,7 +10,7 @@ const formControl = {};
         };
         console.log(req.body);
         const reSql= await pool.query('SELECT rol FROM usuarios WHERE (email =?) AND (password=?)',[newUser.email,newUser.password]);
-         console.log(reSql);
+         //console.log(reSql);
         if (Object.keys(reSql).length === 0 ){
            res.json({ 
                estado:false,

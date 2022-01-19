@@ -9,13 +9,12 @@ const formControl = {};
             password,
             rol
         };
-        await pool.query('INSERT INTO usuarios set ?', [newUser]);
-        //res.redirect('/links');
+        const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
         res.json({ 
             msg: 'Registro',
             estado: true
-     });
-        //console.log('prueba de enlace');
+        });
+        //res.end();
     }
        
  module.exports = formControl;

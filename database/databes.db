@@ -1,10 +1,7 @@
- CREATE TABLE usuarios (
-  id INT(11) NOT NULL,
-  email VARCHAR(50) NOT NULL,
-  password VARCHAR(60) NOT NULL,
-  rol VARCHAR(20) NOT NULL
+CREATE TABLE `usuarios` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(30) NOT NULL,
+  `password` varchar(20) NOT NULL,s
+  `rol` varchar(20) NOT NULL,
+   UNIQUE (`email`)
 );
-ALTER TABLE users
-  ADD PRIMARY KEY (id);
-ALTER TABLE usuarios
-  MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
