@@ -7,21 +7,21 @@ const pool = require('../src/db');
 
 //rutas  para cada tarea
 router.post('/login',getForm);
-//eliminación de registro de usuario tomando cuenta el id.
+//eliminación de registro de usuario tomando cuenta el id
 router.get('/delete/:id',async(req,res)=>{
         const {id} =  req.params;
-        await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
+        await pool.query("DELETE FROM usuarios WHERE id_usuario = ?", [id]);
         res.end();
 });
 
 // editar un registro primero muestra la información a actulizar por medio de su Id
 router.get('/dataedit/:id',async(req,res)=>{
         const {id} =  req.params;
-        const reSql= await pool.query('SELECT * FROM usuarios WHERE id=?',[id]);
+        const reSql= await pool.query('SELECT * FROM usuarios WHERE id_usuario=?',[id]);
         res.json({reSql:reSql[0]});
         //res.end();
 });
-
+// ruta para editar los parametros en base Id
 router.post('/edit/:id', async(req,res)=>{
         const {id} =  req.params;
         const {email,password,rol} =req.body;
@@ -31,7 +31,7 @@ router.post('/edit/:id', async(req,res)=>{
               password,
               rol  
         };
-        await pool.query('UPDATE usuarios set ? WHERE id =?',[editvalues,id])
+        await pool.query('UPDATE usuarios set ? WHERE id_usuario=?',[editvalues,id])
        const link= `/edit/${id} `;
        console.log(link);
        res.redirect('/api/cotizador/registro');
@@ -40,7 +40,8 @@ router.post('/edit/:id', async(req,res)=>{
        
 
 } )
-
+//ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados 
+// es el método GET
 router.route('/registro')
         .post(postForm)
         .get(viewForm);

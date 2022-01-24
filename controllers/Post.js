@@ -5,13 +5,14 @@ const formControl = {};
     formControl.postForm = async(req, res)=> {
         const {email,password,rol}=req.body;
         const newUser={
-            email,
-            password,
-            rol
+            rol,
+           email,
+            password
         };
         const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
         res.json({ 
             msg: 'Registro',
+
             estado: true
         });
         //res.end();
