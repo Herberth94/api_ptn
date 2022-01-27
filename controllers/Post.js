@@ -11,8 +11,7 @@ const formControl = {};
         };
         const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
         res.json({ 
-            msg: 'Registro',
-
+            msg: 'Registro exitoso',
             estado: true
         });
         //res.end();

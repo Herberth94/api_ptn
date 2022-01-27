@@ -37,18 +37,16 @@ module.exports= function(){
                 const link= `/edit/${id} `;
                 console.log(link);
                 res.redirect('/api/cotizador/registro');
-                
-                
-                
+          
                 
         } )
         //ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados 
         // es el método GET
         router.route('/registro')
-        .post(postForm)
-        .get(viewForm);
-        
-        
+         .post(postForm)
+         .get(viewForm);
+
+
         // ruta para agregar datos a tabla por post        
         router.post('/partida',partidaController.postPtmBom)
         
