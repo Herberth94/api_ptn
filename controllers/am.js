@@ -23,11 +23,11 @@ exports.updateAm = async(req,res)=>{
    })
 }
 
-exports.deleteAm = async(req,res)=>{
-    const {id}= req.params;
-    await pool.query("DELETE FROM am WHERE id_am= ?",[id]);
-    res.json({
-            msg:"se elimino am"
-    })
+exports.deleteAm= async(req,res)=>{
+                 const {id}= req.params;
+                 await pool.query("DELETE FROM am WHERE id_am= ?",[id]);
+                 res.json({
+                         msg:"se elimino am"
+                 })
 
-}
+         }

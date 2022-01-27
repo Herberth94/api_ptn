@@ -90,8 +90,41 @@ module.exports= function(){
          router.post('/am/update/:id',amController.updateAm);
          router.delete('/am/dalete/:id',amController.deleteAm);
 
+        // metodo para mostar datos especificos
+        router.get('/vistas/:informacion',async(req,res)=>{
+
+        const {informacion} = req.params
+        const reSql= await pool.query(`SELECT * FROM ptn_bom WHERE clave_proyecto = ?`,[informacion]);
+        res.json({reSql:reSql});
+
+        })
 
 
+
+
+        router.get('/vistas/cliente/:clientes',async(req,res)=>{
+
+                const {clientes} = req.params
+
+                const reSql = await pool.query(` SELECT nombre_cliente FROM ${clientes}`);
+                res.json({
+                        reSql:reSql
+                })
+        });
+
+
+
+        router.get('/vistas/clave/:proyecto',async(req,res)=>{
+        
+               
+         const {proyecto} = req.params;       
+         const reSql= await pool.query('SELECT clave_proyecto FROM proyectos');
+         
+         res.json({
+                reSql: reSql
+         })
+
+        })
 
         
         
