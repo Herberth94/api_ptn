@@ -9,7 +9,7 @@ const formControl = {};
             password
         };
         console.log(req.body);
-        const reSql= await pool.query('SELECT rol FROM usuarios WHERE (email =?) AND (password=?)',[newUser.email,newUser.password]);
+        const reSql= await pool.query('SELECT rol , id_usuario FROM usuarios WHERE (email =?) AND (password=?)',[newUser.email,newUser.password]);
          //console.log(reSql);
         if (Object.keys(reSql).length === 0 ){
            res.json({ 
@@ -20,7 +20,8 @@ const formControl = {};
         else{
             //console.log(" registrado");
            res.json({ 
-               msg: reSql[0].rol,
+               rol: reSql[0].rol,
+               id_usuario: reSql[0].id_usuario,
                estado: true
              });
         }

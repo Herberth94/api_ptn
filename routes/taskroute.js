@@ -13,12 +13,12 @@ const res = require('express/lib/response');
 //rutas  para cada tarea
 module.exports= function(){
         router.post('/login',getForm);
-        //ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados 
-        // es el método GET
+//ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados 
+// es el método GET
         router.route('/registro')
                 .post(postForm)
                 .get(viewForm);
-        //eliminación de registro de usuario tomando cuenta el id
+ //eliminación de registro de usuario tomando cuenta el id
         router.get('/delete/:id',deleteForm);  
 
         // editar un registro primero muestra la información a actulizar por medio de su Id
@@ -38,15 +38,17 @@ module.exports= function(){
         router.post('/partida/update/:id',partidaController.updatePtmBom);
          //ruta para eliminar datos de tabla ptmBom
         router.delete('/partida/delete/:id',partidaController.deletePtnBom);
+        
 
          // metodos para agregar elimindar y modificar clientes
 
          //agregar datos  clientes
         router.post('/clientes/agregar',clientesController.postClientes);
          // modificar clientes
-         router.post('/clientes/update/:id',clientesController.updateClientes);        
+        router.post('/clientes/update/:id',clientesController.updateClientes);        
         // elimar clientes
-         router.delete('/clientes/delete/:id',clientesController.deleteClientes);
+        router.delete('/clientes/delete/:id',clientesController.deleteClientes);
+        router.get('/clientes/view', clientesController.viewCliente);
 
 
          //methodos para agregar , eliminar , modificar en la tabla proyectos 
@@ -72,10 +74,6 @@ module.exports= function(){
         res.json({reSql:reSql});
 
         })
-
-
-
-
         router.get('/vistas/cliente/:clientes',async(req,res)=>{
 
                 const {clientes} = req.params
@@ -86,11 +84,7 @@ module.exports= function(){
                 })
         });
 
-
-
         router.get('/vistas/clave/:proyecto',async(req,res)=>{
-        
-               
          const {proyecto} = req.params;       
          const reSql= await pool.query('SELECT clave_proyecto FROM proyectos');
          res.json({

@@ -6,10 +6,16 @@ const pool = require("../src/db");
     await pool.query("INSERT INTO clientes set ?", insertClientes);
     res.json({
         msg: "Partida clientes",
-
         estado: true,
     });
     };
+
+    exports.viewCliente = async(req,res)=>{
+        const reSql= await pool.query('SELECT id_cliente,nombre_cliente, razon_social FROM clientes');
+        res.json({reSql:reSql});
+        //res.end();
+    }
+    
 
     exports.updateClientes = async (req, res) => {
     const { id } = req.params;
