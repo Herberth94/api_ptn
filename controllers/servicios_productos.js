@@ -64,7 +64,7 @@ sp.update = async (req, res) => {
 
 sp.delete = async (req, res) => {
   const { id } = req.params;
-  await pool.query("DELETE servicio_producto WHERE sp_id", [edit_sp, id]);
+  await pool.query("DELETE servicio_producto WHERE sp_id", [id]);
   res.json({
     msg: "Producto eliminado exitosamente",
     estado: true,
@@ -78,5 +78,12 @@ sp.view = async (req, res) => {
     +"pt_total, moneda_nombre,"
     +"proveedor_nombre, proveedor_telefono, proveedor_compania, categoria_nombre)"
     +"FROM servicio_producto"
-    +"join precio on ");
+    +"join precio on sp_id_precio = precio_id"
+    +"join precios_totales on precio_id_pt = pt_id"
+    +"join moneda on pt_id_moneda = moneda_id"
+    +"join proveedor on sp_id_proveedor = proveedor_id"
+    +"join proveedor_marca on pm_id_marca = marca_id"
+    +"join categoria on sp_id_categoria = categoria_id"
+    );
+    res.json({reSql:resSql});
 };
