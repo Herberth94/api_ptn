@@ -2,7 +2,7 @@ const { response } = require("express");
 const pool = require("../src/db");
 const sp = {};
 
-// Función para agregar atributos que no tienen llave foránea (fk) en la tabla servicio_producto
+// Función para agregar atributos en la tabla servicio_producto
 sp.insert_sp = async (req, res) => {
   const new_sp= {
     sp_no_parte,
@@ -23,7 +23,7 @@ sp.insert_sp = async (req, res) => {
   });
 };
 
-// Función para editar atributos que no tienen llave foránea (fk) en la tabla servicio_producto
+// Función para editar atributos en la tabla servicio_producto
 sp.update_sp = async (req, res) => {
   //const { sp_id = 1003 } = req.params; //Prueba para editar datos
   const { sp_id } = req.params;
@@ -46,7 +46,7 @@ sp.update_sp = async (req, res) => {
   });
 };
 
-// Función para elimiar todos los atributos de la tabla servicio_producto
+// Función para elimiar  atributos de la tabla servicio_producto
 sp.delete_sp = async (req, res) => {
   //const { sp_id = 1003 } = req.params; //Prueba de eliminación de datos
   const { sp_id } = req.params;
