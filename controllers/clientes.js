@@ -11,7 +11,7 @@ const pool = require("../src/db");
     };
 
     exports.viewCliente = async(req,res)=>{
-        const reSql= await pool.query('SELECT id_cliente,nombre_cliente, razon_social FROM clientes');
+        const reSql= await pool.query('SELECT cliente_id,nombre_cliente, razon_social,telefono FROM clientes');
         res.json({reSql:reSql});
         //res.end();
     }
@@ -20,7 +20,7 @@ const pool = require("../src/db");
     exports.updateClientes = async (req, res) => {
     const { id } = req.params;
     const updatUsuario = req.body;
-    await pool.query("UPDATE clientes set ? WHERE id_cliente=?", [
+    await pool.query("UPDATE clientes set ? WHERE cliente_id=?", [
         updatUsuario,
         id,
     ]);
@@ -29,14 +29,13 @@ const pool = require("../src/db");
     console.log(link);
     res.json({
         msg: "modficiacion de usuario con exito ",
-
         estado: true,
     });
     };
 
     exports.deleteClientes = async (req, res) => {
     const { id } = req.params;
-    await pool.query("DELETE FROM clientes WHERE id_cliente= ?", [id]);
+    await pool.query("DELETE FROM clientes WHERE cliente_id= ?", [id]);
     res.json({
         msg: "cliente Eliminado",
 

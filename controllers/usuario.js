@@ -3,11 +3,12 @@ const pool = require('../src/db');
 const formControl = {};
 
     formControl.postForm = async(req, res)=> {
-        const {email,password,rol}=req.body;
+        const {email,password,rol,estado_login}=req.body;
         const newUser={
             rol,
             email,
-            password
+            password,
+            estado_login
             };
             const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
             res.json({ 
@@ -29,16 +30,17 @@ const formControl = {};
            };
     formControl.editForm= async(req,res)=>{
         const {id} =  req.params;
-        const {email,password,rol} =req.body;
+        const {email,password,rol,estado_login} =req.body;
         const editvalues =
         {
                 email,
                 password,
-                rol  
+                rol,
+                estado_login  
         };
         await pool.query('UPDATE usuarios set ? WHERE id_usuario=?',[editvalues,id])
         const link= `/edit/${id} `;
-        console.log(link);
+        //console.log(link);
         res.redirect('/api/cotizador/registro');
            };
 
