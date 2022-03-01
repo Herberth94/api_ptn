@@ -6,6 +6,7 @@ const {getForm} = require('../controllers/login');
 const pool = require('../src/db');
 const partidaController = require('../controllers/Partida');
 const clientesController= require('../controllers/clientes');
+const spController = require('../controllers/servicios_productos')
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am')
 const res = require('express/lib/response');
