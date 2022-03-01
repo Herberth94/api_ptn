@@ -59,16 +59,12 @@ module.exports= function(){
 
         // Metodos para la tabla servicio_producto:
         // Agregar atributos sin llave foranea 
-        router.post('/sp/agregar1',spController.insert_sp1);
-        // Agregar atributos con llave foranea 
-        router.post('/sp/agregar2',spController.insert_sp2);
-        // Editar atributos sin llave foránea
-        router.put('/sp/edit1/:id',spController.update_sp1);
-        // Editar atributos con llave foránea
-        router.put('/sp/edit2/:id',spController.update_sp2);
-        // Eliminar todos los atributos
+        router.post('/sp/agregar',spController.insert_sp);
+        // Editar 
+        router.put('/sp/edit/:id',spController.update_sp);
+        // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
-        // Visualizar todos los atributos junto con los atributos de las tablas que tienen llave foranea
+        // Visualizar
         router.get('/sp/view',spController.view_sp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
