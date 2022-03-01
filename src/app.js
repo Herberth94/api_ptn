@@ -2,7 +2,6 @@ const express =  require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const routes = require('../routes/taskroute');
-const { request } = require('express');
 //creando servidor
 const app = express();
 

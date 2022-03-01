@@ -1,4 +1,3 @@
-const {Router}= require ('express');
 const express= require('express')
 const router = express.Router();
 const {postForm , viewForm ,deleteForm , editForm} = require('../controllers/usuario');
@@ -8,7 +7,7 @@ const partidaController = require('../controllers/Partida');
 const clientesController= require('../controllers/clientes');
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am')
-const res = require('express/lib/response');
+
 //rutas  para cada tarea
 module.exports= function(){
 
@@ -91,6 +90,6 @@ module.exports= function(){
         })
   
         
-               return router;        
+return router;        
         
 }

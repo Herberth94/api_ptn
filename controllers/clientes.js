@@ -1,4 +1,3 @@
-const { response } = require("express");
 const pool = require("../src/db");
 
     exports.postClientes = async (req, res) => {
