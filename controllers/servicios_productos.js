@@ -11,9 +11,10 @@ sp.insert_sp1 = async (req, res) => {
     sp_semanas,
     sp_comentarios,
   } = req.body;
-  await pool.query("INSERT INTO servicio_producto (sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_comentarios) "
+  await pool.query("INSERT INTO servicio_producto sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_comentarios"
   + 'SET ?', 
-  [new_sp1.sp_no_parte, new_sp1.sp_descripcion, new_sp1.sp_meses, new_sp1.sp_semanas, new_sp1.sp_comentarios]);
+  //[new_sp1.sp_no_parte, new_sp1.sp_descripcion, new_sp1.sp_meses, new_sp1.sp_semanas, new_sp1.sp_comentarios]);
+  [new_sp1]);
   res.json({
     msg: "Producto agregado exitosamente",
     estado: true,
@@ -27,8 +28,9 @@ sp.insert_sp2 = async (req, res) => {
     sp_id_proveedor,
     sp_id_categoria,
   } = req.body;
-  await pool.query("INSERT INTO servicio_producto SET ? ? ?", 
-  [new_sp2.sp_id_precio,new_sp2.sp_id_proveedor,new_sp2.sp_id_categoria]);
+  await pool.query("INSERT INTO servicio_producto sp_id_precio, sp_id_proveedor, sp_id_categoria SET ?", 
+  //[new_sp2.sp_id_precio,new_sp2.sp_id_proveedor,new_sp2.sp_id_categoria]);
+  [new_sp2]);
   res.json({
     msg: "Producto agregado exitosamente",
     estado: true,
