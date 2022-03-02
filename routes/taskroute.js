@@ -29,7 +29,7 @@ module.exports= function(){
 
 /// metodos para agrgar datos eliminar datos y modificar datos de tabla proyecto  
         // ruta para agregar datos a tabla por post        
-        router.post('/partida',partidaController.postPtmBom);
+        router.post('/partida/:id',partidaController.postPtmBom);
         //ruta para modificar datos de tabla ptmBom
         router.post('/partida/update/:id',partidaController.updatePtmBom);
          //ruta para eliminar datos de tabla ptmBom
