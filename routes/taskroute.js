@@ -11,6 +11,7 @@ const precioController = require ('../controllers/precio');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
 const monedaController = require ('../controllers/moneda.js');
+const categoriaController = require ('../controllers/categoria')
 
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am')
@@ -110,6 +111,16 @@ module.exports= function(){
         router.put('/moneda/edit/:id',monedaController.update_mon);
         // Eliminar 
         router.delete('/moneda/delete/:id',monedaController.delete_mon);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla categoria:
+        // Agregar 
+        router.post('/cat/agregar',categoriaController.insert_cat);
+        // Editar 
+        router.put('/cat/edit/:id',categoriaController.update_cat);
+        // Eliminar 
+        router.delete('/cat/delete/:id',categoriaController.delete_cat);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
