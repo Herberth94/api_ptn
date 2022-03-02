@@ -5,7 +5,12 @@ const {getForm} = require('../controllers/login');
 const pool = require('../src/db');
 const partidaController = require('../controllers/Partida');
 const clientesController= require('../controllers/clientes');
-const spController = require('../controllers/servicios_productos')
+
+const spController = require('../controllers/servicios_productos');
+const precioController = require ('../controllers/precio');
+const proveedorController = require ('../controllers/proveedor');
+const marcaController = require ('../controllers/marca');
+
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am')
 
@@ -57,18 +62,43 @@ module.exports= function(){
 /*--------------------------------------------------------------------------------------------------------------------*/
 
         // Metodos para la tabla servicio_producto:
-        // Agregar atributos sin llave foranea 
-        router.post('/sp/agregar1',spController.insert_sp1);
-        // Agregar atributos con llave foranea 
-        router.post('/sp/agregar2',spController.insert_sp2);
-        // Editar atributos sin llave foránea
-        router.put('/sp/edit1/:id',spController.update_sp1);
-        // Editar atributos con llave foránea
-        router.put('/sp/edit2/:id',spController.update_sp2);
-        // Eliminar todos los atributos
+        // Agregar 
+        router.post('/sp/agregar',spController.insert_sp);
+        // Editar 
+        router.put('/sp/edit/:id',spController.update_sp);
+        // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
-        // Visualizar todos los atributos junto con los atributos de las tablas que tienen llave foranea
+        // Visualizar
         router.get('/sp/view',spController.view_sp);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+// Metodos para la tabla precio:
+        // Agregar 
+        router.post('/precio/agregar',precioController.insert_precio);
+        // Editar 
+        router.put('/precio/edit/:id',precioController.update_precio);
+        // Eliminar 
+        router.delete('/precio/delete/:id',precioController.delete_precio);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+// Metodos para la tabla proveedor:
+        // Agregar 
+        router.post('/proveedor/agregar',proveedorController.insert_prov);
+        // Editar 
+        router.put('/proveedor/edit/:id',proveedorController.update_prov);
+        // Eliminar 
+        router.delete('/proveedor/delete/:id',proveedorController.delete_prov);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+// Metodos para la tabla marca:
+        // Agregar 
+        router.post('/marca/agregar',marcaController.insert_marca);
+        // Editar 
+        router.put('/marca/edit/:id',marcaController.update_marca);
+        // Eliminar 
+        router.delete('/marca/delete/:id',marcaController.delete_marca);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
