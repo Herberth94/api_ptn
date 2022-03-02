@@ -15,6 +15,7 @@ const monedaController = require ('../controllers/moneda.js');
 const categoriaController = require ('../controllers/categoria')
 
 const proyectosController= require('../controllers/proyecto');
+const catsController = require ('../controllers/categorias_c_a_sptn_ma');
 const amController=  require('../controllers/am')
 
 //rutas  para cada tarea
@@ -61,6 +62,16 @@ module.exports= function(){
         router.post('/proyecto/update/:id',proyectosController.updateProyectos)
          // metodo eliminar  proyecto
          router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos)
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla categorias_c_a_sptn_ma:
+        // Agregar 
+        router.post('/cats/agregar',catsController.insert_cats);
+        // Editar 
+        router.put('/cats/edit/:id',catsController.update_cats);
+        // Eliminar 
+        router.delete('/cats/delete/:id',catsController.delete_cats);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
