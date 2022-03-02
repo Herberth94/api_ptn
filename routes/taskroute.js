@@ -10,6 +10,7 @@ const spController = require('../controllers/servicios_productos');
 const precioController = require ('../controllers/precio');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
+const monedaController = require ('../controllers/moneda.js');
 
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am')
@@ -92,13 +93,23 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-// Metodos para la tabla marca:
+        // Metodos para la tabla marca:
         // Agregar 
         router.post('/marca/agregar',marcaController.insert_marca);
         // Editar 
         router.put('/marca/edit/:id',marcaController.update_marca);
         // Eliminar 
         router.delete('/marca/delete/:id',marcaController.delete_marca);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla moneda:
+        // Agregar 
+        router.post('/moneda/agregar',monedaController.insert_mon);
+        // Editar 
+        router.put('/moneda/edit/:id',monedaController.update_mon);
+        // Eliminar 
+        router.delete('/moneda/delete/:id',monedaController.delete_mon);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
