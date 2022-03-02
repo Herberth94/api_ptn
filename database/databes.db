@@ -1,7 +1,0 @@
-CREATE TABLE `usuarios` (
-  `id_usuario` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `email` varchar(30) NOT NULL,
-  `password` varchar(20) NOT NULL,s
-  `rol` varchar(20) NOT NULL,
-   UNIQUE (`email`)
-);
