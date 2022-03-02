@@ -2,7 +2,7 @@ const { response } = require("express");
 const pool = require("../src/db");
 const categoria = {};
 
-//Función para agregar atributos en la tabla marca---------------------------------------------------
+//Función para agregar atributos en la tabla categoria---------------------------------------------------
 categoria.insert_cat = async (req,res) =>{
     const new_cat = { categoria_nombre} = req.body;
     //new_cat.categoria_nombre = 'Tecnolgía principal'; //Dato prueba para inserción
@@ -19,7 +19,7 @@ categoria.insert_cat = async (req,res) =>{
 }
 //---------------------------------------------------------------------------------------------------
 
-//Función para editar atributos en la tabla marca---------------------------------------------------
+//Función para editar atributos en la tabla categoria---------------------------------------------------
 categoria.update_cat = async (req, res) => {
     const { categoria_id } = req.params;
     //const { categoria_id = 1} = req.params; //Dato para prueba
@@ -33,7 +33,7 @@ categoria.update_cat = async (req, res) => {
   };
 //--------------------------------------------------------------------------------------------------
 
-//Función para eliminar atributos en la tabla marca---------------------------------------------------
+//Función para eliminar atributos en la tabla categoria---------------------------------------------------
 categoria.delete_cat = async (req, res) => {
     //const { categoria_id = 1 } = req.params; //Dato para prueba
     const { categoria_id } = req.params;
