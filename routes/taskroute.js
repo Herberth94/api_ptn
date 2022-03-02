@@ -10,6 +10,7 @@ const spController = require('../controllers/servicios_productos');
 const precioController = require ('../controllers/precio');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
+const pmController = require ('../controllers/proveedor_marca');
 const monedaController = require ('../controllers/moneda.js');
 const categoriaController = require ('../controllers/categoria')
 
@@ -101,6 +102,16 @@ module.exports= function(){
         router.put('/marca/edit/:id',marcaController.update_marca);
         // Eliminar 
         router.delete('/marca/delete/:id',marcaController.delete_marca);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla proveedor_marca:
+        // Agregar 
+        router.post('/pm/agregar',pmController.insert_pm);
+        // Editar 
+        router.put('/pm/edit/:id',pmController.update_pm);
+        // Eliminar 
+        router.delete('/pm/delete/:id',pmController.delete_pm);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
