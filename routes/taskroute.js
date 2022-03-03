@@ -16,6 +16,7 @@ const categoriaController = require ('../controllers/categoria')
 
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
+const cattController = require ('../controllers/cat_totales');
 const pcController = require ('../controllers/proyectos_cat');
 const amController=  require('../controllers/am')
 
@@ -73,6 +74,16 @@ module.exports= function(){
         router.put('/cats/edit/:id',catsController.update_cats);
         // Eliminar 
         router.delete('/cats/delete/:id',catsController.delete_cats);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla cat_totales:
+        // Agregar 
+        router.post('/catt/agregar',cattController.insert_catt);
+        // Editar 
+        router.put('/catt/edit/:id',cattController.update_catt);
+        // Eliminar 
+        router.delete('/catt/delete/:id',cattController.delete_catt);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
         
