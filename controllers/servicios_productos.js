@@ -4,7 +4,7 @@ const sp = {};
 
 // Función para agregar atributos en la tabla servicio_producto
 sp.insert_sp = async (req, res) => {
-  const {new_sp_id_precio, new_sp_id_proveedor, new_sp_id_categoria } = req.params;
+  const { new_sp_id_precio, new_sp_id_proveedor, new_sp_id_categoria } = req.params;
   const new_sp= {
     sp_no_parte,
     sp_descripcion,
@@ -26,15 +26,19 @@ sp.insert_sp = async (req, res) => {
 // Función para editar atributos en la tabla servicio_producto
 sp.update_sp = async (req, res) => {
   //const { sp_id = 1003 } = req.params; //Dato para prueba
-  const { sp_id } = req.params;
+  const { 
+    sp_id, 
+    new_sp_id_precio, 
+    new_sp_id_proveedor, 
+    new_sp_id_categoria } = req.params;
   const editnew_sp = {
     sp_no_parte,
     sp_descripcion,
     sp_meses,
     sp_semanas,
-    sp_id_precio,
-    sp_id_proveedor,
-    sp_id_categoria,
+    sp_id_precio: new_sp_id_precio,
+    sp_id_proveedor: new_sp_id_proveedor,
+    sp_id_categoria: new_sp_id_categoria,
     sp_comentarios } = req.body;
   //editnew_sp1.sp_no_parte = 20; //Dato para prueba
   await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
