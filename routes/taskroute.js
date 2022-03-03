@@ -9,25 +9,11 @@ const spController = require('../controllers/servicios_productos');
 const precioController = require ('../controllers/precio');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
-<<<<<<< HEAD
 const proyectosController= require('../controllers/proyecto');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
 const pspController =require('../controllers/psp')
 const { route } = require('express/lib/application');
-=======
-const pmController = require ('../controllers/proveedor_marca');
-const monedaController = require ('../controllers/moneda.js');
-const categoriaController = require ('../controllers/categoria')
-
-const proyectosController= require('../controllers/proyecto');
-const catsController = require ('../controllers/categorias_c_a_sptn_ma');
-const cattController = require ('../controllers/cat_totales');
-const pcController = require ('../controllers/proyectos_cat');
-const cctController = require ('../controllers/cat_cat_t');
-const amController=  require ('../controllers/am');
-const ciController = require('../controllers/costos_indirectos');
->>>>>>> 29a2f408269ca95f1f7c8d908faba3f88587f174
 
 //rutas  para cada tarea
 module.exports= function(){
@@ -141,13 +127,8 @@ module.exports= function(){
         router.get('/sp/view',spController.view_sp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-<<<<<<< HEAD
 /*=====TABLA DE PRECIO ========*/
 // Metodos para la tabla precio:
-=======
-
-        // Metodos para la tabla precio:
->>>>>>> 29a2f408269ca95f1f7c8d908faba3f88587f174
         // Agregar 
         router.post('/precio/agregar',precioController.insert_precio);
         // Editar 
@@ -156,13 +137,8 @@ module.exports= function(){
         router.delete('/precio/delete/:id',precioController.delete_precio);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-<<<<<<< HEAD
 /*=====TABLA DE PROVEEDOR ========*/
 // Metodos para la tabla proveedor:
-=======
-
-        // Metodos para la tabla proveedor:
->>>>>>> 29a2f408269ca95f1f7c8d908faba3f88587f174
         // Agregar 
         router.post('/proveedor/agregar',proveedorController.insert_prov);
         // Editar 
@@ -171,13 +147,8 @@ module.exports= function(){
         router.delete('/proveedor/delete/:id',proveedorController.delete_prov);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-<<<<<<< HEAD
 /*=====TABLA DE MARCA ========*/
 // Metodos para la tabla marca:
-=======
-
-        // Metodos para la tabla marca:
->>>>>>> 29a2f408269ca95f1f7c8d908faba3f88587f174
         // Agregar 
         router.post('/marca/agregar',marcaController.insert_marca);
         // Editar 
@@ -207,41 +178,10 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
          router.post('/am/agregar',amController.insertAm);
          router.post('/am/update/:id',amController.updateAm);
          router.delete('/am/dalete/:id',amController.deleteAm);
          
-=======
-        // Metodos para la tabla categoria:
-        // Agregar 
-        router.post('/cat/agregar',categoriaController.insert_cat);
-        // Editar 
-        router.put('/cat/edit/:id',categoriaController.update_cat);
-        // Eliminar 
-        router.delete('/cat/delete/:id',categoriaController.delete_cat);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-        // Metodos para la tabla am:
-        //Agregar
-        router.post('/am/agregar',amController.insert_am);
-        //Editar
-        router.put('/am/edit/:id',amController.update_am);
-        //Eliminar
-        router.delete('/am/delete/:id',amController.delete_am);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-        // Metodos para la tabla costos_indirectos:
-        //Agregar
-        router.post('/ci/agregar',ciController.insert_ci);
-        //Editar
-        router.put('/ci/edit/:id',ciController.update_ci);
-        //Eliminar
-        router.delete('/ci/delete/:id',ciController.delete_ci);
-
->>>>>>> 29a2f408269ca95f1f7c8d908faba3f88587f174
 /*--------------------------------------------------------------------------------------------------------------------*/
 
         // metodo para mostar datos especificos
