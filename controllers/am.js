@@ -48,8 +48,8 @@ am.update_am = async (req, res) => {
     
 //Función para eliminar atributos en la tabla am---------------------------------------------------
 am.delete_am = async (req, res) => {
-        const { am_id = 1 } = req.params; //Dato para prueba
-        //const { am_id } = req.params;
+        //const { am_id = 1 } = req.params; //Dato para prueba
+        const { am_id } = req.params;
         await pool.query("DELETE FROM am WHERE am_id = ?", [ am_id]);
         res.json({
           msg: "AM eliminado exitosamente",
