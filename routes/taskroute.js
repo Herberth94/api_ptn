@@ -19,7 +19,8 @@ const catsController = require ('../controllers/categorias_c_a_sptn_ma');
 const cattController = require ('../controllers/cat_totales');
 const pcController = require ('../controllers/proyectos_cat');
 const cctController = require ('../controllers/cat_cat_t');
-const amController=  require('../controllers/am')
+const amController=  require ('../controllers/am');
+const ciController = require('../controllers/costos_indirectos');
 
 //rutas  para cada tarea
 module.exports= function(){
@@ -187,6 +188,16 @@ module.exports= function(){
         router.put('/am/edit/:id',amController.update_am);
         //Eliminar
         router.delete('/am/delete/:id',amController.delete_am);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla costos_indirectos:
+        //Agregar
+        router.post('/ci/agregar',ciController.insert_ci);
+        //Editar
+        router.put('/ci/edit/:id',ciController.update_ci);
+        //Eliminar
+        router.delete('/ci/delete/:id',ciController.delete_ci);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
