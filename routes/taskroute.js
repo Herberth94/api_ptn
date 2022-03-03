@@ -16,6 +16,7 @@ const categoriaController = require ('../controllers/categoria')
 
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
+const pcController = require ('../controllers/proyectos_cat');
 const amController=  require('../controllers/am')
 
 //rutas  para cada tarea
@@ -72,6 +73,16 @@ module.exports= function(){
         router.put('/cats/edit/:id',catsController.update_cats);
         // Eliminar 
         router.delete('/cats/delete/:id',catsController.delete_cats);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+        
+        // Metodos para la tabla proyectos_cat:
+        // Agregar 
+        router.post('/pc/agregar',pcController.insert_pc);
+        // Editar 
+        router.put('/pc/edit/:id',pcController.update_pc);
+        // Eliminar 
+        router.delete('/pc/delete/:id',pcController.delete_pc);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
