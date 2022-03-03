@@ -18,6 +18,7 @@ const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
 const cattController = require ('../controllers/cat_totales');
 const pcController = require ('../controllers/proyectos_cat');
+const cctController = require ('../controllers/cat_cat_t');
 const amController=  require('../controllers/am')
 
 //rutas  para cada tarea
@@ -86,6 +87,16 @@ module.exports= function(){
         router.delete('/catt/delete/:id',cattController.delete_catt);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
+
+        // Metodos para la tabla cat_cat_t:
+        // Agregar 
+        router.post('/cct/agregar',cctController.insert_cct);
+        // Editar 
+        router.put('/cct/edit/:id',cctController.update_cct);
+        // Eliminar 
+        router.delete('/cct/delete/:id',cctController.delete_cct);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
         
         // Metodos para la tabla proyectos_cat:
         // Agregar 
@@ -108,7 +119,8 @@ module.exports= function(){
         router.get('/sp/view',spController.view_sp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-// Metodos para la tabla precio:
+
+        // Metodos para la tabla precio:
         // Agregar 
         router.post('/precio/agregar',precioController.insert_precio);
         // Editar 
@@ -118,7 +130,7 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-// Metodos para la tabla proveedor:
+        // Metodos para la tabla proveedor:
         // Agregar 
         router.post('/proveedor/agregar',proveedorController.insert_prov);
         // Editar 
