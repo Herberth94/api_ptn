@@ -1,5 +1,4 @@
 const pool = require('../src/db');
-const {response} = require('express');
 
 exports.insertProyectos = async(req,res)=>{
      /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */   

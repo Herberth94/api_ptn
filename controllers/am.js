@@ -1,6 +1,4 @@
 const pool = require( '../src/db');
-const{response} = require('express');
-
 
 exports.insertAm = async(req,res)=>{
     const insertAm = req.body;

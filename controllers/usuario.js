@@ -9,11 +9,25 @@ const formControl = {};
             password,
             estado_login
             };
-            const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
-            res.json({ 
-                msg: 'Registro exitoso',
-                estado: true
-            });
+            const Vsql = await pool.query('SELECT email FROM usuarios WHERE email = ?', [newUser.email]);
+            if (  Vsql != ''){
+
+                res.json({ 
+                msg: 'Email ya registrado intente con otro',
+                estado: false
+            })
+             }
+
+            else{
+                const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
+                res.json({ 
+                    msg: 'Registro exitoso',
+                    estado: true
+                });
+
+            }
+            
+           
             //res.end();
         };
 
