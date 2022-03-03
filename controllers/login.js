@@ -17,7 +17,7 @@ const formControl = {};
         });
         }
         else{
-            //console.log(" registrado");
+            console.log(reSql[0]);
            res.json({ 
                rol: reSql[0].rol,
                id_usuario: reSql[0].id_usuario,
