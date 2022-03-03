@@ -180,11 +180,15 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-         // metodos para agregar eliminar modificar tabla  am
+        // Metodos para la tabla am:
+        //Agregar
+        router.post('/am/agregar',amController.insert_am);
+        //Editar
+        router.put('/am/edit/:id',amController.update_am);
+        //Eliminar
+        router.delete('/am/delete/:id',amController.delete_am);
 
-         router.post('/am/agregar',amController.insertAm);
-         router.post('/am/update/:id',amController.updateAm);
-         router.delete('/am/dalete/:id',amController.deleteAm);
+/*--------------------------------------------------------------------------------------------------------------------*/
 
         // metodo para mostar datos especificos
         router.get('/vistas/:informacion',async(req,res)=>{
