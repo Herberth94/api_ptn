@@ -56,7 +56,7 @@ module.exports= function(){
          //agregar datos  clientes
         router.post('/clientes/agregar',clientesController.postClientes);
          // modificar clientes
-        router.post('/clientes/update/:id',clientesController.updateClientes);        
+        router.put('/clientes/update/:id',clientesController.updateClientes);        
         // elimar clientes
         router.delete('/clientes/delete/:id',clientesController.deleteClientes);
         router.get('/clientes/view', clientesController.viewCliente);
