@@ -7,9 +7,15 @@ const partidaController = require('../controllers/Partida');
 const clientesController= require('../controllers/clientes');
 const spController = require('../controllers/servicios_productos');
 const precioController = require ('../controllers/precio');
+const monedaController = require ('../controllers/moneda');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
+const pmController = require ('../controllers/proveedor_marca');
 const proyectosController= require('../controllers/proyecto');
+const catsController = require ('../controllers/categorias_c_a_sptn_ma');
+const pcController = require ('../controllers/proyectos_cat.js');
+const cattController = require ('../controllers/cat_totales');
+const cctController = require ('../controllers/cat_cat_t');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
 const pspController =require('../controllers/psp')
@@ -74,7 +80,6 @@ module.exports= function(){
         router.post('/psp',pspController.insertPsp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
 
         // Metodos para la tabla categorias_c_a_sptn_ma:
         // Agregar 
@@ -115,7 +120,7 @@ module.exports= function(){
         router.delete('/pc/delete/:id',pcController.delete_pc);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-
+/*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
         // Metodos para la tabla servicio_producto:
         // Agregar 
         router.post('/sp/agregar',spController.insert_sp);
@@ -178,9 +183,13 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-         router.post('/am/agregar',amController.insertAm);
-         router.post('/am/update/:id',amController.updateAm);
-         router.delete('/am/dalete/:id',amController.deleteAm);
+        // Metodos para la tabla am:
+        //Agregar
+        router.post('/am/agregar',amController.insert_am);
+        //Editar
+        router.put('/am/edit/:id',amController.update_am);
+        //Eliminar
+        router.delete('/am/delete/:id',amController.delete_am);
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 
