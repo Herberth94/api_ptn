@@ -6,8 +6,8 @@ const proveedor = {};
 proveedor.insert_prov = async (req,res) =>{
   const new_proveedor = {
     proveedor_nombre,
-    provedor_telefono,
-    proveedor_compania, 
+    // provedor_telefono,
+    // proveedor_compania, 
   } = req.body;
   //new_proveedor.proveedor_nombre = "PTN"; //Dato para prueba
   const proveedor_id = await pool.query('INSERT INTO proveedor SET ?', [new_proveedor]); 

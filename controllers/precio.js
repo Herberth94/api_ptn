@@ -4,13 +4,14 @@ const precio = {};
 
 //Función para agregar atributos en la tabla precio---------------------------------------------------
 precio.insert_precio = async (req, res) => {
-  const { new_precio_id_moneda } = req.params;
+  // const { new_precio_id_moneda } = req.params;
   const new_precio = {
     precio_lista,
     precio_unitario,
     precio_descuento, 
-    precio_id_moneda: new_precio_id_moneda
+    // precio_id_moneda: new_precio_id_moneda
   } = req.body;
+  console.log(req.body)
   //new_precio.precio_lista = 10; //Dato prueba para inserción
   //new_precio.precio_id_moneda = 1; //Dato prueba para inserción
   const precio_id = await pool.query('INSERT INTO precio SET ?', [new_precio]);

@@ -3,7 +3,9 @@ const pool = require('../src/db');
 exports.insertProyectos = async(req,res)=>{
      /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */   
     const  {id} = req.params
+    console.log("este es el id", id)
     const insertProyectos = req.body;
+    console.log(req.body)
     /* INSERCCION DE DATOS A TABLA PROYECTO */
     const proyecto = await pool.query("INSERT INTO proyecto set ?",insertProyectos);
     /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */

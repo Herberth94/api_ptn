@@ -5,6 +5,7 @@ exports.postPtmBom = async (req, res) => {
   //DATOS DE PARTIDA
   const  {id} = req.params
   const newPtn = req.body;
+  console.log(req.body)
   /* INSERTA DATOS A LA TABLA "PARTIDA" */
   const reSql = await pool.query("INSERT INTO partida set ?", [newPtn]);
   /* DATOS A INGRESAR EN  LA TABLA "pp" */

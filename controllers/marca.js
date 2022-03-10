@@ -5,6 +5,7 @@ const marca = {};
 //Función para agregar atributos en la tabla marca---------------------------------------------------
 marca.insert_marca = async (req,res) =>{
     const new_marca = { marca_nombre} = req.body;
+    console.log(req.body)
     //new_marca.marca_nombre = "PTN"; //Dato para prueba 
     const marca_id = await pool.query('INSERT INTO marca SET ?', [new_marca]);
     //Obtención del atributo marca_id anteriormente insertado en la tablas marca

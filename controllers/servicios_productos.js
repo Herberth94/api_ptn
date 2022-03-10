@@ -3,17 +3,18 @@ const sp = {};
 
 // Función para agregar atributos en la tabla servicio_producto
 sp.insert_sp = async (req, res) => {
-  const { new_sp_id_precio, new_sp_id_proveedor, new_sp_id_categoria } = req.params;
+  // const { new_sp_id_precio, new_sp_id_proveedor, new_sp_id_categoria } = req.params;
   const new_sp= {
     sp_no_parte,
     sp_descripcion,
     sp_meses,
     sp_semanas,
-    sp_id_precio: new_sp_id_precio,
-    sp_id_proveedor: new_sp_id_proveedor,
-    sp_id_categoria: new_sp_id_categoria,
+    // sp_id_precio: new_sp_id_precio,
+    // sp_id_proveedor: new_sp_id_proveedor,
+    // sp_id_categoria: new_sp_id_categoria,
     sp_comentarios,
   } = req.body;
+  console.log(req.body)
   //new_sp.sp_no_parte = 50; //Dato para prueba
   await pool.query('insert into servicio_producto set ?', [new_sp]);
   res.json({
