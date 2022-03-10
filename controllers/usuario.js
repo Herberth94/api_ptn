@@ -52,10 +52,21 @@ const formControl = {};
                 estado_login  
         };
         await pool.query('UPDATE usuarios set ? WHERE id_usuario=?',[editvalues,id])
-        const link= `/edit/${id} `;
+        //const link= `/edit/${id} `;
         //console.log(link);
         res.redirect('/api/cotizador/registro');
            };
+    formControl.editPass = async(req,res)=>{
+         const {id} = req.params;
+         const {password} =req.body;
+         const editPass ={
+             password
+         }
+         await pool.query('UPDATE usuarios set ? WHERE id_usuario=?',[editPass,id])
+         res.json({
+             msg:"cambio aplicado"
+         })
+     }
 
        
  module.exports = formControl;

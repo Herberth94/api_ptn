@@ -1,6 +1,6 @@
 const express= require('express')
 const router = express.Router();
-const {postForm , viewForm ,deleteForm , editForm} = require('../controllers/usuario');
+const {postForm , viewForm ,deleteForm , editForm , editPass} = require('../controllers/usuario');
 const {getForm} = require('../controllers/login');
 const pool = require('../src/db');
 const partidaController = require('../controllers/Partida');
@@ -33,9 +33,11 @@ module.exports= function(){
                 .post(postForm)
                 .get(viewForm);
 //eliminación de registro de usuario tomando cuenta el id
-        router.get('/delete/:id',deleteForm);  
+        router.delete('/delete/:id',deleteForm);  
         // ruta para editar los parametros en base Id
-        router.post('/edit/:id', editForm);           
+        router.put('/edit/:id', editForm);  
+        // ruta para editar el password en base Id
+        router.put('/edit/pass/:id', editPass);         
 
 /*--------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PARITDA ========*/
@@ -44,7 +46,7 @@ module.exports= function(){
         // ruta para agregar datos a tabla por post        
         router.post('/partida/:id',partidaController.postPtmBom);
         //ruta para modificar datos de tabla ptmBom
-        router.post('/partida/update/:id',partidaController.updatePtmBom);
+        router.put('/partida/update/:id',partidaController.updatePtmBom);
          //ruta para eliminar datos de tabla ptmBom
         router.delete('/partida/delete/:id',partidaController.deletePtnBom);
         
@@ -54,7 +56,7 @@ module.exports= function(){
          //agregar datos  clientes
         router.post('/clientes/agregar',clientesController.postClientes);
          // modificar clientes
-        router.post('/clientes/update/:id',clientesController.updateClientes);        
+        router.put('/clientes/update/:id',clientesController.updateClientes);        
         // elimar clientes
         router.delete('/clientes/delete/:id',clientesController.deleteClientes);
         router.get('/clientes/view', clientesController.viewCliente);
