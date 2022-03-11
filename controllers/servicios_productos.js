@@ -61,22 +61,5 @@ sp.delete_sp = async (req, res) => {
   });
 };
 
-// Función para consultar todos los atributos de la tabla servicio_producto, así como los atributos de la tablas con las que tiene una llave foránea 
-sp.view_sp = async (req, res) => {
-  const reSql = await pool.query(
-    "SELECT sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad," 
-    +"precio_lista, precio_unitario, precio_descuento, moneda_nombre,"
-    +"proveedor_nombre, proveedor_telefono, proveedor_compania, categoria_nombre "
-    +"FROM servicio_producto "
-    +"INNER JOIN precio on sp_id_precio = precio_id "
-    +"INNER JOIN moneda on precio_id_moneda = moneda_id "
-    +"INNER JOIN proveedor on sp_id_proveedor = proveedor_id "
-    +"INNER JOIN proveedor_marca on pm_id_proveedor = proveedor_id "
-    +"INNER JOIN marca on pm_id_marca = marca_id "
-    +"INNER JOIN categoria on sp_id_categoria = categoria_id "
-    );
-    res.json({reSql:reSql});
-    console.log(reSql);
-};
 
 module.exports = sp;
