@@ -69,7 +69,8 @@ module.exports= function(){
         router.post('/proyecto/update/:id',proyectosController.updateProyectos)
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
-
+         //ruta vizualizar proyecto
+         router.get('/proyecto/view',proyectosController.view_proyecto);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
@@ -130,8 +131,6 @@ module.exports= function(){
         router.put('/sp/edit/:id',spController.update_sp);
         // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
-        // Visualizar
-        router.get('/sp/view',spController.view_sp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PRECIO ========*/
