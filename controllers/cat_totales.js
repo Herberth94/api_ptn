@@ -4,15 +4,23 @@ const catt = {};
 
 //Función para agregar atributos en la tabla cat_totales---------------------------------------------------
 catt.insert_catt = async (req,res) =>{
-    const {new_cat_id_moneda} = req.params;
+    const {cat_id,proyecto_id} = req.params;
     const new_catt = { 
-        ct_totales,
-        ct_id_moneda: new_cat_id_moneda
+      ct_totales_mxn,
+      ct_totales_usd
     } = req.body;
-    //new_catt.ct_totales = 1000.20; //Dato para prueba
-    //new_catt.ct_id_moneda = 1; //Dato para prueba
-    const cat_id = await pool.query('INSERT INTO cat_totales SET ?', [new_catt]);
+    //new_catt.ct_totales_mxn= 1000.20; //Dato para prueba
+    const resCatId = await pool.query('INSERT INTO cat_totales SET ?', [new_catt]);
+
+    const new_pc= {
+      pc_id_proyecto: proyecto_id,
+      pc_id_cat: cat_id,
+      pc_id_cat_t: resCatId.insertId
+    }
+    await pool.query('INSERT INTO proyectos_cat_cat_t SET ?', [new_pc]); 
+      
     res.json({
+        data:resCatId,
         msg: "Total de la categoria agregado exitosamente",
         estado: true,
       });
