@@ -45,9 +45,10 @@ exports.updateProyectos = async(req,res)=>{
   }
 
   // Función para consultar todos los atributos de la tabla servicio_producto, así como los atributos de la tablas con las que tiene una llave foránea 
-  exports.view_proyecto = async (req, res) => {
-  const reSql = await pool.query(
-    "SELECT * FROM proyecto"
+  exports.viewProyecto = async (req, res) => {
+    const reSql = await pool.query("SELECT * FROM proyecto");
+    res.json({data:reSql});
+    console.log(reSql);
     // "SELECT proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion,"//Atributos de las tablas proyecto y cliente
     // +"cat_nombre, ct_totales, moneda_nombre," //Atributos de las tablas cat_c_a_spt_ma y moneda
     // +"partida_nombre, partida_descripcion,"// Atributos de la tabla partida
@@ -71,7 +72,5 @@ exports.updateProyectos = async(req,res)=>{
     // +"INNER JOIN proveedor_marca on pm_id_proveedor = proveedor_id "
     // +"INNER JOIN marca on pm_id_marca = marca_id "
     // +"INNER JOIN categoria on sp_id_categoria = categoria_id "
-    );
-    res.json({reSql:reSql});
-    console.log(reSql.reSql);
+    
   };
