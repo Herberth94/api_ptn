@@ -13,26 +13,24 @@ const marcaController = require ('../controllers/marca');
 const pmController = require ('../controllers/proveedor_marca');
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
-const pcController = require ('../controllers/proyectos_cat.js');
 const cattController = require ('../controllers/cat_totales');
-const cctController = require ('../controllers/cat_cat_t');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
-const pspController =require('../controllers/psp')
+
 const { route } = require('express/lib/application');
 
 //rutas  para cada tarea
 module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE USUARIO ========*/
-//Ruta de login de usuaruio
+        /*=====TABLA DE USUARIO ========*/
+        //Ruta de login de usuaruio
         router.post('/login',getForm);
-//ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados usar método GET
+        //ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados usar método GET
         router.route('/registro')
                 .post(postForm)
                 .get(viewForm);
-//eliminación de registro de usuario tomando cuenta el id
+        //eliminación de registro de usuario tomando cuenta el id
         router.delete('/delete/:id',deleteForm);  
         // ruta para editar los parametros en base Id
         router.put('/edit/:id', editForm);  
@@ -76,13 +74,7 @@ module.exports= function(){
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
-
         router.post('/colaboradores/:id',colaboradoresController.insertColaborador);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-/*===== TABLA DE PSP ========*/
-
-        router.post('/psp',pspController.insertPsp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -98,31 +90,11 @@ module.exports= function(){
 
         // Metodos para la tabla cat_totales:
         // Agregar 
-        router.post('/catt/agregar',cattController.insert_catt);
+        router.post('/catt/agregar/:cat_id/:proyecto_id',cattController.insert_catt);
         // Editar 
         router.put('/catt/edit/:id',cattController.update_catt);
         // Eliminar 
         router.delete('/catt/delete/:id',cattController.delete_catt);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-        // Metodos para la tabla cat_cat_t:
-        // Agregar 
-        router.post('/cct/agregar',cctController.insert_cct);
-        // Editar 
-        router.put('/cct/edit/:id',cctController.update_cct);
-        // Eliminar 
-        router.delete('/cct/delete/:id',cctController.delete_cct);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-        
-        // Metodos para la tabla proyectos_cat:
-        // Agregar 
-        router.post('/pc/agregar',pcController.insert_pc);
-        // Editar 
-        router.put('/pc/edit/:id',pcController.update_pc);
-        // Eliminar 
-        router.delete('/pc/delete/:id',pcController.delete_pc);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
