@@ -1,7 +1,7 @@
 const { response } = require("express");
 const pool = require("../src/db");
 
-exports.postPtmBom = async (req, res) => {
+exports.insertPartida = async (req, res) => {
   //DATOS DE PARTIDA
   const  {id} = req.params
   const newPtn = req.body;
@@ -25,7 +25,7 @@ exports.postPtmBom = async (req, res) => {
   //res.end();
 };
 
-exports.updatePtmBom = async (req, res) => {
+exports.updatePartida = async (req, res) => {
   const { id } = req.params;
   const editptnBom = req.body;
   const updaetsql = await pool.query("UPDATE partida set ? WHERE partida_id =?",[editptnBom, id]);
@@ -34,10 +34,16 @@ exports.updatePtmBom = async (req, res) => {
     estado: true,
   });
 };
-exports.deletePtnBom=async(req,res)=>{
+exports.deletePartida=async(req,res)=>{
     const {id} =  req.params;
     await pool.query("DELETE FROM ptn_bom WHERE partida_id= ?", [id]);
     res.json({
         msg : "se eliminado la partida correctamente"
     });
+};
+
+exports.viewPartida = async (req, res) => {
+  const reSql = await pool.query("SELECT * FROM prartida");
+  res.json({reSql:reSql});
+  console.log(reSql);
 };
