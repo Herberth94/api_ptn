@@ -43,7 +43,7 @@ exports.deletePartida=async(req,res)=>{
 };
 
 exports.viewPartida = async (req, res) => {
-  const reSql = await pool.query("SELECT * FROM prartida");
-  res.json({reSql:reSql});
+  const reSql = await pool.query("SELECT * FROM partida");
+  res.json({data:reSql});
   console.log(reSql);
 };
