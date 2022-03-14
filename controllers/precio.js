@@ -9,18 +9,14 @@ precio.insert_precio = async (req, res) => {
     precio_lista,
     precio_unitario,
     precio_descuento, 
+    precio_total,
+    precio_id_moneda
     // precio_id_moneda: new_precio_id_moneda
   } = req.body;
-  console.log(req.body)
-  //new_precio.precio_lista = 10; //Dato prueba para inserción
-  //new_precio.precio_id_moneda = 1; //Dato prueba para inserción
+  //console.log(req.body)
   const precio_id = await pool.query('INSERT INTO precio SET ?', [new_precio]);
-
-  //Obtención del atributo precio_id anteriormente insertado en la tabla precio
-  // const new_sp_id_precio = {
-  //   sp_id_precio: precio_id.insertId
-  // }
   res.json({
+    data: precio_id,
     msg: "Precio agregado exitosamente",
     estado: true,
   });
