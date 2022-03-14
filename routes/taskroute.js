@@ -44,11 +44,13 @@ module.exports= function(){
 
 // metodos para agrgar datos eliminar datos y modificar datos de tabla proyecto  
         // ruta para agregar datos a tabla por post        
-        router.post('/partida/:id',partidaController.postPtmBom);
+        router.post('/partida/:id',partidaController.insertPartida);
         //ruta para modificar datos de tabla ptmBom
-        router.put('/partida/update/:id',partidaController.updatePtmBom);
+        router.put('/partida/update/:id',partidaController.updatePartida);
          //ruta para eliminar datos de tabla ptmBom
-        router.delete('/partida/delete/:id',partidaController.deletePtnBom);
+        router.delete('/partida/delete/:id',partidaController.deletePartida);
+        //Consultar datos
+        router.get('/partida/view',partidaController.viewPartida);
         
 /*--------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE CLIENTES ========*/
@@ -70,7 +72,7 @@ module.exports= function(){
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto
-         router.get('/proyecto/view',proyectosController.view_proyecto);
+         router.get('/proyecto/view',proyectosController.viewProyecto);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
@@ -126,7 +128,7 @@ module.exports= function(){
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
         // Metodos para la tabla servicio_producto:
         // Agregar 
-        router.post('/sp/agregar',spController.insert_sp);
+        router.post('/sp/agregar/:id',spController.insert_sp);
         // Editar 
         router.put('/sp/edit/:id',spController.update_sp);
         // Eliminar 
@@ -156,7 +158,7 @@ module.exports= function(){
 /*=====TABLA DE MARCA ========*/
 // Metodos para la tabla marca:
         // Agregar 
-        router.post('/marca/agregar',marcaController.insert_marca);
+        router.post('/marca/agregar/:proveedor_id',marcaController.insert_marca);
         // Editar 
         router.put('/marca/edit/:id',marcaController.update_marca);
         // Eliminar 
