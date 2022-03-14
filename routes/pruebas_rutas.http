@@ -1,5 +1,5 @@
 ###
-POST http://localhost:4001/api/cotizador/pm/agregar HTTP/1.1
+POST http://localhost:4001/api/cotizador/catt/agregar/1/1 HTTP/1.1
 
 ###
 PUT http://localhost:4001/api/cotizador/pm/edit/:id HTTP/1.1
