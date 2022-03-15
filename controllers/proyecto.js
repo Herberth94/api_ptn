@@ -44,33 +44,45 @@ exports.updateProyectos = async(req,res)=>{
   })  
   }
 
-  // Función para consultar todos los atributos de la tabla servicio_producto, así como los atributos de la tablas con las que tiene una llave foránea 
+  // Función para consultar todos los atributos de la tabla proyecto
   exports.viewProyecto = async (req, res) => {
     const reSql = await pool.query("SELECT * FROM proyecto");
     res.json({data:reSql});
     console.log(reSql);
-    // "SELECT proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion,"//Atributos de las tablas proyecto y cliente
-    // +"cat_nombre, ct_totales, moneda_nombre," //Atributos de las tablas cat_c_a_spt_ma y moneda
-    // +"partida_nombre, partida_descripcion,"// Atributos de la tabla partida
-    // +"sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad, sp_comentarios," // Atributos de la tabla servicio_producto
-    // +"precio_lista, precio_unitario, precio_descuento, moneda_nombre," // Atributos de las tablas precio y moneda
-    // +"proveedor_nombre, proveedor_telefono, proveedor_compania, categoria_nombre " //Atributos de las tablas proveedor y categoria
-    // // Comienzo del recorrido entre las tablas
-    // +"FROM proyecto " 
-    // +"INNER JOIN clientes on proyecto_id_cliente = cliente_id "
-    // +"INNER JOIN proyectos_cat on pc_id_proyecto = proyecto_id "
-    // +"INNER JOIN categorias_c_a_sptn_ma on pc_id_cat = cat_id "
-    // +"INNER JOIN cat_cat_t on cc_id_cat = cat_id "
-    // +"INNER JOIN cat_totales on cc_id_cat_t = ct_id "
-    // +"INNER JOIN pp on pp_id_proyecto = proyecto_id "
-    // +"INNER JOIN partida on pp_id_partida = partida_id "
-    // +"INNER JOIN psp on psp_id_partida = partida_id "
-    // +"INNER JOIN servicio_producto on psp_id_sp = sp_id "
-    // +"INNER JOIN precio on sp_id_precio = precio_id "
-    // +"INNER JOIN moneda on precio_id_moneda = moneda_id and ct_id_moneda = moneda_id "
-    // +"INNER JOIN proveedor on sp_id_proveedor = proveedor_id "
-    // +"INNER JOIN proveedor_marca on pm_id_proveedor = proveedor_id "
-    // +"INNER JOIN marca on pm_id_marca = marca_id "
-    // +"INNER JOIN categoria on sp_id_categoria = categoria_id "
-    
+  };
+
+  // Función para consultar los atributos proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion
+  exports.viewProyectoWithNcliente = async (req, res) => {
+    const reSql = await pool.query(
+      "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion "
+      +"FROM proyecto "
+      +"LEFTH JOIN clientes ON proyecto_id_cliente = cliente_id "
+      +"ORDER BY proyecto_id"
+      );
+    res.json({data:reSql});
+    console.log(reSql);
+  };
+
+  // Función para consultar los atributos de un determinado proyecto
+  exports.viewSerchProyecto = async (req, res) => {
+    const {proyecto_id} = req.params;
+    const reSql = await pool.query(
+      "SELECT partida_nombre, partida_descripcion,"
+      +"sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad,"
+      +"precio_lista, precio_unitario, precio_descuento, precio_total, moneda_nombre,"
+      +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
+      +"FROM proyecto "
+      +"LEFT JOIN pp ON pp_id_proyecto = proyecto_id "
+      +"LEFT JOIN partida ON pp_id_partida = partida_id "
+      +"LEFT JOIN psp ON psp_id_partida = partida_id "
+      +"LEFT JOIN servicio_producto ON psp_id_sp = sp_id "
+      +"LEFT JOIN precio ON sp_id_precio = precio_id "
+      +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
+      +"LEFT JOIN proveedor ON sp_id_proveedor = proveedor_id "
+      +"LEFT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
+      +"LEFT JOIN marca ON pm_id_marca = marca_id "
+      +"LEFT JOIN categoria ON sp_id_categoria = categoria_id "
+      +"WHERE proyecto_id = ?", [proyecto_id]);
+    res.json({data:reSql});
+    console.log(reSql);
   };
