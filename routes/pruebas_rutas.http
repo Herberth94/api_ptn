@@ -8,4 +8,4 @@ PUT http://localhost:4001/api/cotizador/pm/edit/:id HTTP/1.1
 DELETE http://localhost:4001/api/cotizador/pm/delete/:id HTTP/1.1
 
 ###
-GET http://localhost:4001/api/cotizador/sp/view HTTP/1.1
+GET http://localhost:4001/api/cotizador/proyecto/view2/61 HTTP/1.1
