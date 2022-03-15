@@ -71,6 +71,8 @@ module.exports= function(){
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto
          router.get('/proyecto/view',proyectosController.viewProyecto);
+         router.get('/proyecto/view1',proyectosController.viewProyectoWithNcliente);
+         router.get('/proyecto/view2/:proyecto_id',proyectosController.viewSerchProyecto);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
