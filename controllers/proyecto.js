@@ -67,7 +67,7 @@ exports.updateProyectos = async(req,res)=>{
   exports.viewSerchProyecto = async (req, res) => {
     const {proyecto_id} = req.params;
     const reSql = await pool.query(
-      "SELECT partida_nombre, partida_descripcion,"
+      "SELECT partida_id,partida_nombre,partida_descripcion,"
       +"sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad,"
       +"precio_lista, precio_unitario, precio_descuento, precio_total, moneda_nombre,"
       +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
