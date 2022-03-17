@@ -47,9 +47,10 @@ module.exports= function(){
         router.put('/partida/update/:id',partidaController.updatePartida);
          //ruta para eliminar datos de tabla ptmBom
         router.delete('/partida/delete/:id',partidaController.deletePartida);
-        //Consultar datos
-        router.get('/partida/view',partidaController.viewPartida);
+        //Consultar datos de una partida de un deteterminado proyecto
+        router.get('/partida/viewPP/:proyecto_id',partidaController.viewPartida);
         
+
 /*--------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE CLIENTES ========*/
 
@@ -72,7 +73,6 @@ module.exports= function(){
          //ruta vizualizar proyecto
          router.get('/proyecto/view',proyectosController.viewProyecto);
          router.get('/proyecto/view1',proyectosController.viewProyectoWithNcliente);
-         router.get('/proyecto/view2/:proyecto_id',proyectosController.viewSerchProyecto);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
@@ -107,6 +107,8 @@ module.exports= function(){
         router.put('/sp/edit/:id',spController.update_sp);
         // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
+        //Consultar datos de un servicio
+        router.get('/partida/viewPSP/:partida_id',spController.viewPSP);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PRECIO ========*/
@@ -117,7 +119,8 @@ module.exports= function(){
         router.put('/precio/edit/:id',precioController.update_precio);
         // Eliminar 
         router.delete('/precio/delete/:id',precioController.delete_precio);
-
+        //Consultar precios de un servicio_producto
+        router.get('/precio/viewSPP/:sp_id',precioController.viewSPP);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PROVEEDOR ========*/
 // Metodos para la tabla proveedor:
