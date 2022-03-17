@@ -60,8 +60,7 @@ precio.viewSPP = async (req, res) => {
   const reSql = await pool.query(
     "SELECT precio_id, precio_lista, precio_unitario, precio_descuento, precio_total, moneda_nombre "
     +"FROM servicio_producto "
-    +"RIGHT JOIN sp_precio ON spp_id_sp = sp_id "
-    +"RIGHT JOIN precio ON spp_id_precio = precio_id "
+    +"RIGHT JOIN precio ON sp_id_precio = precio_id "
     +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
     +"WHERE sp_id = ? "
     +"ORDER BY precio_id", [sp_id]);
