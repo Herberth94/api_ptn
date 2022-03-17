@@ -162,7 +162,7 @@ module.exports= function(){
 
         // Metodos para la tabla am:
         //Agregar
-        router.post('/am/agregar',amController.insert_am);
+        router.post('/am/agregar/:id',amController.insert_am);
         //Editar
         router.put('/am/edit/:id',amController.update_am);
         //Eliminar
