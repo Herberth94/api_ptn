@@ -10,7 +10,6 @@ sp.insert_sp = async (req, res) => {
     sp_meses,
     sp_semanas,
     sp_cantidad, 
-    sp_id_precio,
     sp_id_proveedor,
     sp_id_categoria,
     sp_comentarios,
@@ -67,6 +66,25 @@ sp.delete_sp = async (req, res) => {
     msg: "Producto eliminado exitosamente",
     estado: true,
   });
+};
+
+/*== Función para consultar datos relacionados de una determinada partida ==*/
+sp.viewPSP = async (req, res) => {
+  const {partida_id} = req.params;
+  const reSql = await pool.query(
+    "SELECT sp_id, sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad,"
+    +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
+    +"FROM partida "
+    +"RIGHT JOIN psp ON psp_id_partida = partida_id "
+    +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
+    +"RIGHT JOIN proveedor ON sp_id_proveedor = proveedor_id "
+    +"RIGHT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
+    +"RIGHT JOIN marca ON pm_id_marca = marca_id "
+    +"RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
+    +"WHERE partida_id = ? "
+    +"ORDER BY sp_id", [partida_id]);
+  res.json({data:reSql});
+  //console.log(reSql);
 };
 
 
