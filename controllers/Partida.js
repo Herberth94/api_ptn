@@ -44,6 +44,12 @@ exports.deletePartida=async(req,res)=>{
 
 /*== Función para consultar datos de una partida(s) de un determinado proyecto ==*/
 exports.viewPartida = async (req, res) => {
+  const reSql = await pool.query("SELECT * FROM partida ");
+  res.json({data:reSql});
+};
+
+/*== Función para consultar datos de una partida(s) de un determinado proyecto ==*/
+exports.viewPartidaPP = async (req, res) => {
   const{proyecto_id} = req.params;
   const reSql = await pool.query("SELECT partida_id, partida_nombre, partida_descripcion "
   +"FROM proyecto "

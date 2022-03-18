@@ -47,8 +47,10 @@ module.exports= function(){
         router.put('/partida/update/:id',partidaController.updatePartida);
          //ruta para eliminar datos de tabla ptmBom
         router.delete('/partida/delete/:id',partidaController.deletePartida);
+        //Consultar datos de la tabla partida
+        router.get('/partida/view',partidaController.viewPartida);
         //Consultar datos de una partida de un deteterminado proyecto
-        router.get('/partida/viewPP/:proyecto_id',partidaController.viewPartida);
+        router.get('/partida/viewPP/:proyecto_id',partidaController.viewPartidaPP);
         
 
 /*--------------------------------------------------------------------------------------------------------------*/
