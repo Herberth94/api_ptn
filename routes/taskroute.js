@@ -13,26 +13,24 @@ const marcaController = require ('../controllers/marca');
 const pmController = require ('../controllers/proveedor_marca');
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
-const pcController = require ('../controllers/proyectos_cat.js');
 const cattController = require ('../controllers/cat_totales');
-const cctController = require ('../controllers/cat_cat_t');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
-const pspController =require('../controllers/psp')
+
 const { route } = require('express/lib/application');
 
 //rutas  para cada tarea
 module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE USUARIO ========*/
-//Ruta de login de usuaruio
+        /*=====TABLA DE USUARIO ========*/
+        //Ruta de login de usuaruio
         router.post('/login',getForm);
-//ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados usar método GET
+        //ruta para el registro de usuario con el metodo POST y para sustraer todos los usuarios registrados usar método GET
         router.route('/registro')
                 .post(postForm)
                 .get(viewForm);
-//eliminación de registro de usuario tomando cuenta el id
+        //eliminación de registro de usuario tomando cuenta el id
         router.delete('/delete/:id',deleteForm);  
         // ruta para editar los parametros en base Id
         router.put('/edit/:id', editForm);  
@@ -44,12 +42,17 @@ module.exports= function(){
 
 // metodos para agrgar datos eliminar datos y modificar datos de tabla proyecto  
         // ruta para agregar datos a tabla por post        
-        router.post('/partida/:id',partidaController.postPtmBom);
+        router.post('/partida/:id',partidaController.insertPartida);
         //ruta para modificar datos de tabla ptmBom
-        router.put('/partida/update/:id',partidaController.updatePtmBom);
+        router.put('/partida/update/:id',partidaController.updatePartida);
          //ruta para eliminar datos de tabla ptmBom
-        router.delete('/partida/delete/:id',partidaController.deletePtnBom);
+        router.delete('/partida/delete/:id',partidaController.deletePartida);
+        //Consultar datos de la tabla partida
+        router.get('/partida/view',partidaController.viewPartida);
+        //Consultar datos de una partida de un deteterminado proyecto
+        router.get('/partida/viewPP/:proyecto_id',partidaController.viewPartidaPP);
         
+
 /*--------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE CLIENTES ========*/
 
@@ -66,20 +69,16 @@ module.exports= function(){
          //ruta para  agregar proyecto 
         router.post('/proyecto/agregar/:id',proyectosController.insertProyectos)
          // ruta para modificar proyectos
-        router.post('/proyecto/update/:id',proyectosController.updateProyectos)
+        router.put('/proyecto/update/:id',proyectosController.updateProyectos)
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
-
+         //ruta vizualizar proyecto
+         router.get('/proyecto/view',proyectosController.viewProyecto);
+         router.get('/proyecto/view1',proyectosController.viewProyectoWithNcliente);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
-
         router.post('/colaboradores/:id',colaboradoresController.insertColaborador);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-/*===== TABLA DE PSP ========*/
-
-        router.post('/psp',pspController.insertPsp);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -95,43 +94,23 @@ module.exports= function(){
 
         // Metodos para la tabla cat_totales:
         // Agregar 
-        router.post('/catt/agregar',cattController.insert_catt);
+        router.post('/catt/agregar/:cat_id/:proyecto_id',cattController.insert_catt);
         // Editar 
         router.put('/catt/edit/:id',cattController.update_catt);
         // Eliminar 
         router.delete('/catt/delete/:id',cattController.delete_catt);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-
-        // Metodos para la tabla cat_cat_t:
-        // Agregar 
-        router.post('/cct/agregar',cctController.insert_cct);
-        // Editar 
-        router.put('/cct/edit/:id',cctController.update_cct);
-        // Eliminar 
-        router.delete('/cct/delete/:id',cctController.delete_cct);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-        
-        // Metodos para la tabla proyectos_cat:
-        // Agregar 
-        router.post('/pc/agregar',pcController.insert_pc);
-        // Editar 
-        router.put('/pc/edit/:id',pcController.update_pc);
-        // Eliminar 
-        router.delete('/pc/delete/:id',pcController.delete_pc);
-
-/*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
         // Metodos para la tabla servicio_producto:
         // Agregar 
-        router.post('/sp/agregar',spController.insert_sp);
+        router.post('/sp/agregar/:id',spController.insert_sp);
         // Editar 
         router.put('/sp/edit/:id',spController.update_sp);
         // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
-        // Visualizar
-        router.get('/sp/view',spController.view_sp);
+        //Consultar datos de un servicio
+        router.get('/partida/viewPSP/:partida_id',spController.viewPSP);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PRECIO ========*/
@@ -142,7 +121,8 @@ module.exports= function(){
         router.put('/precio/edit/:id',precioController.update_precio);
         // Eliminar 
         router.delete('/precio/delete/:id',precioController.delete_precio);
-
+        //Consultar precios de un servicio_producto
+        router.get('/precio/viewSPP/:sp_id',precioController.viewSPP);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PROVEEDOR ========*/
 // Metodos para la tabla proveedor:
@@ -157,7 +137,7 @@ module.exports= function(){
 /*=====TABLA DE MARCA ========*/
 // Metodos para la tabla marca:
         // Agregar 
-        router.post('/marca/agregar',marcaController.insert_marca);
+        router.post('/marca/agregar/:proveedor_id',marcaController.insert_marca);
         // Editar 
         router.put('/marca/edit/:id',marcaController.update_marca);
         // Eliminar 
@@ -187,7 +167,7 @@ module.exports= function(){
 
         // Metodos para la tabla am:
         //Agregar
-        router.post('/am/agregar',amController.insert_am);
+        router.post('/am/agregar/:id',amController.insert_am);
         //Editar
         router.put('/am/edit/:id',amController.update_am);
         //Eliminar

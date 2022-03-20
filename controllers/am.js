@@ -4,14 +4,18 @@ const am = {};
 
 //Función para agregar atributos en la tabla am---------------------------------------------------
 am.insert_am = async (req,res) =>{
-        const {new_id_proyecto} = req.params; 
+        const {id} = req.params; 
         const new_am = { 
                 am_valor_dolar,
-                am_desc_cliente,
-                am_margen_ganancia,
-                am_desc_fabrica,
-                am_id_proyecto: new_id_proyecto
+                // am_desc_cliente,
+                // am_margen_ganancia,
+                // am_desc_fabrica,
+                am_id_proyecto
         } = req.body;
+        new_am["am_id_proyecto"] = id
+        console.log(req.body)
+        console.log(req.params)
+        console.log(new_am)
         //new_am.am_valor_dolar = 21.22; //Dato prueba para inserción
         //new_am.am_id_proyecto = 1; //Dato prueba para inserción
         await pool.query('INSERT INTO am SET ?', [new_am]);

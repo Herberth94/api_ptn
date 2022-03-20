@@ -1,21 +1,30 @@
 const pool = require("../src/db");
 const sp = {};
 
-// Función para agregar atributos en la tabla servicio_producto
+// Función para agregar atributos en la tabla servicio_producto y psp
 sp.insert_sp = async (req, res) => {
-  const { new_sp_id_precio, new_sp_id_proveedor, new_sp_id_categoria } = req.params;
+  const {id} = req.params;
   const new_sp= {
     sp_no_parte,
     sp_descripcion,
     sp_meses,
     sp_semanas,
-    sp_id_precio: new_sp_id_precio,
-    sp_id_proveedor: new_sp_id_proveedor,
-    sp_id_categoria: new_sp_id_categoria,
+    sp_cantidad, 
+    sp_id_proveedor,
+    sp_id_categoria,
     sp_comentarios,
   } = req.body;
-  //new_sp.sp_no_parte = 50; //Dato para prueba
-  await pool.query('insert into servicio_producto set ?', [new_sp]);
+  //console.log(req.body)
+  //new_sp.sp_no_parte = 70; //Dato para prueba
+  const reSql = await pool.query('insert into servicio_producto set ?', [new_sp]);
+
+  const psp ={
+    psp_id_partida:id,
+    psp_id_sp:reSql.insertId
+  }
+  console.log()
+  const reSql2 = await pool.query("INSERT INTO psp set ?", [psp]);
+  /* DEVUELVE RESPUESTA AL FRONT LOS SIGUIENTES DATOS*/
   res.json({
     msg: "Producto agregado exitosamente",
     estado: true,
@@ -35,6 +44,7 @@ sp.update_sp = async (req, res) => {
     sp_descripcion,
     sp_meses,
     sp_semanas,
+    sp_cantidad,
     sp_id_precio: new_sp_id_precio,
     sp_id_proveedor: new_sp_id_proveedor,
     sp_id_categoria: new_sp_id_categoria,
@@ -58,22 +68,25 @@ sp.delete_sp = async (req, res) => {
   });
 };
 
-// Función para consultar todos los atributos de la tabla servicio_producto, así como los atributos de la tablas con las que tiene una llave foránea 
-sp.view_sp = async (req, res) => {
+/*== Función para consultar datos relacionados de una determinada partida ==*/
+sp.viewPSP = async (req, res) => {
+  const {partida_id} = req.params;
   const reSql = await pool.query(
-    "SELECT sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad," 
-    +"precio_lista, precio_unitario, precio_descuento, moneda_nombre,"
-    +"proveedor_nombre, proveedor_telefono, proveedor_compania, categoria_nombre "
-    +"FROM servicio_producto "
-    +"INNER JOIN precio on sp_id_precio = precio_id "
-    +"INNER JOIN moneda on precio_id_moneda = moneda_id "
-    +"INNER JOIN proveedor on sp_id_proveedor = proveedor_id "
-    +"INNER JOIN proveedor_marca on pm_id_proveedor = proveedor_id "
-    +"INNER JOIN marca on pm_id_marca = marca_id "
-    +"INNER JOIN categoria on sp_id_categoria = categoria_id "
-    );
-    res.json({reSql:reSql});
-    console.log(reSql);
+    "SELECT sp_id, sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad, sp_id_precio,"
+    +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
+    +"FROM partida "
+    +"RIGHT JOIN psp ON psp_id_partida = partida_id "
+    +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
+    +"LEFT JOIN precio ON sp_id_precio = precio_id "
+    +"RIGHT JOIN proveedor ON sp_id_proveedor = proveedor_id "
+    +"RIGHT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
+    +"RIGHT JOIN marca ON pm_id_marca = marca_id "
+    +"RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
+    +"WHERE partida_id = ? "
+    +"ORDER BY sp_id", [partida_id]);
+  res.json({data:reSql});
+  //console.log(reSql);
 };
+
 
 module.exports = sp;

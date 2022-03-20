@@ -4,22 +4,18 @@ const precio = {};
 
 //Función para agregar atributos en la tabla precio---------------------------------------------------
 precio.insert_precio = async (req, res) => {
-  const { new_precio_id_moneda } = req.params;
+  const { sp_id } = req.params;
   const new_precio = {
     precio_lista,
     precio_unitario,
     precio_descuento, 
-    precio_id_moneda: new_precio_id_moneda
+    precio_total,
+    precio_id_moneda
   } = req.body;
-  //new_precio.precio_lista = 10; //Dato prueba para inserción
-  //new_precio.precio_id_moneda = 1; //Dato prueba para inserción
   const precio_id = await pool.query('INSERT INTO precio SET ?', [new_precio]);
 
-  //Obtención del atributo precio_id anteriormente insertado en la tabla precio
-  // const new_sp_id_precio = {
-  //   sp_id_precio: precio_id.insertId
-  // }
   res.json({
+    data: precio_id,
     msg: "Precio agregado exitosamente",
     estado: true,
   });
@@ -57,5 +53,19 @@ precio.delete_precio = async (req, res) => {
   });
 };
 //-----------------------------------------------------------------------------------------------------
+
+/*== Función para consultar datos relacionados de un determinado servicio_producto ==*/
+precio.viewSPP = async (req, res) => {
+  const {sp_id} = req.params;
+  const reSql = await pool.query(
+    "SELECT precio_id, precio_lista, precio_unitario, precio_descuento, precio_total, moneda_nombre "
+    +"FROM servicio_producto "
+    +"RIGHT JOIN precio ON sp_id_precio = precio_id "
+    +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
+    +"WHERE sp_id = ? "
+    +"ORDER BY precio_id", [sp_id]);
+  res.json({data:reSql});
+  //console.log(reSql);
+};
 
 module.exports = precio;

@@ -3,7 +3,9 @@ const pool = require('../src/db');
 exports.insertProyectos = async(req,res)=>{
      /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */   
     const  {id} = req.params
+    console.log("este es el id", id)
     const insertProyectos = req.body;
+    console.log(req.body)
     /* INSERCCION DE DATOS A TABLA PROYECTO */
     const proyecto = await pool.query("INSERT INTO proyecto set ?",insertProyectos);
     /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
@@ -24,7 +26,12 @@ exports.insertProyectos = async(req,res)=>{
 
 exports.updateProyectos = async(req,res)=>{
     const {id}= req.params ;     
-    const updateProyectos =req.body;
+    const {proyecto_clave, proyecto_descripcion, proyecto_id_cliente} = req.body;
+    const updateProyectos = {
+      proyecto_clave,
+      proyecto_descripcion,
+      proyecto_id_cliente
+    };
          await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?",[updateProyectos,id]);
          res.json({
                  msg: 'Proyectos  se estan modificando',
@@ -32,11 +39,31 @@ exports.updateProyectos = async(req,res)=>{
          })
   };
 
-  exports.deleteProyectos= async(req,res)=>{
-    const {id} = req.params;
+exports.deleteProyectos= async(req,res)=>{
+  const {id} = req.params;
   await pool.query("DELETE FROM proyecto WHERE proyecto_id = ?",[id]);
   res.json({
-          msg: 'proyectos eleminados',
-          estado :true
+  msg: 'proyectos eleminados',
+  estado :true
   })  
-}
+  }
+
+  // Función para consultar todos los atributos de la tabla proyecto
+  exports.viewProyecto = async (req, res) => {
+    const reSql = await pool.query("SELECT * FROM proyecto");
+    res.json({data:reSql});
+    console.log(reSql);
+  };
+
+  // Función para consultar los atributos proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion
+  exports.viewProyectoWithNcliente = async (req, res) => {
+    const reSql = await pool.query(
+      "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
+      +"FROM proyecto "
+      +"LEFTH JOIN clientes ON proyecto_id_cliente = cliente_id "
+      +"ORDER BY proyecto_id"
+      );
+    res.json({data:reSql});
+    console.log(reSql);
+  };
+
