@@ -26,7 +26,6 @@ exports.updateProyectos = async(req,res)=>{
     const {id}= req.params ;     
     const updateProyectos =req.body;
          await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?",[updateProyectos,id]);
-
          res.json({
                  msg: 'Proyectos  se estan modificando',
                  estado: true
