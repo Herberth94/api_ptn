@@ -72,11 +72,12 @@ sp.delete_sp = async (req, res) => {
 sp.viewPSP = async (req, res) => {
   const {partida_id} = req.params;
   const reSql = await pool.query(
-    "SELECT sp_id, sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad,"
+    "SELECT sp_id, sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad, sp_id_precio,"
     +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
     +"FROM partida "
     +"RIGHT JOIN psp ON psp_id_partida = partida_id "
     +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
+    +"LEFT JOIN precio ON sp_id_precio = precio_id "
     +"RIGHT JOIN proveedor ON sp_id_proveedor = proveedor_id "
     +"RIGHT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
     +"RIGHT JOIN marca ON pm_id_marca = marca_id "

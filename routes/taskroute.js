@@ -69,7 +69,7 @@ module.exports= function(){
          //ruta para  agregar proyecto 
         router.post('/proyecto/agregar/:id',proyectosController.insertProyectos)
          // ruta para modificar proyectos
-        router.post('/proyecto/update/:id',proyectosController.updateProyectos)
+        router.put('/proyecto/update/:id',proyectosController.updateProyectos)
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto
