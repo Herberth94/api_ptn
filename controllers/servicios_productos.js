@@ -3,29 +3,36 @@ const sp = {};
 
 // Función para agregar atributos en la tabla servicio_producto y psp
 sp.insert_sp = async (req, res) => {
-  const {id} = req.params;
+  const {partida_id, proveedor_id, marca_id} = req.params;
   const new_sp= {
     sp_no_parte,
     sp_descripcion,
     sp_meses,
     sp_semanas,
     sp_cantidad, 
-    sp_id_proveedor,
     sp_id_categoria,
     sp_comentarios,
   } = req.body;
   //console.log(req.body)
   //new_sp.sp_no_parte = 70; //Dato para prueba
   const reSql = await pool.query('insert into servicio_producto set ?', [new_sp]);
-
+ 
   const psp ={
-    psp_id_partida:id,
+    psp_id_partida:partida_id,
     psp_id_sp:reSql.insertId
   }
   console.log()
   const reSql2 = await pool.query("INSERT INTO psp set ?", [psp]);
+
+  const sppm ={
+    sppm_id_sp:reSql.insertId,
+    sppm_id_proveedor: proveedor_id,
+    sppm_id_marca: marca_id
+  };
+  await pool.query('INSERT INTO sp_proveedor_marca SET ?', [sppm]);
   /* DEVUELVE RESPUESTA AL FRONT LOS SIGUIENTES DATOS*/
   res.json({
+    //data: reSql,
     msg: "Producto agregado exitosamente",
     estado: true,
   });
