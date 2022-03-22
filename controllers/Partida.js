@@ -27,8 +27,12 @@ exports.insertPartida = async (req, res) => {
 
 exports.updatePartida = async (req, res) => {
   const { id } = req.params;
-  const editptnBom = req.body;
-  const updaetsql = await pool.query("UPDATE partida set ? WHERE partida_id =?",[editptnBom, id]);
+  const {partida_nombre, partida_descripcion} = req.body;
+  const editptnBom = {
+    partida_nombre,
+    partida_descripcion
+  };
+  const updaetsql = await pool.query("UPDATE partida set ? WHERE partida_id = ?",[editptnBom, id]);
   res.json({
     msg: "se actualizo correctamente",
     estado: true,
@@ -36,7 +40,7 @@ exports.updatePartida = async (req, res) => {
 };
 exports.deletePartida=async(req,res)=>{
     const {id} =  req.params;
-    await pool.query("DELETE FROM ptn_bom WHERE partida_id= ?", [id]);
+    await pool.query("DELETE FROM partida WHERE partida_id= ?", [id]);
     res.json({
         msg : "se eliminado la partida correctamente"
     });

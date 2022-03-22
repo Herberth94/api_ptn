@@ -10,7 +10,7 @@ const precioController = require ('../controllers/precio');
 const monedaController = require ('../controllers/moneda');
 const proveedorController = require ('../controllers/proveedor');
 const marcaController = require ('../controllers/marca');
-const pmController = require ('../controllers/proveedor_marca');
+const sppmController = require ('../controllers/sp_proveedor_marca');
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
 const cattController = require ('../controllers/cat_totales');
@@ -69,7 +69,7 @@ module.exports= function(){
          //ruta para  agregar proyecto 
         router.post('/proyecto/agregar/:id',proyectosController.insertProyectos)
          // ruta para modificar proyectos
-        router.post('/proyecto/update/:id',proyectosController.updateProyectos)
+        router.put('/proyecto/update/:id',proyectosController.updateProyectos)
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto
@@ -104,9 +104,9 @@ module.exports= function(){
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
         // Metodos para la tabla servicio_producto:
         // Agregar 
-        router.post('/sp/agregar/:id',spController.insert_sp);
+        router.post('/sp/agregar/:partida_id/:proveedor_id/:marca_id',spController.insert_sp);
         // Editar 
-        router.put('/sp/edit/:id',spController.update_sp);
+        router.put('/sp/edit/:sp_id/:sppm_id_proveedor/:sppm_id_marca',spController.update_sp);
         // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
         //Consultar datos de un servicio
@@ -120,7 +120,7 @@ module.exports= function(){
         // Editar 
         router.put('/precio/edit/:id',precioController.update_precio);
         // Eliminar 
-        router.delete('/precio/delete/:id',precioController.delete_precio);
+        router.delete('/precio/delete/:precio_id',precioController.delete_precio);
         //Consultar precios de un servicio_producto
         router.get('/precio/viewSPP/:sp_id',precioController.viewSPP);
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -132,6 +132,8 @@ module.exports= function(){
         router.put('/proveedor/edit/:id',proveedorController.update_prov);
         // Eliminar 
         router.delete('/proveedor/delete/:id',proveedorController.delete_prov);
+        // Consultar
+        router.get('/proveedor/view',proveedorController.view_prov)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE MARCA ========*/
@@ -142,16 +144,17 @@ module.exports= function(){
         router.put('/marca/edit/:id',marcaController.update_marca);
         // Eliminar 
         router.delete('/marca/delete/:id',marcaController.delete_marca);
-
+        // Consultar
+        router.get('/provmarcas/view/:proveedor_id',marcaController.viewProvMarca);
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Metodos para la tabla proveedor_marca:
+        // Metodos para la tabla sp_proveedor_marca:
         // Agregar 
-        router.post('/pm/agregar',pmController.insert_pm);
+        //router.post('/sppm/agregar',sppmController.insert_sppm);
         // Editar 
-        router.put('/pm/edit/:id',pmController.update_pm);
+        //router.put('/pm/edit/:id',pmController.update_pm);
         // Eliminar 
-        router.delete('/pm/delete/:id',pmController.delete_pm);
+        router.delete('/sppm/delete/:id',sppmController.delete_sppm);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 

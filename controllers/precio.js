@@ -44,7 +44,7 @@ precio.update_precio = async (req, res) => {
 
 //Función para eliminar atributos en la tabla precio---------------------------------------------------
 precio.delete_precio = async (req, res) => {
-  const { precio_id} = req.params; 
+  const {precio_id} = req.params; 
   //const { precio_id = 21} = req.params; //Prueba de eliminación de datos
   await pool.query("DELETE FROM precio WHERE precio_id = ?", [precio_id]);
   res.json({
