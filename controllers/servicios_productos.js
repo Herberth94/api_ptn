@@ -40,24 +40,32 @@ sp.insert_sp = async (req, res) => {
 
 // Función para editar atributos en la tabla servicio_producto
 sp.update_sp = async (req, res) => {
-  //const { sp_id = 1003 } = req.params; //Dato para prueba
-  const { 
-    sp_id, 
-    new_sp_id_precio, 
-    new_sp_id_proveedor, 
-    new_sp_id_categoria } = req.params;
+  const { sp_id, sppm_id_proveedor, sppm_id_marca } = req.params;
+  const{
+    sp_no_parte,
+    sp_descripcion,
+    sp_meses,
+    sp_semanas,
+    sp_cantidad,
+    sp_id_categoria,
+    sp_comentarios } = req.body;
+
   const editnew_sp = {
     sp_no_parte,
     sp_descripcion,
     sp_meses,
     sp_semanas,
     sp_cantidad,
-    sp_id_precio: new_sp_id_precio,
-    sp_id_proveedor: new_sp_id_proveedor,
-    sp_id_categoria: new_sp_id_categoria,
-    sp_comentarios } = req.body;
+    sp_id_categoria,
+    sp_comentarios };
   //editnew_sp1.sp_no_parte = 20; //Dato para prueba
   await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
+  
+  const editnewSPPM ={
+    sppm_id_proveedor,
+    sppm_id_marca
+  }
+  await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
   res.json({
     msg: "Producto editado exitosamente",
     estado: true,
@@ -80,14 +88,14 @@ sp.viewPSP = async (req, res) => {
   const {partida_id} = req.params;
   const reSql = await pool.query(
     "SELECT sp_id, sp_no_parte, sp_descripcion, sp_meses, sp_semanas, sp_cantidad, sp_id_precio,"
-    +"proveedor_nombre, marca_nombre, categoria_nombre, sp_comentarios "
+    +"proveedor_id, proveedor_nombre, marca_id, marca_nombre, sp_id_categoria, sp_comentarios "
     +"FROM partida "
     +"RIGHT JOIN psp ON psp_id_partida = partida_id "
     +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
     +"LEFT JOIN precio ON sp_id_precio = precio_id "
-    +"RIGHT JOIN proveedor ON sp_id_proveedor = proveedor_id "
-    +"RIGHT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
-    +"RIGHT JOIN marca ON pm_id_marca = marca_id "
+    +"LEFT JOIN sp_proveedor_marca ON sppm_id_sp = sp_id "
+    +"RIGHT JOIN proveedor ON sppm_id_proveedor = proveedor_id "
+    +"RIGHT JOIN marca ON sppm_id_marca = marca_id "
     +"RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
     +"WHERE partida_id = ? "
     +"ORDER BY sp_id", [partida_id]);
