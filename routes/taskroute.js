@@ -172,6 +172,8 @@ module.exports= function(){
         router.put('/am/edit/:id',amController.update_am);
         //Eliminar
         router.delete('/am/delete/:id',amController.delete_am);
+        // view_resumen_am
+        router.get('/am/viewAM/:id', amController.view_resumen_am);
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 

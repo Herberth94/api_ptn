@@ -65,7 +65,7 @@ precio.viewSPP = async (req, res) => {
     +"WHERE sp_id = ? "
     +"ORDER BY precio_id", [sp_id]);
   res.json({data:reSql});
-  //console.log(reSql);
+  console.log(reSql);
 };
 
 module.exports = precio;
