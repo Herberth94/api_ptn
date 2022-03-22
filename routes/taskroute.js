@@ -176,7 +176,7 @@ module.exports= function(){
         //Eliminar
         router.delete('/am/delete/:id',amController.delete_am);
         // view_resumen_am
-        router.get('/am/viewAM/:id', amController.view_resumen_am);
+        router.get('/am/viewAM/:proyecto_id', amController.view_resumen_am);
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 
