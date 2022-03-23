@@ -65,8 +65,8 @@ am.delete_am = async (req, res) => {
 am.view_resumen_am = async (req,res) => {
         const{proyecto_id} = req.params;
         console.log("hola, soy los el id proyecto",req.params)
-        const reSql = await pool.query("SELECT partida_id, partida_nombre, partida_descripcion, psp_id, psp_id_sp, sp_id_precio, "
-        + " precio_total, precio_id_moneda "
+        const reSql = await pool.query("SELECT partida_id, partida_nombre, partida_descripcion, psp_id, psp_id_sp, sp_id_precio,"
+        + "precio_total, precio_id_moneda "
         + "FROM proyecto "
         + "RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
         + "RIGHT JOIN partida ON pp_id_partida = partida_id "
