@@ -50,4 +50,18 @@ marca.delete_marca = async (req, res) => {
   };
 //----------------------------------------------------------------------------------------------------
 
+//Función para consultar los datos de la tabla marca dependiendo de un proveedor---------------------------------------------------
+marca.viewProvMarca = async (req, res) => {
+  const {proveedor_id} = req.params;
+  const resProv = await pool.query(
+    "SELECT marca_id, marca_nombre FROM proveedor "
+    +"RIGHT JOIN proveedor_marca ON pm_id_proveedor = proveedor_id "
+    +"RIGHT JOIN marca ON pm_id_marca = marca_id " 
+    +"WHERE proveedor_id = ?", [proveedor_id]);
+  res.json({
+    data:resProv
+  });
+};
+//---------------------------------------------------------------------------------------------------------------------------------
+
 module.exports = marca;

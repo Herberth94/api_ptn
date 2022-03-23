@@ -48,4 +48,13 @@ proveedor.delete_prov = async (req, res) => {
   });
 };
 //--------------------------------------------------------------------------------------------------------
+
+//Función para consultar los datos de la tabla proveedor---------------------------------------------------
+proveedor.view_prov = async (req, res) => {
+  const resProv = await pool.query("SELECT * FROM proveedor");
+  res.json({
+    data:resProv
+  });
+};
+//---------------------------------------------------------------------------------------------------------
 module.exports = proveedor;

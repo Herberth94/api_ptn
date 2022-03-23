@@ -16,6 +16,14 @@ exports.insertColaborador = async(req,res)=>{
        estado: true
    });
 };
+exports.viewColaboradores = async(req, res)=>{
+  const reSql = await pool.query("SELECT id_usuario, email, colab_id, colab_id, colab_id_proyecto, colab_id_usuario, proyecto_clave "
+  + "FROM usuarios "
+  + "RIGHT JOIN colaboradores ON id_usuario = colab_id_usuario "
+  + "RIGHT JOIN proyecto ON colab_id_proyecto = proyecto_id ");
+  res.json({data:reSql})
+  console.log(reSql)
+}
 
 exports.updateProyectos = async(req,res)=>{
     const {id}= req.params ;     

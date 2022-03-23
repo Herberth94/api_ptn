@@ -69,6 +69,7 @@ const formControl = {};
              data:reSql,
              msg:"cambio aplicado"
          })
+         res.redirect('/api/cotizador/registro');
          console.log(reSql);
      }
 
