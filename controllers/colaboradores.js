@@ -16,6 +16,7 @@ exports.insertColaborador = async(req,res)=>{
        estado: true
    });
 };
+// ver la lista de los colaboradores con el nombre de los proyectos donde son colaboradores
 exports.viewColaboradores = async(req, res)=>{
   const reSql = await pool.query("SELECT id_usuario, email, colab_id, colab_id, colab_id_proyecto, colab_id_usuario, proyecto_clave "
   + "FROM usuarios "
