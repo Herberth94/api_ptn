@@ -47,7 +47,6 @@ const formControl = {};
         const editvalues =
         {
                 email,
-                password,
                 rol,
                 estado_login  
         };
