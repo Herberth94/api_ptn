@@ -33,7 +33,7 @@ module.exports= function(){
         //eliminación de registro de usuario tomando cuenta el id
         router.delete('/delete/:id',deleteForm);  
         // ruta para editar los parametros en base Id
-        router.put('/edit/:id', editForm);  
+        router.post('/edit/:id', editForm);  
         // ruta para editar el password en base Id
         router.put('/edit/pass/:id', editPass);         
 
