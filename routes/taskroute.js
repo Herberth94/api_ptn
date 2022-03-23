@@ -79,6 +79,8 @@ module.exports= function(){
 /*===== TABLA DE COLABORADORES ========*/
 
         router.post('/colaboradores/:id',colaboradoresController.insertColaborador);
+        router.get('/colaboradores/view', colaboradoresController.viewColaboradores);
+        router.delete('/colaboradores/delete/:id', colaboradoresController.deleteProyectos)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
