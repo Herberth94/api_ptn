@@ -24,6 +24,23 @@ exports.insertProyectos = async(req,res)=>{
   });
 };
 
+  exports.UpdateStatusProyectos = async(req,res)=>{
+      /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */   
+    const {proyecto_id} = req.params
+    const {proyecto_estatus} = req.body;
+    const Pestatus = {
+      proyecto_estatus
+    };
+    //proyecto_estatus = 'En revision';
+    /* INSERCCION DEL DATO proyecto_estatus A LATABLA PROYECTO */
+    await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [Pestatus,proyecto_id]);
+    /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
+    res.json({
+        msg: 'Estatus del proyecto agregado',
+        estado: true
+    });
+  };
+
 exports.updateProyectos = async(req,res)=>{
     const {id}= req.params ;     
     const {proyecto_clave, proyecto_descripcion, proyecto_id_cliente} = req.body;
@@ -55,15 +72,38 @@ exports.deleteProyectos= async(req,res)=>{
     console.log(reSql);
   };
 
-  // Función para consultar los atributos proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion
-  exports.viewProyectoWithNcliente = async (req, res) => {
+  /*
+    Función para consultar los atributos proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion
+    para usuarios administrador  
+  */
+  exports.viewAdmin = async (req, res) => {
     const reSql = await pool.query(
-      "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
-      +"FROM proyecto "
-      +"LEFTH JOIN clientes ON proyecto_id_cliente = cliente_id "
+      "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
+      +"FROM usuarios "
+      +"LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
+      +"RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
+      +"LEFT JOIN clientes ON proyecto_id_cliente = cliente_id "
       +"ORDER BY proyecto_id"
       );
     res.json({data:reSql});
     console.log(reSql);
   };
+
+  /*
+    Función para consultar los atributos proyecto_id, proyecto_clave, proyecto_descripcion, nombre_cliente, proyecto_fecha_creacion
+    para usuarios de preventa
+  */
+    exports.viewVentas = async (req, res) => {
+      const{usuario_id} = req.params;
+      const reSql = await pool.query(
+        "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
+        +"FROM usuarios "
+        +"LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
+        +"RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
+        +"LEFT JOIN clientes ON proyecto_id_cliente = cliente_id "
+        +"WHERE id_usuario = ? "
+        +"ORDER BY proyecto_id", [usuario_id]);
+      res.json({data:reSql});
+      console.log(reSql);
+    };
 
