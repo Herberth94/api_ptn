@@ -101,6 +101,8 @@ module.exports= function(){
         router.put('/catt/edit/:id',cattController.update_catt);
         // Eliminar 
         router.delete('/catt/delete/:id',cattController.delete_catt);
+        //view
+        router.get('/catt/view/:proyecto_id', cattController.view_catt);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/

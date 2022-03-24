@@ -58,5 +58,19 @@ catt.delete_catt = async (req, res) => {
     });
   };
 //----------------------------------------------------------------------------------------------------------
+// Funcion de ver los atributos de las tablas de 
+catt.view_catt = async (req,res) => {
+  const {proyecto_id} = req.params;
+  console.log(req.params)
+  const reSql = await pool.query ("SELECT pc_id,pc_id_proyecto, proyecto_clave , cat_id , cat_nombre, pc_id_cat_t, ct_totales_mxn , ct_totales_usd "
+  + "FROM proyectos_cat_cat_t "
+  + "RIGHT JOIN proyecto ON pc_id_proyecto = proyecto_id "
+  + "RIGHT JOIN categorias_c_a_sptn_ma ON pc_id_cat = cat_id "
+  + "RIGHT JOIN cat_totales ON pc_id_cat_t = ct_id "
+  + "WHERE proyecto_id = ? ", [proyecto_id]);
+  res.json({data:reSql})
+  console.log(reSql)
+
+}
 
 module.exports = catt;
