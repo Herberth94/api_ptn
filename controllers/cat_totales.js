@@ -58,7 +58,7 @@ catt.delete_catt = async (req, res) => {
     });
   };
 //----------------------------------------------------------------------------------------------------------
-// Funcion de ver los atributos de las tablas de 
+// Funcion de ver los atributos de las tablas de proyectos_cat_cat_t, categorias_c_a_sptn_ma, cat_totales
 catt.view_catt = async (req,res) => {
   const {proyecto_id} = req.params;
   console.log(req.params)
