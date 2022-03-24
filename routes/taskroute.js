@@ -48,7 +48,7 @@ module.exports= function(){
          //ruta para eliminar datos de tabla ptmBom
         router.delete('/partida/delete/:id',partidaController.deletePartida);
         //Consultar datos de la tabla partida
-        router.get('/partida/view',partidaController.viewPartida);
+        router.get('/partida/viewPU/:id_usuario',partidaController.viewPartida_UP);
         //Consultar datos de una partida de un deteterminado proyecto
         router.get('/partida/viewPP/:proyecto_id',partidaController.viewPartidaPP);
         
@@ -66,20 +66,22 @@ module.exports= function(){
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PROYECTO ========*/
 
-         //ruta para  agregar proyecto 
-        router.post('/proyecto/agregar/:id',proyectosController.insertProyectos)
+         //rutas para  agregar proyecto 
+        router.post('/proyecto/agregar/:id',proyectosController.insertProyectos);
          // ruta para modificar proyectos
-        router.put('/proyecto/update/:id',proyectosController.updateProyectos)
+        router.put('/proyecto/update/:id',proyectosController.updateProyectos);
+                // ruta para modificar el estatus de un proyecto finalizado
+                router.put('/proyecto/updateEstatus/:proyecto_id',proyectosController.UpdateStatusProyectos);
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto
-         router.get('/proyecto/view',proyectosController.viewProyecto);
-         router.get('/proyecto/view1',proyectosController.viewProyectoWithNcliente);
+         router.get('/proyecto/viewadmin',proyectosController.viewAdmin);
+         router.get('/proyecto/viewpreventas/:usuario_id',proyectosController.viewVentas);
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
         router.post('/colaboradores/:id',colaboradoresController.insertColaborador);
-        router.get('/colaboradores/view', colaboradoresController.viewColaboradores);
+        router.get('/colaboradores/view/:id_usuario', colaboradoresController.viewColaboradores);
         router.delete('/colaboradores/delete/:id', colaboradoresController.deleteProyectos)
 
 /*--------------------------------------------------------------------------------------------------------------------*/

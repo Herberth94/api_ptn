@@ -46,9 +46,18 @@ exports.deletePartida=async(req,res)=>{
     });
 };
 
-/*== Función para consultar datos de una partida(s) de un determinado proyecto ==*/
-exports.viewPartida = async (req, res) => {
-  const reSql = await pool.query("SELECT * FROM partida ");
+/*== Función para consultar datos de todas las partidas de los proyectos de un determinado usuario==*/
+exports.viewPartida_UP = async (req, res) => {
+  const{id_usuario} = req.params;
+  const reSql = await pool.query(
+    "SELECT partida_id, partida_nombre, partida_descripcion "
+    +"FROM usuarios "
+    +"LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario "
+    +"RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
+    +"RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
+    +"RIGHT JOIN partida ON pp_id_partida = partida_id "
+    +"WHERE id_usuario = ? "
+    +"ORDER BY partida_id", [id_usuario]);
   res.json({data:reSql});
   console.log({data:reSql})
 };
