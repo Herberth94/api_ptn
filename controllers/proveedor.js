@@ -4,12 +4,7 @@ const proveedor = {};
 
 //Función para agregar atributos en la tabla proveedor---------------------------------------------------
 proveedor.insert_prov = async (req,res) =>{
-  const new_proveedor = {
-    proveedor_nombre,
-    //provedor_telefono,
-    //proveedor_compania
-  } = req.body;
-  //new_proveedor.proveedor_nombre = "PTN"; //Dato para prueba
+  const new_proveedor = req.body;
   const resProv = await pool.query('INSERT INTO proveedor SET ?', [new_proveedor]); 
   res.json({
     data: resProv,
