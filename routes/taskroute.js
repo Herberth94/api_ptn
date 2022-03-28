@@ -80,7 +80,7 @@ module.exports= function(){
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
-        router.post('/colaboradores/:id',colaboradoresController.insertColaborador);
+        router.post('/colaboradores/insert',colaboradoresController.insertColaborador);
         router.get('/colaboradores/view/:id_usuario', colaboradoresController.viewColaboradores);
         router.delete('/colaboradores/delete/:id', colaboradoresController.deleteProyectos)
 

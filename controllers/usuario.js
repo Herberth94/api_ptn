@@ -1,12 +1,14 @@
 const pool = require('../src/db');
+const bcrypt = require("bcryptjs");
 const formControl = {};
 
     formControl.postForm = async(req, res)=> {
         const {email,password,rol,estado_login}=req.body;
+        let passwordHash = await bcrypt.hash(password, 10)
         const newUser={
             rol,
             email,
-            password,
+            password: passwordHash,
             estado_login
             };
             const Vsql = await pool.query('SELECT email FROM usuarios WHERE email = ?', [newUser.email]);
@@ -20,10 +22,13 @@ const formControl = {};
 
             else{
                 const sql = await pool.query('INSERT INTO usuarios set ?', [newUser]);
+                
                 res.json({ 
                     msg: 'Registro exitoso',
                     estado: true
+                    
                 });
+                console.log(passwordHash)
 
             }
             
