@@ -41,6 +41,12 @@ const formControl = {};
             res.json({reSql:reSql});
             //res.end();
             };
+
+    formControl.viewUsersVenta = async(req, res)=> {
+        const reSql= await pool.query('SELECT id_usuario , rol , email, password FROM usuarios WHERE rol = "venta"');
+        res.json({reSql:reSql});
+        //res.end();
+        };
     formControl.deleteForm = async(req,res)=>{
         const {id} =  req.params;
         await pool.query("DELETE FROM usuarios WHERE id_usuario = ?", [id]);

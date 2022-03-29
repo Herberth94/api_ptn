@@ -1,6 +1,6 @@
 const express= require('express')
 const router = express.Router();
-const {postForm , viewForm ,deleteForm , editForm , editPass} = require('../controllers/usuario');
+const {postForm , viewForm, viewUsersVenta ,deleteForm , editForm , editPass} = require('../controllers/usuario');
 const {getForm} = require('../controllers/login');
 const pool = require('../src/db');
 const partidaController = require('../controllers/Partida');
@@ -30,6 +30,8 @@ module.exports= function(){
         router.route('/registro')
                 .post(postForm)
                 .get(viewForm);
+        //Ruta para obtener los usuarios de venta
+        router.get('/viewUsersVenta',viewUsersVenta);  
         //eliminación de registro de usuario tomando cuenta el id
         router.delete('/delete/:id',deleteForm);  
         // ruta para editar los parametros en base Id
