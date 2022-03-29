@@ -58,7 +58,7 @@ precio.delete_precio = async (req, res) => {
 precio.viewSPP = async (req, res) => {
   const {sp_id} = req.params;
   const reSql = await pool.query(
-    "SELECT precio_id, precio_lista, precio_unitario, precio_descuento, precio_total, moneda_nombre "
+    "SELECT sp_cantidad, precio_id, precio_lista, precio_unitario, precio_descuento, precio_total, precio_id_moneda, moneda_nombre "
     +"FROM servicio_producto "
     +"RIGHT JOIN precio ON sp_id_precio = precio_id "
     +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
