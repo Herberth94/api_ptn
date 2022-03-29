@@ -40,7 +40,7 @@ module.exports= function(){
         router.post('/edit/pass/:id', editPass);         
 
 /*--------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE PARITDA ========*/
+/*=====TABLA DE PARTIDA ========*/
 
 // metodos para agrgar datos eliminar datos y modificar datos de tabla proyecto  
         // ruta para agregar datos a tabla por post        
@@ -79,6 +79,8 @@ module.exports= function(){
          //ruta vizualizar proyecto
          router.get('/proyecto/viewadmin',proyectosController.viewAdmin);
          router.get('/proyecto/viewpreventas/:usuario_id',proyectosController.viewVentas);
+         //ruta para asignar un proyecto a un usuario de ventas
+         router.post('/proyecto/insertUsuariosProyectos', proyectosController.insertUsuariosProyectos)  
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*===== TABLA DE COLABORADORES ========*/
 
