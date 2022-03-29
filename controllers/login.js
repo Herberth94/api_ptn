@@ -12,9 +12,6 @@ formControl.getForm = async (req, res) => {
     const contrasenaHasheadaGuardada = await pool.query('SELECT password FROM usuarios WHERE email = ?', [newUser.email]);
     const reSql = await pool.query('SELECT rol , id_usuario, estado_login FROM usuarios WHERE email = ?', [newUser.email]);
     const contrasenaHashDestructurada = contrasenaHasheadaGuardada[0].password
-    // console.log("hola soy la contraseñ Hasheadaguardada", contrasenaHashDestructurada);
-    // console.log("hola soy la contraseña del body", passwordBody);
-    // console.log("hola soy passwordhash", passwordHash)
     let compare = await bcrypt.compare(passwordBody, contrasenaHashDestructurada, function (err, resX) {
         if (resX == true) {
             res.json({

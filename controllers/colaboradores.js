@@ -3,52 +3,36 @@ const bcrypt = require("bcryptjs");
 
 exports.insertColaborador = async (req, res) => {
   /* ID DE USUARIO LOGEADO , INGRESA UN NUEVO DATO A LA TABLA USUARIO_COLABORADOR */
-  // const  {id} = req.params
   const { colab_id_usuario, colab_id_proyecto, password, validatorid } = req.body;
   let validaIdUsuario = parseInt(validatorid);
-  console.log("soy el id_usuario",validaIdUsuario)
-  let passwordBody = password;
-  console.log("hola soy el body", req.body)
-  const data = {
+  let passwordBody = password.password;
+  const dataEnviar = {
     colab_id_usuario,
     colab_id_proyecto
   }
   const contrasenaHasheadaGuardada = await pool.query('SELECT password FROM usuarios WHERE id_usuario = ?', [validaIdUsuario]);
   const contrasenaHashDestructurada = contrasenaHasheadaGuardada[0].password
-  console.log("soy la contraseña hash", contrasenaHashDestructurada)
-
-  let compare = await bcrypt.compare(passwordBody, contrasenaHashDestructurada, function (err, resX) {
-    if (resX == true) {
-      const reSql = pool.query("INSERT INTO colaboradores set ?", data);
+    // /* INSERCCION DE DATOS A TABLA COLABORADORES */
+  bcrypt.compare(passwordBody, contrasenaHashDestructurada).then((resX) => {
+    return resX
+  }).then((data) => {
+    if (data == true) {
+      console.log(dataEnviar)
+      const reSql = pool.query("INSERT INTO colaboradores set ? ", dataEnviar);
       res.json({
         msg: 'colaborador agregado',
         estado: true,
         data: reSql
       });
-      console.log(reSql)
-      console.log("las contraseñas son iguales")
-
     } else {
-        res.json({
-            estado: false,
-            msg: "Usuario no registrado"
-        });
+      res.json({
+        estado: false,
+        msg: "Usuario no registrado"
+      });
 
     }
-})
 
-
-
-
-  // /* INSERCCION DE DATOS A TABLA COLABORADORES */
-  // const reSql = await pool.query("INSERT INTO colaboradores set ?", data);
-  // /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
-  // res.json({
-  //   msg: 'colaborador agregado',
-  //   estado: true,
-  //   data: reSql
-  // });
-  // console.log(reSql)
+  })
 };
 // ver la lista de los colaboradores con el nombre de los proyectos donde son colaboradores
 exports.viewColaboradores = async (req, res) => {
