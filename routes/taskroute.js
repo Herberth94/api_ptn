@@ -116,7 +116,9 @@ module.exports= function(){
         // Agregar 
         router.post('/sp/agregar/:partida_id/:proveedor_id/:marca_id',spController.insert_sp);
         // Editar 
-        router.put('/sp/edit/:sp_id/:sppm_id_proveedor/:sppm_id_marca',spController.update_sp);
+        router.post('/sp/edit/:sp_id/:sppm_id_proveedor/:sppm_id_marca',spController.update_sp);
+        // Editar sp_cantidad
+        router.post('/sp/editCant/:sp_id',spController.update_sp_cant);
         // Eliminar 
         router.delete('/sp/delete/:id',spController.delete_sp);
         //Consultar datos de un servicio
@@ -128,7 +130,7 @@ module.exports= function(){
         // Agregar 
         router.post('/precio/agregar',precioController.insert_precio);
         // Editar 
-        router.put('/precio/edit/:id',precioController.update_precio);
+        router.post('/precio/edit/:precio_id',precioController.update_precio);
         // Eliminar 
         router.delete('/precio/delete/:precio_id',precioController.delete_precio);
         //Consultar precios de un servicio_producto

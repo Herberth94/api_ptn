@@ -72,6 +72,22 @@ sp.update_sp = async (req, res) => {
   });
 };
 
+// Función para editar el atributo sp_cantidad en la tabla servicio_producto
+sp.update_sp_cant = async (req, res) => {
+  const { sp_id} = req.params;
+  const{
+    sp_cantidad} = req.body;
+
+  const editnew_sp = {
+    sp_cantidad
+}
+  //editnew_sp1.sp_no_parte = 20; //Dato para prueba
+  await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
+  res.json({
+    msg: "Producto editado exitosamente",
+    estado: true,
+  });
+};
 // Función para elimiar  atributos de la tabla servicio_producto
 sp.delete_sp = async (req, res) => {
   //const { sp_id = 1003 } = req.params; //Dato para prueba
