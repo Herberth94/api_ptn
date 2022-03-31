@@ -153,8 +153,24 @@ exports.insertUsuariosProyectos = async(req, res) => {
 
     }
   })
+  
+};
 
-
-
+exports.viewModal = async (req, res) => {
+  const { proyecto_id } = req.params;
+  const reSql = await pool.query(
+    "SELECT partida_nombre, partida_descripcion, sp_no_parte, sp_meses, sp_semanas, sp_cantidad, categoria_nombre, precio_total, moneda_nombre "
+    +"FROM proyecto "
+    +"RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
+    +"RIGHT JOIN partida ON pp_id_partida = partida_id "
+    +"RIGHT JOIN psp ON psp_id_partida = partida_id "
+    +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
+    +"RIGHT JOIN precio ON sp_id_precio = precio_id "
+    +"RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
+    +"RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
+    +"WHERE proyecto_id = ? "
+    +"ORDER BY partida_id", [proyecto_id]);
+  res.json({ data: reSql });
+  console.log(reSql);
 };
 
