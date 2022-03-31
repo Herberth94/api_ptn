@@ -81,6 +81,8 @@ module.exports= function(){
          //ruta vizualizar proyecto
          router.get('/proyecto/viewadmin',proyectosController.viewAdmin);
          router.get('/proyecto/viewpreventas/:usuario_id',proyectosController.viewVentas);
+         // Ruta modal
+         router.get('/proyecto/viewModal/:proyecto_id',proyectosController.viewModal);
          //ruta para asignar un proyecto a un usuario de ventas
          router.post('/proyecto/insertUsuariosProyectos', proyectosController.insertUsuariosProyectos)  
 /*--------------------------------------------------------------------------------------------------------------------*/
