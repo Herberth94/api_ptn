@@ -74,6 +74,8 @@ module.exports= function(){
         router.post('/proyecto/update/:id',proyectosController.updateProyectos);
                 // ruta para modificar el estatus de un proyecto finalizado
                 router.put('/proyecto/updateEstatus/:proyecto_id',proyectosController.UpdateStatusProyectos);
+                // ruta para modificar la divisa de un proyecto 
+                router.put('/proyecto/updateDiv/:proyecto_id',proyectosController.UpdateDivisa);
          //ruta  eliminar  proyecto
         router.delete('/proyecto/delete/:id',proyectosController.deleteProyectos);
          //ruta vizualizar proyecto

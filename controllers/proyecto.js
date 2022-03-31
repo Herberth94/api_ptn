@@ -42,9 +42,22 @@ exports.UpdateStatusProyectos = async (req, res) => {
   });
 };
 
+exports.UpdateDivisa = async (req, res) => {
+  const { proyecto_id } = req.params
+  const { proyecto_valor_dolar } = req.body;
+  const editDiv = {
+    proyecto_valor_dolar
+  };
+  await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
+  res.json({
+    msg: 'Divisa del proyecto editada',
+    estado: true
+  });
+};
+
 exports.updateProyectos = async (req, res) => {
   const { id } = req.params;
-  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente } = req.body;
+  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente} = req.body;
   const updateProyectos = {
     proyecto_clave,
     proyecto_descripcion,
@@ -79,7 +92,8 @@ exports.viewProyecto = async (req, res) => {
 */
 exports.viewAdmin = async (req, res) => {
   const reSql = await pool.query(
-    "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
+    "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente," 
+    +"nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,proyecto_valor_dolar,proyecto_plazo_meses "
     + "FROM usuarios "
     + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
     + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
@@ -97,7 +111,8 @@ exports.viewAdmin = async (req, res) => {
 exports.viewVentas = async (req, res) => {
   const { usuario_id } = req.params;
   const reSql = await pool.query(
-    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus "
+    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
+    +"nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses "
     + "FROM usuarios "
     + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
     + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
