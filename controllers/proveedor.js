@@ -52,7 +52,7 @@ proveedor.view_prov = async (req, res) => {
   res.json({
     data:resProv
   });
-  console.log(resProv)
+  console.log("hola soy el resProv", resProv)
 };
 //---------------------------------------------------------------------------------------------------------
 module.exports = proveedor;

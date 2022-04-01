@@ -145,7 +145,7 @@ module.exports= function(){
         // Agregar 
         router.post('/proveedor/agregar',proveedorController.insert_prov);
         // Editar 
-        router.put('/proveedor/edit/:id',proveedorController.update_prov);
+        router.post('/proveedor/edit/:proveedor_id',proveedorController.update_prov);
         // Eliminar 
         router.delete('/proveedor/delete/:id',proveedorController.delete_prov);
         // Consultar
