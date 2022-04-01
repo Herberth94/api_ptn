@@ -170,7 +170,7 @@ exports.viewModal = async (req, res) => {
     +"RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
     +"WHERE proyecto_id = ? "
     +"ORDER BY partida_id", [proyecto_id]);
-  res.json({ data: reSql });
-  console.log(reSql);
+  res.json({ reSql: reSql });
+  console.log({data:reSql});
 };
 
