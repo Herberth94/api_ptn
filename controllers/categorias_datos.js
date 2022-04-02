@@ -1,23 +1,26 @@
-const { response } = require("express");
+const {response} = require("express");
 const pool = require("../src/db");
-const catt = {};
+const catd = {};
 
 //Función para agregar atributos en la tabla cat_totales---------------------------------------------------
-catt.insert_catt = async (req,res) =>{
-    const {cat_id,proyecto_id} = req.params;
+catd.insert_catd = async (req,res) =>{
+    const {proyecto_id} = req.params;
     const new_catt = { 
-      ct_totales_mxn,
-      ct_totales_usd
+      cd_id_cats,
+      cd_no_parte,
+      cd_descripcion,
+      cd_meses,
+      cd_semanas,
+      cd_comentarios
     } = req.body;
     //new_catt.ct_totales_mxn= 1000.20; //Dato para prueba
-    const resCatId = await pool.query('INSERT INTO cat_totales SET ?', [new_catt]);
+    const resCatId = await pool.query('INSERT INTO categorias_datos SET ?', [new_catt]);
 
     const new_pc= {
       pc_id_proyecto: proyecto_id,
-      pc_id_cat: cat_id,
-      pc_id_cat_t: resCatId.insertId
+      pc_id_cat_d: resCatId.insertId
     }
-    await pool.query('INSERT INTO proyectos_cat_cat_t SET ?', [new_pc]); 
+    await pool.query('INSERT INTO proyectos_cat_d SET ?', [new_pc]); 
       
     res.json({
         data:resCatId,
@@ -28,7 +31,7 @@ catt.insert_catt = async (req,res) =>{
 //---------------------------------------------------------------------------------------------------------
 
 //Función para editar atributos en la tabla cat_totales---------------------------------------------------
-catt.update_catt = async (req, res) => {
+catd.update_catt = async (req, res) => {
     const { 
         ct_id,// = 3, //Dato para prueba
         new_ct_id_moneda
@@ -48,7 +51,7 @@ catt.update_catt = async (req, res) => {
 //--------------------------------------------------------------------------------------------------------
 
 //Función para eliminar atributos en la tabla cat_totales---------------------------------------------------
-catt.delete_catt = async (req, res) => {
+catd.delete_catt = async (req, res) => {
     //const { ct_id = 3 } = req.params; //Dato para prueba
     const { ct_id } = req.params;
     await pool.query("DELETE FROM cat_totales WHERE ct_id = ?", [ ct_id]);
@@ -59,7 +62,7 @@ catt.delete_catt = async (req, res) => {
   };
 //----------------------------------------------------------------------------------------------------------
 // Funcion de ver los atributos de las tablas de proyectos_cat_cat_t, categorias_c_a_sptn_ma, cat_totales
-catt.view_catt = async (req,res) => {
+catd.view_catd = async (req,res) => {
   const {proyecto_id} = req.params;
   console.log(req.params)
   const reSql = await pool.query ( "SELECT proyecto_clave, pc_id, cd_id,cd_id_cats,cd_no_parte,cd_descripcion,cd_semanas,cd_meses,cd_cantidad,cd_id_precio,cd_comentarios, cat_id, cat_nombre, precio_lista, precio_unitario, precio_descuento, precio_total, precio_id_moneda, moneda_nombre "
@@ -75,4 +78,4 @@ catt.view_catt = async (req,res) => {
 
 }
 
-module.exports = catt;
+module.exports = catd;

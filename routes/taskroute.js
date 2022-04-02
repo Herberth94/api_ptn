@@ -13,7 +13,7 @@ const marcaController = require ('../controllers/marca');
 const sppmController = require ('../controllers/sp_proveedor_marca');
 const proyectosController= require('../controllers/proyecto');
 const catsController = require ('../controllers/categorias_c_a_sptn_ma');
-const cattController = require ('../controllers/cat_totales');
+const cattController = require ('../controllers/categorias_datos');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
 
@@ -106,13 +106,13 @@ module.exports= function(){
 
         // Metodos para la tabla cat_totales:
         // Agregar 
-        router.post('/catt/agregar/:cat_id/:proyecto_id',cattController.insert_catt);
-        // Editar 
-        router.put('/catt/edit/:id',cattController.update_catt);
-        // Eliminar 
-        router.delete('/catt/delete/:id',cattController.delete_catt);
+        router.post('/catd/agregar/:proyecto_id',cattController.insert_catd);
+        // // Editar 
+        // router.put('/catt/edit/:id',cattController.update_catt);
+        // // Eliminar 
+        // router.delete('/catt/delete/:id',cattController.delete_catt);
         //view
-        router.get('/catt/view/:proyecto_id', cattController.view_catt);
+        router.get('/catd/view/:proyecto_id', cattController.view_catd);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
