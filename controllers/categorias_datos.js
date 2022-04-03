@@ -65,16 +65,18 @@ catd.delete_catt = async (req, res) => {
 catd.view_catd = async (req,res) => {
   const {proyecto_id} = req.params;
   console.log(req.params)
-  const reSql = await pool.query ( "SELECT proyecto_clave, pc_id, cd_id,cd_id_cats,cd_no_parte,cd_descripcion,cd_semanas,cd_meses,cd_cantidad,cd_id_precio,cd_comentarios, cat_id, cat_nombre, precio_lista, precio_unitario, precio_descuento, precio_total, precio_id_moneda, moneda_nombre "
-  + "FROM proyecto "
-  + "RIGHT JOIN proyectos_cat_d ON proyecto_id = pc_id_proyecto "
-  + "RIGHT JOIN categorias_datos ON pc_id_cat_d = cd_id "
-  + "RIGHT JOIN categorias_c_a_sptn_ma ON cd_id_cats = cat_id "
-  + "RIGHT JOIN precio ON cd_id_precio = precio_id "
-  + "RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
-  + "WHERE proyecto_id = ?", [proyecto_id]);
+  const reSql = await pool.query ( 
+   "SELECT cd_id_cats,cat_nombre,cd_no_parte,cd_descripcion,cd_semanas,cd_meses,cd_cantidad,cd_comentarios," 
+  +"precio_lista, precio_unitario, precio_descuento, precio_total, precio_id_moneda, moneda_nombre "
+  +"FROM proyecto "
+  +"RIGHT JOIN proyectos_cat_d ON proyecto_id = pc_id_proyecto "
+  +"RIGHT JOIN categorias_datos ON pc_id_cat_d = cd_id "
+  +"RIGHT JOIN categorias_c_a_sptn_ma ON cd_id_cats = cat_id "
+  +"RIGHT JOIN precio ON cd_id_precio = precio_id "
+  +"RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
+  +"WHERE proyecto_id = ?", [proyecto_id]);
   res.json({data:reSql})
-  console.log(reSql)
+  //console.log(reSql)
 
 }
 
