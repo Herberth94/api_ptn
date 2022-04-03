@@ -187,11 +187,11 @@ module.exports= function(){
 
         // Metodos para la tabla am:
         //Agregar
-        router.post('/am/agregar/:id',amController.insert_am);
+        router.post('/am/agregar/:partida_id',amController.insert_am);
         //Editar
-        router.put('/am/edit/:id',amController.update_am);
+        //router.put('/am/edit/:id',amController.update_am);
         //Eliminar
-        router.delete('/am/delete/:id',amController.delete_am);
+        //router.delete('/am/delete/:id',amController.delete_am);
         // view_resumen_am
         router.get('/am/viewAM/:proyecto_id', amController.view_resumen_am);
          
@@ -201,6 +201,7 @@ module.exports= function(){
         //Create
         router.post('/ci/agregar/:ci_id_cci/:ci_porcentaje/:ci_id_proyecto',ciController.insert_ci);
         //Read
+        router.get('/ci/view/:proyecto_id',ciController.viewCIP);
         //Update
         //Delete
          

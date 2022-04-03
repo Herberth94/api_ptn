@@ -17,11 +17,7 @@ exports.insertPartida = async (req, res) => {
   await pool.query("INSERT INTO pp set ?", [pp]);
   //Datos para la tabla am
   const dataAM = {
-    am_id_partida:reSql.insertId,
-    am_desc_cliente:'0',
-    am_margen_ganancia:'32',
-    am_cantidad:'1',
-    am_descuento_fabrica:'0'
+    am_id_partida:reSql.insertId
   };
   //Inserción a la tabla am
   await pool.query("INSERT INTO am set ?", [dataAM]);

@@ -4,20 +4,11 @@ const am = {};
 
 //Función para agregar atributos en la tabla am---------------------------------------------------
 am.insert_am = async (req, res) => {
-        const { id } = req.params;
+        const { partida_id } = req.params;
         const new_am = {
-                am_valor_dolar,
-                // am_desc_cliente,
-                // am_margen_ganancia,
-                // am_desc_fabrica,
-                am_id_proyecto
-        } = req.body;
-        new_am["am_id_proyecto"] = id
-        console.log(req.body)
-        console.log(req.params)
-        console.log(new_am)
-        //new_am.am_valor_dolar = 21.22; //Dato prueba para inserción
-        //new_am.am_id_proyecto = 1; //Dato prueba para inserción
+                am_id_partida:partida_id,
+        } 
+
         await pool.query('INSERT INTO am SET ?', [new_am]);
         res.json({
                 msg: "AM agregado exitosamente",
@@ -64,15 +55,20 @@ am.delete_am = async (req, res) => {
 //Función para visualizar los atributos para rellenar la tabla de resumen del am
 am.view_resumen_am = async (req,res) => {
         const{proyecto_id} = req.params;
-        console.log("hola, soy los el id proyecto",req.params)
-        const reSql = await pool.query("SELECT partida_id, partida_nombre, partida_descripcion, psp_id, psp_id_sp, sp_cantidad, sp_id_precio, precio_total, precio_id_moneda, precio_unitario, precio_lista, precio_descuento "
+        //console.log("hola, soy los el id proyecto",req.params)
+        const reSql = await pool.query(
+          "SELECT partida_id, partida_nombre, partida_descripcion, psp_id, psp_id_sp, sp_cantidad, sp_id_precio, precio_total, precio_id_moneda, moneda_nombre,"
+        + "precio_unitario, precio_lista, precio_descuento,am_desc_cliente,am_margen_ganancia,am_cantidad,am_descuento_fabrica "
         + "FROM proyecto "
         + "RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
         + "RIGHT JOIN partida ON pp_id_partida = partida_id "
         + "RIGHT JOIN psp ON partida_id = psp_id_partida "
+        + "RIGHT JOIN am ON partida_id = am_id_partida "
         + "RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
         + "RIGHT JOIN precio ON sp_id_precio = precio_id "
-        + "WHERE proyecto_id = ? ", [proyecto_id]);
+        + "RIGHT JOIN moneda ON moneda_id = precio_id_moneda "
+        + "WHERE proyecto_id = ? "
+        + "ORDER BY partida_id", [proyecto_id]);
         res.json({data:reSql});
         //console.log("soy el resql de view resumen am", reSql)
 
