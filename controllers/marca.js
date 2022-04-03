@@ -6,7 +6,7 @@ const marca = {};
 marca.insert_marca = async (req,res) =>{
     const {proveedor_id} = req.params;
     const new_marca = req.body;
-    console.log(req.body)
+    //console.log(req.body)
     //new_marca.marca_nombre = "PTN"; //Dato para prueba 
     const resMarca = await pool.query('INSERT INTO marca SET ?', [new_marca]);
 
@@ -62,7 +62,7 @@ marca.viewProvMarca = async (req, res) => {
   res.json({
     data:resProv
   });
-  console.log("soy resProv:",resProv)
+  //console.log("soy resProv:",resProv)
 };
 //---------------------------------------------------------------------------------------------------------------------------------
 

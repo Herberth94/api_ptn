@@ -74,7 +74,7 @@ am.view_resumen_am = async (req,res) => {
         + "RIGHT JOIN precio ON sp_id_precio = precio_id "
         + "WHERE proyecto_id = ? ", [proyecto_id]);
         res.json({data:reSql});
-        console.log("soy el resql de view resumen am", reSql)
+        //console.log("soy el resql de view resumen am", reSql)
 
 }
 

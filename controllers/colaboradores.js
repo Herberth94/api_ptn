@@ -45,7 +45,7 @@ exports.viewColaboradores = async (req, res) => {
     //+"RIGHT JOIN proyecto ON  "
     + "WHERE id_usuario = ?", [id_usuario]);
   res.json({ data: reSql })
-  console.log(reSql)
+  //console.log(reSql)
 }
 
 exports.updateProyectos = async (req, res) => {

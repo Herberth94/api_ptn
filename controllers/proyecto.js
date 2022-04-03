@@ -4,9 +4,9 @@ const bcrypt = require("bcryptjs");
 exports.insertProyectos = async (req, res) => {
   /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */
   const { id } = req.params
-  console.log("este es el id", id)
+  //console.log("este es el id", id)
   const insertProyectos = req.body;
-  console.log(req.body)
+  //console.log(req.body)
   /* INSERCCION DE DATOS A TABLA PROYECTO */
   const proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
   /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
@@ -83,7 +83,7 @@ exports.deleteProyectos = async (req, res) => {
 exports.viewProyecto = async (req, res) => {
   const reSql = await pool.query("SELECT * FROM proyecto");
   res.json({ data: reSql });
-  console.log(reSql);
+  //console.log(reSql);
 };
 
 /*
@@ -101,7 +101,7 @@ exports.viewAdmin = async (req, res) => {
     + "ORDER BY proyecto_id"
   );
   res.json({ data: reSql });
-  console.log(reSql);
+  //console.log(reSql);
 };
 
 /*
@@ -120,7 +120,7 @@ exports.viewVentas = async (req, res) => {
     + "WHERE id_usuario = ? "
     + "ORDER BY proyecto_id", [usuario_id]);
   res.json({ data: reSql });
-  console.log(reSql);
+  //console.log(reSql);
 };
 //ruta para asignar un proyecto a un usuario de ventas
 exports.insertUsuariosProyectos = async(req, res) => {
@@ -171,6 +171,6 @@ exports.viewModal = async (req, res) => {
     +"WHERE proyecto_id = ? "
     +"ORDER BY partida_id", [proyecto_id]);
   res.json({ reSql: reSql });
-  console.log({data:reSql});
+  //console.log({data:reSql});
 };
 

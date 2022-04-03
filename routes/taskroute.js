@@ -16,6 +16,7 @@ const catsController = require ('../controllers/categorias_c_a_sptn_ma');
 const cattController = require ('../controllers/categorias_datos');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
+const ciController = require('../controllers/costos_indirectos');
 
 const { route } = require('express/lib/application');
 
@@ -196,6 +197,14 @@ module.exports= function(){
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+        // Rutas del CRUD para la tabla costos_indirectos:
+        //Create
+        router.post('/ci/agregar/:ci_id_cci/:ci_porcentaje/:ci_id_proyecto',ciController.insert_ci);
+        //Read
+        //Update
+        //Delete
+         
+/*--------------------------------------------------------------------------------------------------------------------*/
         // metodo para mostar datos especificos
         router.get('/vistas/:informacion',async(req,res)=>{
 

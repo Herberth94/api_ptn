@@ -4,19 +4,14 @@ const ci = {};
 
 //Función para agregar atributos en la tabla costos_indirectos------------------------------------
 ci.insert_ci = async (req,res) =>{
-        const {new_id_am} = req.params; 
-        const new_ci = { 
-                ci_descripcion,
-                ci_costo,
-                ci_id_am: new_id_am
-        } = req.body;
-        //new_ci.ci_descripcion = 'Costo indirecto 1'; //Dato para prueba
-        //new_ci.ci_id_am = 2; //Dato para prueba 
+        const {ci_id_cci,ci_porcentaje,ci_id_proyecto} = req.params; 
+        const new_ci = {
+                ci_id_cci,
+                ci_porcentaje,
+                ci_id_proyecto
+        }
         await pool.query('INSERT INTO costos_indirectos SET ?', [new_ci]);
-        res.json({
-                msg: "Costo indirecto agregado exitosamente",
-                estado: true,
-                });
+        res.json({msg: "Costo indirecto agregado exitosamente",estado: true});
 }
 //------------------------------------------------------------------------------------------------
 
@@ -54,4 +49,4 @@ ci.delete_ci = async (req, res) => {
 };
 //-------------------------------------------------------------------------------------------------
     
-    module.exports = ci;
+module.exports = ci;
