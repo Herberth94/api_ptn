@@ -17,6 +17,7 @@ const cattController = require ('../controllers/categorias_datos');
 const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
 const ciController = require('../controllers/costos_indirectos');
+const proporcionalidadController = require('../controllers/proporcionalidad');
 
 const { route } = require('express/lib/application');
 
@@ -202,6 +203,10 @@ module.exports= function(){
         router.get('/ci/view/:proyecto_id',ciController.viewCIP);
         //Update
         //Delete
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+        //insert proporcionalidad
+        router.post('/proporcionalidad/insert/:idProyecto',proporcionalidadController.insertProporcionalidad);
          
 /*--------------------------------------------------------------------------------------------------------------------*/
         // metodo para mostar datos especificos
