@@ -35,17 +35,28 @@ exports.insertColaborador = async (req, res) => {
   })
 };
 // ver la lista de los colaboradores con el nombre de los proyectos donde son colaboradores
-exports.viewColaboradores = async (req, res) => {
+// exports.viewColaboradores = async (req, res) => {
+//   const { id_usuario } = req.params;
+//   const reSql = await pool.query("SELECT id_usuario, email, colab_id, colab_id_proyecto, colab_id_usuario, email, proyecto_clave "
+//     + "FROM usuarios "
+//     + "LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario "
+//     + "RIGHT JOIN colaboradores ON id_usuario = colab_id_usuario "
+//     + "RIGHT JOIN proyecto ON  proyecto_id = up_id_proyecto AND colab_id_proyecto "
+//     + "WHERE id_usuario = ?", [id_usuario]);
+//   res.json({ data: reSql })
+//   //console.log(reSql)
+//}
+// visualizar los colaboradores añadidos a un proyecto 
+exports.viewColaboradores = async(req, res) => {
   const { id_usuario } = req.params;
-  const reSql = await pool.query("SELECT id_usuario, email, colab_id, colab_id_proyecto, colab_id_usuario, email, proyecto_clave "
-    + "FROM usuarios "
-    + "LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario "
-    + "RIGHT JOIN colaboradores ON id_usuario = colab_id_usuario "
-    + "RIGHT JOIN proyecto ON  proyecto_id = up_id_proyecto AND colab_id_proyecto "
-    //+"RIGHT JOIN proyecto ON  "
-    + "WHERE id_usuario = ?", [id_usuario]);
+  const reSql = await pool.query("SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses, colab_id_usuario, email "
+  + "FROM proyecto "
+  + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
+  + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
+  + " WHERE id_usuario = ?", [id_usuario]);
   res.json({ data: reSql })
-  //console.log(reSql)
+  console.log(reSql)
+
 }
 
 exports.updateProyectos = async (req, res) => {
