@@ -26,7 +26,7 @@ ci.viewCIP = async (req,res) => {
         + "RIGHT JOIN categorias_ci ON ci_id_cci = cci_id "
         + "WHERE proyecto_id = ? ", [proyecto_id]);
         res.json({data:reSql});
-}
+};
 /*==========================================================*/
 
 /*========================== Update ==========================*/

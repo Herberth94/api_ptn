@@ -108,12 +108,7 @@ module.exports= function(){
         // Metodos para la tabla cat_totales:
         // Agregar 
         router.post('/catd/agregar/:proyecto_id',cattController.insert_catd);
-        // // Editar 
-        // router.put('/catt/edit/:id',cattController.update_catt);
-        // // Eliminar 
-        // router.delete('/catt/delete/:id',cattController.delete_catt);
-        //view
-        router.get('/catd/view/:proyecto_id', cattController.view_catd);
+
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
@@ -185,15 +180,18 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Metodos para la tabla am:
-        //Agregar
-        router.post('/am/agregar/:partida_id',amController.insert_am);
-        //Editar
-        //router.put('/am/edit/:id',amController.update_am);
-        //Eliminar
-        //router.delete('/am/delete/:id',amController.delete_am);
-        // view_resumen_am
-        router.get('/am/viewAM/:proyecto_id', amController.view_resumen_am);
+        // Rutas del CRUD para la tabla am:
+        //Create
+        router.post('/am/AgregarAMPartidas/:partida_id',amController.insertAMPartidas);
+        router.post('/am/AgregarAMCategorias/:proyecto_id/:cats_id',amController.insertAMCategorias);
+        //Read
+        router.get('/am/viewTotalesPartidas/:proyecto_id', amController.viewTotalesPartida);
+        router.get('/am/viewAMPartidas/:proyecto_id', amController.viewDatosAMPartida);
+        router.get('/am/viewTotalesCategorias/:proyecto_id', amController.viewTotalesCategorias);
+        router.get('/am/viewAMCategorias/:proyecto_id', amController.viewAMCategorias);
+        router.get('/am/viewDivisa/:proyecto_id',amController.viewDivisa)
+        //Update
+        //Delete
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 
