@@ -65,7 +65,7 @@ am.viewDatosAMPartida = async (req,res) => {
         res.json({data:reSql});
 };
 
-// Función para consultar los datos de las categorias de un determinado proyecto para los cálculos de AM
+//Función para consultar los datos de las categorias de un determinado proyecto para los cálculos de AM
 am.viewTotalesCategorias = async (req,res) => {
         const {proyecto_id} = req.params;
         const reSql = await pool.query ( 

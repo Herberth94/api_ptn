@@ -19,5 +19,10 @@ exports.insertProporcionalidad = async (req,res) => {
         estado:true,
         data : reSql
     });
+};
 
-}
+exports.viewdpropd = async (req,res) => {
+    const { idProyecto } = req.params;
+    const reSql = await pool.query("SELECT * FROM proporcionalidad WHERE pd_id_proyecto = ? ", [idProyecto]);
+    res.json({data : reSql});
+};

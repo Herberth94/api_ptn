@@ -20,6 +20,7 @@ const ciController = require('../controllers/costos_indirectos');
 const proporcionalidadController = require('../controllers/proporcionalidad');
 
 const { route } = require('express/lib/application');
+const categorias = require('../controllers/categorias_c_a_sptn_ma');
 
 //rutas  para cada tarea
 module.exports= function(){
@@ -95,18 +96,18 @@ module.exports= function(){
         router.delete('/colaboradores/delete/:id', colaboradoresController.deleteProyectos)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-
-        // Metodos para la tabla categorias_c_a_sptn_ma:
-        // Agregar 
-        router.post('/cats/agregar',catsController.insert_cats);
-        // Editar 
-        router.put('/cats/edit/:id',catsController.update_cats);
-        // Eliminar 
-        router.delete('/cats/delete/:id',catsController.delete_cats);
+       
+        /*======================== Rutas CRUD para la tabla categorias_c_a_sptn_ma ======================== */
+        // Rutas CRUD para la tabla categorias_c_a_sptn_ma:
+        //Create
+        //Read
+        router.get('/dcats/view/:proyecto_id', categorias.viewCatsD);
+        //Update
+        //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Metodos para la tabla cat_totales:
+        // Metodos para la tabla categorias_datos:
         // Agregar 
         router.post('/catd/agregar/:proyecto_id',cattController.insert_catd);
 
@@ -181,7 +182,7 @@ module.exports= function(){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Rutas del CRUD para la tabla am:
+        /*================================== Rutas CRUD para la tabla am ================================== */
         //Create
         router.post('/am/AgregarAMPartidas/:partida_id',amController.insertAMPartidas);
         router.post('/am/AgregarAMCategorias/:proyecto_id/:cats_id',amController.insertAMCategorias);
@@ -196,7 +197,7 @@ module.exports= function(){
          
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Rutas del CRUD para la tabla costos_indirectos:
+        /*=========================== Rutas CRUD para la tabla costos_indirectos ========================== */
         //Create
         router.post('/ci/agregar/:ci_id_cci/:ci_porcentaje/:ci_id_proyecto',ciController.insert_ci);
         //Read
@@ -205,9 +206,15 @@ module.exports= function(){
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-        //insert proporcionalidad
+
+        /*=========================== Rutas CRUD para la tabla proporcionalidad =========================== */
+        //Create
         router.post('/proporcionalidad/insert/:idProyecto',proporcionalidadController.insertProporcionalidad);
-         
+        //Read
+        router.get('/proporcionalidad/view/:idProyecto',proporcionalidadController.viewdpropd);
+        //Update
+        //Delete
+
 /*--------------------------------------------------------------------------------------------------------------------*/
         // metodo para mostar datos especificos
         router.get('/vistas/:informacion',async(req,res)=>{

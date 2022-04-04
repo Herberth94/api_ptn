@@ -46,7 +46,7 @@ exports.viewPartida_UP = async (req, res) => {
 //Función para consultar datos de las partidas de un determinado proyecto
 exports.viewPartidaPP = async (req, res) => {
   const{proyecto_id} = req.params;
-  console.log("hola, soy los params",req.params)
+  //console.log("hola, soy los params",req.params)
   const reSql = await pool.query(
    "SELECT partida_id, partida_nombre, partida_descripcion "
   +"FROM proyecto "

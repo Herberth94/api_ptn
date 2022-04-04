@@ -13,7 +13,7 @@ const pool = require("../src/db");
     exports.viewCliente = async(req,res)=>{
         const reSql= await pool.query('SELECT cliente_id,nombre_cliente, razon_social,telefono,cliente_direccion FROM clientes');
         res.json({reSql:reSql});
-        console.log(reSql)
+        //console.log(reSql)
         //res.end();
     }
     exports.updateClientes = async (req, res) => {
