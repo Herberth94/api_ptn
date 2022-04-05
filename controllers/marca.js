@@ -28,13 +28,10 @@ marca.insert_marca = async (req,res) =>{
 marca.update_marca = async (req, res) => {
     //const { marca_id = 3 } = req.params; //Dato para prueba
     const { marca_id } = req.params;
-    const edit_marca = { marca_nombre } = req.body;
-    //edit_marca.marca_nombre = "PTNNNN"; //Dato para prueba
+    const { marca_nombre } = req.body;
+    const edit_marca = { marca_nombre };
     await pool.query("UPDATE marca set ?  WHERE marca_id = ?", [edit_marca, marca_id]);
-    res.json({
-      msg: "Marca editada exitosamente",
-      estado: true,
-    });
+    res.json({msg: "Marca editada exitosamente",estado: true,});
   };
 //--------------------------------------------------------------------------------------------------
 
@@ -52,7 +49,7 @@ marca.delete_marca = async (req, res) => {
 
 //Función para consultar los datos de la tabla marca dependiendo de un proveedor---------------------------------------------------
 marca.viewProvMarca = async (req, res) => {
-  console.log(req.params)
+  //console.log(req.params)
   const {proveedor_id} = req.params;
   const resProv = await pool.query(
     "SELECT marca_id, marca_nombre FROM proveedor "
