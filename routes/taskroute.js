@@ -213,6 +213,7 @@ module.exports= function(){
         //Read
         router.get('/proporcionalidad/view/:idProyecto',proporcionalidadController.viewdpropd);
         //Update
+        router.put('/proporcionalidad/update/:idProyecto',proporcionalidadController.updateProporcionalidad);
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/

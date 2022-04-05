@@ -23,6 +23,20 @@ exports.insertProporcionalidad = async (req,res) => {
 
 exports.viewdpropd = async (req,res) => {
     const { idProyecto } = req.params;
+    console.log(req.params)
     const reSql = await pool.query("SELECT * FROM proporcionalidad WHERE pd_id_proyecto = ? ", [idProyecto]);
     res.json({data : reSql});
+    console.log(reSql)
 };
+ exports.updateProporcionalidad = async (req, res) => {
+     const { idProyecto } = req.params;
+     const updateProporcionalidad = req.body;
+     const reSql = await pool.query("UPDATE proporcionalidad set ? WHERE pd_id_proyecto = ? ", [updateProporcionalidad, idProyecto]);
+
+     res.json({
+         msg: 'Proporcionalidad actualizada correctamente',
+         estado: true,
+         data:reSql
+     });
+     console.log(reSql)
+ }
