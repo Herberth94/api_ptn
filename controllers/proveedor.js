@@ -18,13 +18,17 @@ proveedor.insert_prov = async (req,res) =>{
 proveedor.update_prov = async (req, res) => {
   //const { proveedor_id = 3 } = req.params; //Dato para prueba
   const { proveedor_id } = req.params;
+  const{
+    proveedor_nombre,
+    proveedor_telefono,
+    proveedor_email, 
+  } = req.body;
+
   const edit_prov = {
     proveedor_nombre,
-    provedor_telefono,
-    proveedor_compania, 
-  } = req.body;
-  console.log(req.body)
-  console.log(req.params)
+    proveedor_telefono,
+    proveedor_email, 
+  }
   //edit_prov.proveedor_nombre = "PTNNNN"; //Dato para prueba
   await pool.query("UPDATE proveedor set ?  WHERE proveedor_id = ?", [edit_prov, proveedor_id]);
   res.json({
@@ -52,7 +56,7 @@ proveedor.view_prov = async (req, res) => {
   res.json({
     data:resProv
   });
-  console.log("hola soy el resProv", resProv)
+  //console.log("hola soy el resProv", resProv)
 };
 //---------------------------------------------------------------------------------------------------------
 module.exports = proveedor;

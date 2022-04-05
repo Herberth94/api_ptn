@@ -155,7 +155,7 @@ module.exports= function(){
         // Agregar 
         router.post('/marca/agregar/:proveedor_id',marcaController.insert_marca);
         // Editar 
-        router.put('/marca/edit/:id',marcaController.update_marca);
+        router.post('/marca/edit/:marca_id',marcaController.update_marca);
         // Eliminar 
         router.delete('/marca/delete/:id',marcaController.delete_marca);
         // Consultar
