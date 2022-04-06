@@ -40,7 +40,7 @@ module.exports= function(){
         // ruta para editar los parametros en base Id
         router.post('/edit/:id', editForm);  
         // ruta para editar el password en base Id
-        router.post('/edit/pass/:id', editPass);         
+        router.put('/edit/pass/:id', editPass);         
 
 /*--------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PARTIDA ========*/
