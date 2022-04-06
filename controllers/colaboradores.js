@@ -1,6 +1,8 @@
 const pool = require('../src/db');
 const bcrypt = require("bcryptjs");
 
+/*==================================================== CRUD - Tabla colaboradores ====================================================*/
+/*========================== Create ==========================*/
 exports.insertColaborador = async (req, res) => {
   /* ID DE USUARIO LOGEADO , INGRESA UN NUEVO DATO A LA TABLA USUARIO_COLABORADOR */
   const { colab_id_usuario, colab_id_proyecto, password, validatorid } = req.body;
@@ -17,7 +19,7 @@ exports.insertColaborador = async (req, res) => {
     return resX
   }).then((data) => {
     if (data == true) {
-      console.log(dataEnviar)
+      //console.log(dataEnviar)
       const reSql = pool.query("INSERT INTO colaboradores set ? ", dataEnviar);
       res.json({
         msg: 'colaborador agregado',
@@ -34,31 +36,38 @@ exports.insertColaborador = async (req, res) => {
 
   })
 };
-// ver la lista de los colaboradores con el nombre de los proyectos donde son colaboradores
-// exports.viewColaboradores = async (req, res) => {
-//   const { id_usuario } = req.params;
-//   const reSql = await pool.query("SELECT id_usuario, email, colab_id, colab_id_proyecto, colab_id_usuario, email, proyecto_clave "
-//     + "FROM usuarios "
-//     + "LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario "
-//     + "RIGHT JOIN colaboradores ON id_usuario = colab_id_usuario "
-//     + "RIGHT JOIN proyecto ON  proyecto_id = up_id_proyecto AND colab_id_proyecto "
-//     + "WHERE id_usuario = ?", [id_usuario]);
-//   res.json({ data: reSql })
-//   //console.log(reSql)
-//}
-// visualizar los colaboradores añadidos a un proyecto 
-exports.viewColaboradores = async(req, res) => {
+/*============================================================*/
+
+/*========================== Read ==========================*/
+//Función que consulta los proyectos en los que esta participando un colaborador 
+exports.viewProyColab = async(req, res) => {
   const { id_usuario } = req.params;
-  const reSql = await pool.query("SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses, colab_id_usuario, email "
+  const reSql = await pool.query(
+    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_fecha_creacion,"
+  + "proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses, colab_id_usuario, email "
   + "FROM proyecto "
   + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
   + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
-  + " WHERE id_usuario = ?", [id_usuario]);
+  + "WHERE id_usuario = ?", [id_usuario]);
   res.json({ data: reSql })
-  console.log(reSql)
+  //console.log(reSql)
+};
 
-}
+//Función que consulta los Colaboradores de un proyecto
+exports.viewColab = async(req, res) => {
+  const { proyecto_id } = req.params;
+  const reSql = await pool.query(
+  "SELECT colab_id,id_usuario, email "
+  + "FROM proyecto "
+  + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
+  + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
+  + "WHERE proyecto_id = ?", [proyecto_id]);
+  res.json({ data: reSql })
+  //console.log(reSql)
+};
+/*==========================================================*/
 
+/*========================== Update ==========================*/
 exports.updateProyectos = async (req, res) => {
   const { id } = req.params;
   const updateProyectos = req.body;
@@ -69,12 +78,13 @@ exports.updateProyectos = async (req, res) => {
     estado: true
   })
 };
+/*============================================================*/
 
+/*========================== Delete ==========================*/
 exports.deleteProyectos = async (req, res) => {
-  const { id } = req.params;
-  await pool.query("DELETE FROM proyecto WHERE proyecto_id = ?", [id]);
-  res.json({
-    msg: 'proyectos eleminados',
-    estado: true
-  })
-}
+  const {colab_id} = req.params;
+  await pool.query("DELETE FROM colaboradores WHERE colab_id = ?", [colab_id]);
+  res.json({msg: 'Colaborador eleminado',estado: true})
+};
+/*============================================================*/
+/*====================================================================================================================================*/

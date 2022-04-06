@@ -89,16 +89,19 @@ module.exports= function(){
          //ruta para asignar un proyecto a un usuario de ventas
          router.post('/proyecto/insertUsuariosProyectos', proyectosController.insertUsuariosProyectos)  
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*===== TABLA DE COLABORADORES ========*/
-
+        /*======================== Rutas CRUD para la tabla colaboradores ======================== */
+        //Create
         router.post('/colaboradores/insert',colaboradoresController.insertColaborador);
-        router.get('/colaboradores/view/:id_usuario', colaboradoresController.viewColaboradores);
-        router.delete('/colaboradores/delete/:id', colaboradoresController.deleteProyectos)
+        //Read
+        router.get('/colaboradores/viewProyectos/:id_usuario', colaboradoresController.viewProyColab);
+        router.get('/colaboradores/view/:proyecto_id', colaboradoresController.viewColab);
+        //Update
+        //Delete
+        router.delete('/colaboradores/delete/:colab_id', colaboradoresController.deleteProyectos)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
        
         /*======================== Rutas CRUD para la tabla categorias_c_a_sptn_ma ======================== */
-        // Rutas CRUD para la tabla categorias_c_a_sptn_ma:
         //Create
         //Read
         router.get('/dcats/view/:proyecto_id', categorias.viewCatsD);
