@@ -116,6 +116,7 @@ module.exports= function(){
         router.get('/catd/view/:proyecto_id', cattController.viewCatsD);
         //Update
         router.post('/catd/edit/:cd_id', cattController.updateCatsD);
+        router.post('/catd/editCant/:cd_id', cattController.updateCdCant);
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
