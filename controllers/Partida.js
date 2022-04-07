@@ -40,7 +40,7 @@ exports.viewPartida_UP = async (req, res) => {
     +"WHERE id_usuario = ? "
     +"ORDER BY partida_id", [id_usuario]);
   res.json({data:reSql});
-  console.log({data:reSql})
+  
 };
 
 //Función para consultar datos de las partidas de un determinado proyecto

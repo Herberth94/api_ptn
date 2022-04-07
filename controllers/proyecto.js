@@ -10,7 +10,7 @@ exports.insertProyectos = async (req, res) => {
   /* INSERCCION DE DATOS A TABLA PROYECTO */
   /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
   
-  var err;
+  let err;
   try {
 
     let proyecto;
