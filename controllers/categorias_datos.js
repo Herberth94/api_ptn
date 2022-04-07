@@ -71,6 +71,21 @@ catd.updateCatsD = async (req, res) => {
   await pool.query("UPDATE categorias_datos set ?  WHERE cd_id = ?", [editCatsD, cd_id]);
   res.json({msg: "Datos de una categorias actualizados exitosamente",estado: true,});
 };
+
+// Función para editar el atributo cd_cantidad en la tabla servicio_producto
+catd.updateCdCant = async (req, res) => {
+  const {cd_id} = req.params;
+
+  const{cd_cantidad} = req.body;
+
+  const editnewCd = {cd_cantidad}
+  //editnew_sp1.sp_no_parte = 20; //Dato para prueba
+  await pool.query("UPDATE categorias_datos set ?  WHERE cd_id = ?", [editnewCd,cd_id]);
+  res.json({
+    msg: "Cantidad de una categoria editada exitosamente",
+    estado: true,
+  });
+};
 /*============================================================*/
 
 /*========================== Delete ==========================*/

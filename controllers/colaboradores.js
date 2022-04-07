@@ -14,54 +14,69 @@ exports.insertColaborador = async (req, res) => {
   }
   const contrasenaHasheadaGuardada = await pool.query('SELECT password FROM usuarios WHERE id_usuario = ?', [validaIdUsuario]);
   const contrasenaHashDestructurada = contrasenaHasheadaGuardada[0].password
-    // /* INSERCCION DE DATOS A TABLA COLABORADORES */
-  bcrypt.compare(passwordBody, contrasenaHashDestructurada).then((resX) => {
-    return resX
-  }).then((data) => {
-    if (data == true) {
-      //console.log(dataEnviar)
-      const reSql = pool.query("INSERT INTO colaboradores set ? ", dataEnviar);
-      res.json({
-        msg: 'colaborador agregado',
-        estado: true,
-        data: reSql
-      });
-    } else {
-      res.json({
-        estado: false,
-        msg: "Usuario no registrado"
-      });
+  // /* INSERCCION DE DATOS A TABLA COLABORADORES */
+  var err;
+  try {
+    bcrypt.compare(passwordBody, contrasenaHashDestructurada).then((resX) => {
+      return resX
+    }).then((data) => {
+      if (data == true) {
+        //console.log(dataEnviar)
+        const reSql = pool.query("INSERT INTO colaboradores set ? ", dataEnviar);
+        res.json({
+          msg: 'Colaborador agregado exitosamente',
+          estado: true,
+          data: reSql
+        });
+      } else {
+        res.json({
+          estado: false,
+          msg: "¡ERROR!, Revisa que hayas ingresado correctamente tu contraseña"
+        });
 
-    }
+      }
 
-  })
+    })
+
+  } catch (error){
+    console.log("Error identificado:",error);
+    err = error;
+
+    res.json({
+     msg:'Error al insertar un nuevo colaborador',
+     error:err
+   });
+
+
+  }
+
 };
 /*============================================================*/
 
 /*========================== Read ==========================*/
 //Función que consulta los proyectos en los que esta participando un colaborador 
-exports.viewProyColab = async(req, res) => {
+exports.viewProyColab = async (req, res) => {
   const { id_usuario } = req.params;
   const reSql = await pool.query(
     "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_fecha_creacion,"
-  + "proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses, colab_id_usuario, email "
-  + "FROM proyecto "
-  + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
-  + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
-  + "WHERE id_usuario = ?", [id_usuario]);
+    + "proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses, colab_id_usuario, email "
+    + "FROM proyecto "
+    + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
+    + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
+    + "WHERE id_usuario = ?", [id_usuario]);
   res.json({ data: reSql })
   //console.log(reSql)
 };
 
 //Función que consulta los Colaboradores de un proyecto
-exports.viewColab = async(req, res) => {
+exports.viewColab = async (req, res) => {
   const { proyecto_id } = req.params;
   const reSql = await pool.query(
-  "SELECT colab_id,id_usuario, email "
-  + "FROM proyecto "
-  + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
-  + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
-  + "WHERE proyecto_id = ?", [proyecto_id]);
+    "SELECT colab_id,id_usuario, email "
+    + "FROM proyecto "
+    + "INNER JOIN colaboradores ON proyecto_id = colab_id_proyecto "
+    + "INNER JOIN usuarios ON colab_id_usuario = id_usuario "
+    + "WHERE proyecto_id = ?", [proyecto_id]);
   res.json({ data: reSql })
   //console.log(reSql)
 };
@@ -82,9 +97,9 @@ exports.updateProyectos = async (req, res) => {
 
 /*========================== Delete ==========================*/
 exports.deleteProyectos = async (req, res) => {
-  const {colab_id} = req.params;
+  const { colab_id } = req.params;
   await pool.query("DELETE FROM colaboradores WHERE colab_id = ?", [colab_id]);
-  res.json({msg: 'Colaborador eleminado',estado: true})
+  res.json({ msg: 'Colaborador eleminado', estado: true })
 };
 /*============================================================*/
 /*====================================================================================================================================*/
