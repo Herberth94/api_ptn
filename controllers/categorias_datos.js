@@ -4,10 +4,9 @@ const catd = {};
 
 /*==================================================== CRUD - Tabla categorias_datos ====================================================*/
 /*========================== Create ==========================*/
-//Función para agregar atributos en la tabla cat_totales---------------------------------------------------
-catd.insert_catd = async (req,res) =>{
+catd.insertCatsD = async (req,res) =>{
     const {proyecto_id} = req.params;
-    const new_catt = { 
+    const newCatsD = { 
       cd_id_cats,
       cd_no_parte,
       cd_descripcion,
@@ -15,8 +14,7 @@ catd.insert_catd = async (req,res) =>{
       cd_semanas,
       cd_comentarios
     } = req.body;
-    //new_catt.ct_totales_mxn= 1000.20; //Dato para prueba
-    const resCatId = await pool.query('INSERT INTO categorias_datos SET ?', [new_catt]);
+    const resCatId = await pool.query('INSERT INTO categorias_datos SET ?', [newCatsD]);
 
     const new_pc= {
       pc_id_proyecto: proyecto_id,
@@ -33,26 +31,45 @@ catd.insert_catd = async (req,res) =>{
 /*============================================================*/
 
 /*========================== Read ==========================*/
-
+//Función para consultar los datos de las categorias de un determinado proyecto
+catd.viewCatsD = async (req,res) => {
+  const {proyecto_id} = req.params;
+  const reSql = await pool.query ( 
+    "SELECT cd_id,cd_id_cats,cat_nombre,cd_no_parte,cd_descripcion,cd_semanas,cd_meses,cd_comentarios " 
+  + "FROM proyecto "
+  + "RIGHT JOIN proyectos_cat_d ON proyecto_id = pc_id_proyecto "
+  + "RIGHT JOIN categorias_datos ON pc_id_cat_d = cd_id "
+  + "RIGHT JOIN categorias_c_a_sptn_ma ON cd_id_cats = cat_id "
+  + "WHERE proyecto_id = ? "
+  + "ORDER BY cd_id_cats", [proyecto_id]);
+  res.json({data:reSql})
+};
 /*==========================================================*/
 
 /*========================== Update ==========================*/
-catd.update_catt = async (req, res) => {
-  const { 
-      ct_id,// = 3, //Dato para prueba
-      new_ct_id_moneda
-  } = req.params;
+catd.updateCatsD = async (req, res) => {
+  const {cd_id} = req.params;
 
-  const edit_catt = { 
-      ct_totales,
-      ct_id_moneda: new_ct_id_moneda
+  const{ 
+    cd_id_cats,
+    cd_no_parte,
+    cd_descripcion,
+    cd_meses,
+    cd_semanas,
+    cd_comentarios, 
   } = req.body;
+
+  const editCatsD = {
+    cd_id_cats,
+    cd_no_parte,
+    cd_descripcion,
+    cd_meses,
+    cd_semanas,
+    cd_comentarios, 
+  }
   //edit_catt.ct_id_moneda = 2; //Dato para prueba
-  await pool.query("UPDATE cat_totales set ?  WHERE ct_id = ?", [edit_catt, ct_id]);
-  res.json({
-    msg: "Total de la categoria editado exitosamente",
-    estado: true,
-  });
+  await pool.query("UPDATE categorias_datos set ?  WHERE cd_id = ?", [editCatsD, cd_id]);
+  res.json({msg: "Datos de una categorias actualizados exitosamente",estado: true,});
 };
 /*============================================================*/
 

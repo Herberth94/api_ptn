@@ -2,78 +2,74 @@ const { response } = require("express");
 const pool = require("../src/db");
 const precio = {};
 
-//Función para agregar atributos en la tabla precio---------------------------------------------------
-precio.insert_precio = async (req, res) => {
-  const { sp_id } = req.params;
-  const new_precio = {
-    precio_lista,
-    precio_unitario,
-    precio_descuento, 
-    precio_total,
-    precio_id_moneda
-  } = req.body;
-  const precio_id = await pool.query('INSERT INTO precio SET ?', [new_precio]);
+/*==================================================== CRUD - Tabla precio ====================================================*/
+/*========================== Create ==========================*/
+precio.insertPrecio = async (req, res) => {
 
-  res.json({
-    data: precio_id,
-    msg: "Precio agregado exitosamente",
-    estado: true,
-  });
-}
-//----------------------------------------------------------------------------------------------------
+  const newPrecio = {precio_lista,precio_unitario,precio_descuento, precio_total,precio_id_moneda} = req.body;
 
-//Función para editar atributos en la tabla precio---------------------------------------------------
-precio.update_precio = async (req, res) => {
-  //const { precio_id = 22 } = req.params; //Prueba para editar datos
-  const {precio_id} = req.params;
-  const{
-    precio_lista,
-    precio_unitario,
-    precio_descuento, 
-    precio_total,
-    precio_id_moneda
-  } = req.body;
-  const edit_precio = {
-    precio_lista,
-    precio_unitario,
-    precio_descuento, 
-    precio_total,
-    precio_id_moneda
-  };
-  //edit_precio.precio_lista = 20.25; //Prueba para editar datos
-  //edit_precio.precio_id_moneda = 2; //Prueba para editar datos
-  await pool.query("UPDATE precio set ?  WHERE precio_id = ?", [edit_precio, precio_id]);
-  res.json({
-    msg: "Precio agregado exitosamente",
-    estado: true,
-  });
+  const precio_id = await pool.query('INSERT INTO precio SET ?', [newPrecio]);
+
+  res.json({data: precio_id,msg: "Precio agregado exitosamente",estado: true,});
 };
-//---------------------------------------------------------------------------------------------------
+/*============================================================*/
 
-//Función para eliminar atributos en la tabla precio---------------------------------------------------
-precio.delete_precio = async (req, res) => {
-  const {precio_id} = req.params; 
-  //const { precio_id = 21} = req.params; //Prueba de eliminación de datos
-  await pool.query("DELETE FROM precio WHERE precio_id = ?", [precio_id]);
-  res.json({
-    msg: "Precio eliminado exitosamente",
-    estado: true,
-  });
-};
-//-----------------------------------------------------------------------------------------------------
-
-/*== Función para consultar datos relacionados de un determinado servicio_producto ==*/
+/*========================== Read ==========================*/
+//Función para consultar los precios de un determinado servicio_producto
 precio.viewSPP = async (req, res) => {
   const {sp_id} = req.params;
+
   const reSql = await pool.query(
-    "SELECT sp_id, sp_cantidad, precio_id, precio_lista, precio_unitario, precio_descuento, precio_total, precio_id_moneda, moneda_nombre "
+     "SELECT sp_id, sp_cantidad, precio_id, precio_lista, precio_unitario, precio_descuento, precio_total,"
+    +"precio_id_moneda, moneda_nombre "
     +"FROM servicio_producto "
     +"RIGHT JOIN precio ON sp_id_precio = precio_id "
     +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
     +"WHERE sp_id = ? "
     +"ORDER BY precio_id", [sp_id]);
+
   res.json({data:reSql});
-  console.log(reSql);
 };
 
+//Función para consultar los precios de un determinado dato de una categoria
+precio.viewCatsDP = async (req, res) => {
+  const {cd_id} = req.params;
+
+  const reSql = await pool.query(
+     "SELECT cd_id, cd_cantidad, precio_id, precio_lista, precio_unitario, precio_descuento, precio_total,"
+    +"precio_id_moneda, moneda_nombre "
+    +"FROM categorias_datos "
+    +"RIGHT JOIN precio ON cd_id_precio = precio_id "
+    +"LEFT JOIN moneda ON precio_id_moneda = moneda_id "
+    +"WHERE cd_id = ? "
+    +"ORDER BY precio_id", [cd_id]);
+
+  res.json({data:reSql});
+};
+/*==========================================================*/
+
+/*========================== Update ==========================*/
+precio.updatePrecio = async (req, res) => {
+
+  const {precio_id} = req.params;
+
+  const{precio_lista,precio_unitario,precio_descuento, precio_total,precio_id_moneda} = req.body;
+
+  const editPrecio = {precio_lista,precio_unitario,precio_descuento, precio_total,precio_id_moneda};
+
+  await pool.query("UPDATE precio set ?  WHERE precio_id = ?", [editPrecio, precio_id]);
+  res.json({msg: "Precio agregado exitosamente",estado: true,});
+};
+/*============================================================*/
+
+/*========================== Delete ==========================*/
+precio.deletePrecio = async (req, res) => {
+  const {precio_id} = req.params; 
+
+  await pool.query("DELETE FROM precio WHERE precio_id = ?", [precio_id]);
+
+  res.json({msg: "Precio eliminado exitosamente",estado: true,});
+};
+/*============================================================*/
 module.exports = precio;
+/*=============================================================================================================================*/

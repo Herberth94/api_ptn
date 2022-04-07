@@ -104,16 +104,19 @@ module.exports= function(){
         /*======================== Rutas CRUD para la tabla categorias_c_a_sptn_ma ======================== */
         //Create
         //Read
-        router.get('/dcats/view/:proyecto_id', categorias.viewCatsD);
         //Update
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-        // Metodos para la tabla categorias_datos:
-        // Agregar 
-        router.post('/catd/agregar/:proyecto_id',cattController.insert_catd);
-
+        /*======================== Rutas CRUD para la tabla categorias_datos ======================== */
+        //Create
+        router.post('/catd/agregar/:proyecto_id',cattController.insertCatsD);
+        //Read
+        router.get('/catd/view/:proyecto_id', cattController.viewCatsD);
+        //Update
+        router.post('/catd/edit/:cd_id', cattController.updateCatsD);
+        //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
@@ -130,16 +133,18 @@ module.exports= function(){
         router.get('/partida/viewPSP/:partida_id',spController.viewPSP);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE PRECIO ========*/
-// Metodos para la tabla precio:
-        // Agregar 
-        router.post('/precio/agregar',precioController.insert_precio);
-        // Editar 
-        router.post('/precio/edit/:precio_id',precioController.update_precio);
-        // Eliminar 
-        router.delete('/precio/delete/:precio_id',precioController.delete_precio);
-        //Consultar precios de un servicio_producto
+
+        /*======================== Rutas CRUD para la tabla precio ======================== */
+        //Create
+        router.post('/precio/agregar',precioController.insertPrecio);
+        //Read
         router.get('/precio/viewSPP/:sp_id',precioController.viewSPP);
+        router.get('/precio/viewCatsDP/:cd_id',precioController.viewCatsDP);
+        //Update
+        router.post('/precio/edit/:precio_id',precioController.updatePrecio);
+        //Delete
+        router.delete('/precio/delete/:precio_id',precioController.deletePrecio);
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*=====TABLA DE PROVEEDOR ========*/
 // Metodos para la tabla proveedor:
