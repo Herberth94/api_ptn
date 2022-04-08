@@ -6,9 +6,25 @@ const marca = {};
 marca.insert_marca = async (req,res) =>{
     const {proveedor_id} = req.params;
     const new_marca = req.body;
+    var err;
     //console.log(req.body)
     //new_marca.marca_nombre = "PTN"; //Dato para prueba 
-    const resMarca = await pool.query('INSERT INTO marca SET ?', [new_marca]);
+    try{
+      const resMarca = await pool.query('INSERT INTO marca SET ?', [new_marca]);
+      res.json({
+        msg: 'Marca agregada exitosamente',
+        estado: true,
+        data: resMarca
+      });
+    } catch (error){
+      console.log("Error identificado:",error);
+      err = error;
+  
+      res.json({
+       msg:'Error al insertar un nuevo colaborador',
+       error:err
+     });
+    }
 
     const new_pm = {
     pm_id_proveedor:proveedor_id,
