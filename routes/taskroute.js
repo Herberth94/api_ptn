@@ -214,6 +214,7 @@ module.exports= function(){
         //Read
         router.get('/ci/view/:proyecto_id',ciController.viewCIP);
         //Update
+        router.post('/ci/edit/:ci_id',ciController.update_ci);
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/

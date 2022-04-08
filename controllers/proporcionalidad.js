@@ -13,12 +13,36 @@ exports.insertProporcionalidad = async (req,res) => {
         pd_pagos_anuales,
         pd_id_proyecto : id
     }
-    const reSql = await pool.query("INSERT INTO proporcionalidad set ? ", [dataEnviar]);
-    res.json({
-        msg: 'Proporcionalidad agregada exitosamente',
-        estado:true,
-        data : reSql
-    });
+    var err;
+    try{
+  
+        console.log(id)
+        const existeProporcionalidad = await pool.query('SELECT pd_id FROM proporcionalidad WHERE pd_id_proyecto = ?', [id])
+        if (existeProporcionalidad != ''){
+            console.log("existeProporcionalidad:", existeProporcionalidad)
+            res.json({
+                msg: 'Ya existe un registro de Financiamiento en este proyecto, por favor intente con otro',
+                estado: false,
+                data: existeProporcionalidad
+            })
+        }else{
+            const reSql = await pool.query("INSERT INTO proporcionalidad set ? ", [dataEnviar]);
+            res.json({
+                msg: 'Proporcionalidad agregada exitosamente',
+                estado:true,
+                data : reSql
+            });
+        } 
+    }catch (error) {
+        console.log("Error identificado:", error);
+        err = error;
+
+        res.json({
+            msg:'Error al insertar la proporcionalidad en este proyecto, por favor verifique que los datos sean correctos',
+            error: err
+        });
+
+    }
 };
 
 exports.viewdpropd = async (req,res) => {
@@ -31,12 +55,25 @@ exports.viewdpropd = async (req,res) => {
  exports.updateProporcionalidad = async (req, res) => {
      const { idProyecto } = req.params;
      const updateProporcionalidad = req.body;
-     const reSql = await pool.query("UPDATE proporcionalidad set ? WHERE pd_id_proyecto = ? ", [updateProporcionalidad, idProyecto]);
+     console.log(updateProporcionalidad)
+     try{
+        const reSql = await pool.query("UPDATE proporcionalidad set ? WHERE pd_id_proyecto = ? ", [updateProporcionalidad, idProyecto]);
+        res.json({
+            msg: 'Proporcionalidad actualizada correctamente',
+            estado: true,
+            data:reSql
+        });
+        console.log(reSql)
 
-     res.json({
-         msg: 'Proporcionalidad actualizada correctamente',
-         estado: true,
-         data:reSql
-     });
-     console.log(reSql)
+     }catch (error) {
+        console.log("Error identificado:",error);
+         err = error;
+    
+         res.json({
+          msg:'Error al modificar la proporcionalidad en este proyecto, por favor verifique que los datos sean correctos',
+          error:err
+        });
+      }
+
+
  }
