@@ -189,7 +189,7 @@ exports.insertUsuariosProyectos = async(req, res) => {
 exports.viewModal = async (req, res) => {
   const { proyecto_id } = req.params;
   const reSql = await pool.query(
-    "SELECT partida_nombre, partida_descripcion, sp_no_parte, sp_meses, sp_semanas, sp_cantidad, categoria_nombre, precio_total, moneda_nombre "
+    "SELECT partida_id,partida_nombre, partida_descripcion, sp_no_parte, sp_meses, sp_semanas, sp_cantidad, categoria_nombre, precio_total, moneda_nombre "
     +"FROM proyecto "
     +"RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
     +"RIGHT JOIN partida ON pp_id_partida = partida_id "

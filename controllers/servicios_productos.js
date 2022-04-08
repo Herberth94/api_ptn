@@ -21,8 +21,8 @@ sp.insert_sp = async (req, res) => {
     psp_id_partida:partida_id,
     psp_id_sp:reSql.insertId
   }
-  console.log()
-  const reSql2 = await pool.query("INSERT INTO psp set ?", [psp]);
+  console.log(psp)
+  const reSql2 = await pool.query('INSERT INTO psp SET ?', [psp]);
 
   const sppm ={
     sppm_id_sp:reSql.insertId,
