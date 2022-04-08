@@ -55,7 +55,7 @@ am.viewTotalesPartida = async (req,res) => {
 am.viewDatosAMPartida = async (req,res) => {
         const{proyecto_id} = req.params;
         const reSql = await pool.query(
-          "SELECT partida_id,partida_nombre,partida_descripcion,am_desc_cliente,am_margen_ganancia,am_cantidad,am_descuento_fabrica "
+          "SELECT am_id,partida_id,partida_nombre,partida_descripcion,am_desc_cliente,am_margen_ganancia,am_cantidad,am_descuento_fabrica "
         + "FROM proyecto "
         + "RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
         + "RIGHT JOIN partida ON pp_id_partida = partida_id "
@@ -87,7 +87,7 @@ am.viewTotalesCategorias = async (req,res) => {
 am.viewAMCategorias = async (req,res) => {
         const {proyecto_id} = req.params;
         const reSql = await pool.query ( 
-          "SELECT cat_id,cat_nombre,amc_desc_cliente,amc_margen_ganancia,amc_cantidad,amc_desc_fabrica " 
+          "SELECT amc_id,cat_id,cat_nombre,amc_desc_cliente,amc_margen_ganancia,amc_cantidad,amc_desc_fabrica " 
         + "FROM proyecto "
         + "RIGHT JOIN am_cats ON amc_id_proyecto = proyecto_id "
         + "RIGHT JOIN categorias_c_a_sptn_ma ON amc_id_cats = cat_id "
@@ -106,25 +106,43 @@ am.viewDivisa = async (req,res) => {
 
 /*========================== Update ==========================*/
 //Función para editar atributos en la tabla am
-am.update_am = async (req, res) => {
-        const {
-                am_id, //= 1,
-                new_id_proyecto
-        } = req.params;
-        const edit_am = {
-                am_valor_dolar,
+am.updateAMPar = async (req, res) => {
+        const {am_id} = req.params;
+        const{
                 am_desc_cliente,
                 am_margen_ganancia,
-                am_desc_fabrica,
-                am_id_proyecto: new_id_proyecto
+                am_cantidad,
+                am_descuento_fabrica,
         } = req.body;
-        //edit_am.am_valor_dolar = 20.20;
-        //edit_am.am_id_proyecto = 2;
-        await pool.query("UPDATE am set ?  WHERE am_id = ?", [edit_am, am_id]);
-        res.json({
-                msg: "AM editado exitosamente",
-                estado: true,
-        });
+
+        const editAmP = {
+                am_desc_cliente,
+                am_margen_ganancia,
+                am_cantidad,
+                am_descuento_fabrica,
+        };
+        await pool.query("UPDATE am set ? WHERE am_id = ?", [editAmP, am_id]);
+        res.json({msg: "AM de una partida editado exitosamente",estado: true,});
+};
+
+//Función para editar atributos en la tabla am_cats
+am.updateAMCats = async (req, res) => {
+        const {amc_id} = req.params;
+        const{
+                amc_desc_cliente,
+                amc_margen_ganancia,
+                amc_cantidad,
+                amc_desc_fabrica,
+        } = req.body;
+
+        const editAmC = {
+                amc_desc_cliente,
+                amc_margen_ganancia,
+                amc_cantidad,
+                amc_desc_fabrica,
+        };
+        await pool.query("UPDATE am_cats set ? WHERE amc_id = ?", [editAmC, amc_id]);
+        res.json({msg: "AM de una categoria editado exitosamente",estado: true,});
 };
 /*============================================================*/
 

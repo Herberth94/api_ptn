@@ -202,6 +202,8 @@ module.exports= function(){
         router.get('/am/viewAMCategorias/:proyecto_id', amController.viewAMCategorias);
         router.get('/am/viewDivisa/:proyecto_id',amController.viewDivisa)
         //Update
+        router.post('/am/EditAMPar/:am_id',amController.updateAMPar);
+        router.post('/am/EditAMCats/:amc_id',amController.updateAMCats);
         //Delete
          
 /*--------------------------------------------------------------------------------------------------------------------*/
