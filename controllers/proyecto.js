@@ -13,9 +13,9 @@ exports.insertProyectos = async (req, res) => {
   let err;
   try {
 
-    let proyecto;
-    if(insertProyectos.proyecto_id_cliente !== ''){
-      proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
+    //let proyecto;
+    //if(insertProyectos.proyecto_id_cliente !== ''){
+      let proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
 
       const user_p = {
         up_id_usuario: id,
@@ -23,9 +23,9 @@ exports.insertProyectos = async (req, res) => {
       }
 
       await pool.query("INSERT INTO usuarios_proyectos set ?", user_p);
-    }else{
+    // }else{
       console.log('Es necesario insertar un cliente');
-    }
+    //}
     res.json({
       msg: 'Proyecto agregado',
       estado: true,
