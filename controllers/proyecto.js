@@ -29,7 +29,7 @@ exports.insertProyectos = async (req, res) => {
     res.json({
       msg: 'Proyecto agregado',
       estado: true,
-      id_proyecto: proyecto.insertId,
+      id_proyecto:proyecto.insertId,
       error:err
     });
     
