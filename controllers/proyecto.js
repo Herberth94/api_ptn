@@ -70,11 +70,22 @@ exports.UpdateDivisa = async (req, res) => {
   const editDiv = {
     proyecto_valor_dolar
   };
-  await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
-  res.json({
-    msg: 'Divisa del proyecto editada',
-    estado: true
-  });
+  try{
+    const reSql = await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
+    res.json({
+      data: reSql,
+      msg: 'Divisa del proyecto modificada exitosamente',
+      estado: true
+    }); 
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+        estado: false,
+        msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+}
+
 };
 
 exports.updateProyectos = async (req, res) => {

@@ -25,51 +25,60 @@ proveedor.insert_prov = async (req, res) => {
 
   }
 }
-  //-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 
-  //Función para editar atributos en la tabla proveedor---------------------------------------------------
-  proveedor.update_prov = async (req, res) => {
-    //const { proveedor_id = 3 } = req.params; //Dato para prueba
-    const { proveedor_id } = req.params;
-    const {
-      proveedor_nombre,
-      proveedor_telefono,
-      proveedor_email,
-    } = req.body;
+//Función para editar atributos en la tabla proveedor---------------------------------------------------
+proveedor.update_prov = async (req, res) => {
+  //const { proveedor_id = 3 } = req.params; //Dato para prueba
+  const { proveedor_id } = req.params;
+  const {
+    proveedor_nombre,
+    proveedor_telefono,
+    proveedor_email,
+  } = req.body;
 
-    const edit_prov = {
-      proveedor_nombre,
-      proveedor_telefono,
-      proveedor_email,
-    }
-    //edit_prov.proveedor_nombre = "PTNNNN"; //Dato para prueba
-    await pool.query("UPDATE proveedor set ?  WHERE proveedor_id = ?", [edit_prov, proveedor_id]);
+  const edit_prov = {
+    proveedor_nombre,
+    proveedor_telefono,
+    proveedor_email,
+  }
+  let err;
+  try {
+    const reSql = await pool.query("UPDATE proveedor set ?  WHERE proveedor_id = ?", [edit_prov, proveedor_id]);
     res.json({
-      msg: "Proveedor editado exitosamente",
-      estado: true,
-    });
-  };
-  //------------------------------------------------------------------------------------------------------
-
-  //Función para eliminar atributos en la tabla proveedor---------------------------------------------------
-  proveedor.delete_prov = async (req, res) => {
-    //const { proveedor_id = 3 } = req.params; //Dato para prueba
-    const { proveedor_id } = req.params;
-    await pool.query("DELETE FROM proveedor WHERE proveedor_id = ?", [proveedor_id]);
+      data: reSql,
+      msg: "Proveedor modificado exitosamente",
+    })
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
     res.json({
-      msg: "Producto eliminado exitosamente",
-      estado: true,
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
     });
-  };
-  //--------------------------------------------------------------------------------------------------------
+  }
+};
+//------------------------------------------------------------------------------------------------------
 
-  //Función para consultar los datos de la tabla proveedor---------------------------------------------------
-  proveedor.view_prov = async (req, res) => {
-    const resProv = await pool.query("SELECT * FROM proveedor");
-    res.json({
-      data: resProv
-    });
-    //console.log("hola soy el resProv", resProv)
-  };
-  //---------------------------------------------------------------------------------------------------------
-  module.exports = proveedor;
+//Función para eliminar atributos en la tabla proveedor---------------------------------------------------
+proveedor.delete_prov = async (req, res) => {
+  //const { proveedor_id = 3 } = req.params; //Dato para prueba
+  const { proveedor_id } = req.params;
+  await pool.query("DELETE FROM proveedor WHERE proveedor_id = ?", [proveedor_id]);
+  res.json({
+    msg: "Producto eliminado exitosamente",
+    estado: true,
+  });
+};
+//--------------------------------------------------------------------------------------------------------
+
+//Función para consultar los datos de la tabla proveedor---------------------------------------------------
+proveedor.view_prov = async (req, res) => {
+  const resProv = await pool.query("SELECT * FROM proveedor");
+  res.json({
+    data: resProv
+  });
+  //console.log("hola soy el resProv", resProv)
+};
+//---------------------------------------------------------------------------------------------------------
+module.exports = proveedor;

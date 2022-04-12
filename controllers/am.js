@@ -139,10 +139,23 @@ am.updateAMCats = async (req, res) => {
                 amc_desc_cliente,
                 amc_margen_ganancia,
                 amc_cantidad,
-                amc_desc_fabrica,
+                amc_desc_fabrica,     
         };
-        await pool.query("UPDATE am_cats set ? WHERE amc_id = ?", [editAmC, amc_id]);
-        res.json({msg: "AM de una categoria editado exitosamente",estado: true,});
+        let err;
+        try{
+                const reSql = await pool.query("UPDATE am_cats set ? WHERE amc_id = ?", [editAmC, amc_id]);
+                res.json({msg: "AM de una categoria modificado exitosamente", estado: true, data: reSql,
+        });
+                
+        }catch (error) {
+                console.log("Error identificado:", error);
+                err = error;
+                res.json({
+                    estado: false,
+                    msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+                });
+        }
+
 };
 /*============================================================*/
 

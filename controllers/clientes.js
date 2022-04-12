@@ -29,17 +29,25 @@ exports.viewCliente = async (req, res) => {
 exports.updateClientes = async (req, res) => {
     const { id } = req.params;
     const updatUsuario = req.body;
-    await pool.query("UPDATE clientes set ? WHERE cliente_id=?", [
-        updatUsuario,
-        id,
-    ]);
-
-    const link = `/clientes/update/${id} `;
-    console.log(link);
-    res.json({
-        msg: "modficiacion de usuario con exito ",
-        estado: true,
-    });
+    let err;
+    try {
+        await pool.query("UPDATE clientes set ? WHERE cliente_id=?", [
+            updatUsuario,
+            id,
+        ]);
+        const link = `/clientes/update/${id} `;
+        res.json({
+            msg: 'Cliente modificado exitosamente',
+            estado: true,
+        });
+    } catch (error) {
+        console.log("Error identificado:", error);
+        err = error;
+        res.json({
+            estado: false,
+            msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+        });
+    }
 };
 
 exports.deleteClientes = async (req, res) => {
