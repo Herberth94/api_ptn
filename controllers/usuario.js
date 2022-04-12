@@ -11,7 +11,7 @@ formControl.postForm = async (req, res) => {
         password: passwordHash,
         estado_login
     };
-    var err;
+    let err;
     try {
         const Vsql = await pool.query('SELECT email FROM usuarios WHERE email = ?', [newUser.email]);
         if (Vsql != '') {
@@ -41,13 +41,7 @@ formControl.postForm = async (req, res) => {
             msg: 'Error al insertar un nuevo colaborador',
             error: err
         });
-
-
     }
-
-
-
-
     //res.end();
 };
 
@@ -76,25 +70,50 @@ formControl.editForm = async (req, res) => {
         rol,
         estado_login
     };
-    await pool.query('UPDATE usuarios set ? WHERE id_usuario=?', [editvalues, id])
-    const link = `/edit/${id} `;
-    console.log(link);
-    res.redirect('/api/cotizador/registro');
+    let err;
+    try {
+        const reSql = await pool.query('UPDATE usuarios set ? WHERE id_usuario=?', [editvalues, id])
+        const link = `/edit/${id} `;
+        console.log(link);
+        // res.redirect('/api/cotizador/registro');
+        res.json({
+            msg: 'Usuario modificado exitosamente',
+            estado: true,
+            data: reSql
+        });
+    } catch (error) {
+        console.log("Error identificado:", error);
+        err = error;
+        res.json({
+            estado: false,
+            msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+        });
+
+    }
 };
 formControl.editPass = async (req, res) => {
     const { id } = req.params;
     const { password, estado_login } = req.body;
     let passwordHash = await bcrypt.hash(password, 10)
+    let err;
     const editPass = {
         password: passwordHash,
         estado_login
     }
-    const reSql = await pool.query('UPDATE usuarios set ? WHERE id_usuario=?', [editPass, id])
-    res.json({
-        data: reSql,
-        msg: "cambio aplicado"
-    })
-    console.log(reSql);
+    try {
+        const reSql = await pool.query('UPDATE usuarios set ? WHERE id_usuario=?', [editPass, id])
+        res.json({
+            data: reSql,
+            msg: 'Reseteo de la contraseña efectuado exitosamente'
+        })
+    } catch (error) {
+        console.log("Error identificado:", error);
+        err = error;
+        res.json({
+            estado: false,
+            msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+        });
+    }
 }
 
 

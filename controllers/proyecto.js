@@ -13,9 +13,9 @@ exports.insertProyectos = async (req, res) => {
   let err;
   try {
 
-    let proyecto;
-    if(insertProyectos.proyecto_id_cliente !== ''){
-      proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
+    //let proyecto;
+    //if(insertProyectos.proyecto_id_cliente !== ''){
+      const proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
 
       const user_p = {
         up_id_usuario: id,
@@ -23,24 +23,16 @@ exports.insertProyectos = async (req, res) => {
       }
 
       await pool.query("INSERT INTO usuarios_proyectos set ?", user_p);
-    }else{
+    // }else{
       console.log('Es necesario insertar un cliente');
-    }
-    res.json({
-      msg: 'Proyecto agregado',
-      estado: true,
-      id_proyecto:proyecto.insertId,
-      error:err
-    });
-    
+    //}
   } catch (error) {
     console.log("Error identificado:",error);
      err = error;
 
      res.json({
       msg:'Error al insertar un proyecto',
-      msg2:'Necesita seleccionar un cliente',
-      error:err
+      msg2:'Necesita seleccionar un cliente'
     });
   }
   
@@ -78,11 +70,22 @@ exports.UpdateDivisa = async (req, res) => {
   const editDiv = {
     proyecto_valor_dolar
   };
-  await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
-  res.json({
-    msg: 'Divisa del proyecto editada',
-    estado: true
-  });
+  try{
+    const reSql = await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
+    res.json({
+      data: reSql,
+      msg: 'Divisa del proyecto modificada exitosamente',
+      estado: true
+    }); 
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+        estado: false,
+        msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+}
+
 };
 
 exports.updateProyectos = async (req, res) => {
