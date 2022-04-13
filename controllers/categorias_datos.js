@@ -15,19 +15,41 @@ catd.insertCatsD = async (req,res) =>{
       cd_semanas,
       cd_comentarios
     } = req.body;
-    const resCatId = await pool.query('INSERT INTO categorias_datos SET ?', [newCatsD]);
+    try{
+      if(cd_id_cats !== ''){
+        const resCatId = await pool.query('INSERT INTO categorias_datos SET ?', [newCatsD]);
 
-    const new_pc= {
-      pc_id_proyecto: proyecto_id,
-      pc_id_cat_d: resCatId.insertId
+        const new_pc= {
+          pc_id_proyecto: proyecto_id,
+          pc_id_cat_d: resCatId.insertId
+        }
+        await pool.query('INSERT INTO proyectos_cat_d SET ?', [new_pc]); 
+          
+        res.json({
+            data:resCatId,
+            msg: "Se agregaron los datos de una categoria correctamente",
+            estado: true,
+          });
+
+      }else{
+        res.json({
+          msg: "¡ERROR!,Tienes que seleccionar una categoría",
+          estado: true,
+        });
+
+      }
+
+
+    }catch (error){
+      console.log("Error identificado:",error);
+      err = error;
+  
+      res.json({
+       msg:'Error al insertar una nueva categoría',
+       error:err
+     });
     }
-    await pool.query('INSERT INTO proyectos_cat_d SET ?', [new_pc]); 
-      
-    res.json({
-        data:resCatId,
-        msg: "Total de la categoria agregado exitosamente",
-        estado: true,
-      });
+
 }
 /*============================================================*/
 

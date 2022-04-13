@@ -5,12 +5,32 @@ const precio = {};
 /*==================================================== CRUD - Tabla precio ====================================================*/
 /*========================== Create ==========================*/
 precio.insertPrecio = async (req, res) => {
-
+  let err;
   const newPrecio = {precio_lista,precio_unitario,precio_descuento, precio_total,precio_id_moneda} = req.body;
+  try{
+    if(precio_id_moneda!==''){
+      const precio_id = await pool.query('INSERT INTO precio SET ?', [newPrecio]);
 
-  const precio_id = await pool.query('INSERT INTO precio SET ?', [newPrecio]);
+      res.json({data: precio_id,msg: "Precio agregado exitosamente",estado: true,});
 
-  res.json({data: precio_id,msg: "Precio agregado exitosamente",estado: true,});
+    }else {
+      res.json({
+        estado: false,
+        msg: "¡ERROR!, Revisa que hayas ingresado correctamente el tipo de moneda",
+      });
+    }    
+
+  } catch (error){
+    console.log("Error identificado:",error);
+    err = error;
+
+    res.json({
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente el tipo de moneda",
+      error:err
+   });
+  }
+
+
 };
 /*============================================================*/
 
