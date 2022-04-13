@@ -97,11 +97,21 @@ exports.updatePartida = async (req, res) => {
     partida_nombre,
     partida_descripcion
   };
-  const updaetsql = await pool.query("UPDATE partida set ? WHERE partida_id = ?", [editptnBom, id]);
-  res.json({
-    msg: "se actualizo correctamente",
-    estado: true,
-  });
+  try{
+    const updaetsql = await pool.query("UPDATE partida set ? WHERE partida_id = ?", [editptnBom, id]);
+    res.json({
+      msg: "Partida exitosa exitosamente",
+      estado: true,
+    });
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+  }
+
 };
 /*============================================================*/
 
