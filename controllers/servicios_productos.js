@@ -13,29 +13,60 @@ sp.insert_sp = async (req, res) => {
     sp_id_categoria,
     sp_comentarios,
   } = req.body;
-  //console.log(req.body)
-  //new_sp.sp_no_parte = 70; //Dato para prueba
-  const reSql = await pool.query('insert into servicio_producto set ?', [new_sp]);
- 
-  const psp ={
-    psp_id_partida:partida_id,
-    psp_id_sp:reSql.insertId
-  }
-  console.log(psp)
-  const reSql2 = await pool.query('INSERT INTO psp SET ?', [psp]);
+  console.log(req.body)
 
-  const sppm ={
-    sppm_id_sp:reSql.insertId,
-    sppm_id_proveedor: proveedor_id,
-    sppm_id_marca: marca_id
-  };
-  await pool.query('INSERT INTO sp_proveedor_marca SET ?', [sppm]);
-  /* DEVUELVE RESPUESTA AL FRONT LOS SIGUIENTES DATOS*/
-  res.json({
-    //data: reSql,
-    msg: "Producto agregado exitosamente",
-    estado: true,
-  });
+  try{
+    if(sp_no_parte !=='' && sp_id_categoria !== ''){
+      const reSql = await pool.query('insert into servicio_producto set ?', [new_sp]);
+ 
+      const psp ={
+        psp_id_partida:partida_id,
+        psp_id_sp:reSql.insertId
+      }
+      console.log(psp)
+      const reSql2 = await pool.query('INSERT INTO psp SET ?', [psp]);
+    
+      const sppm ={
+        sppm_id_sp:reSql.insertId,
+        sppm_id_proveedor: proveedor_id,
+        sppm_id_marca: marca_id
+      };
+      if(proveedor_id !== '' && marca_id !== ''){
+        await pool.query('INSERT INTO sp_proveedor_marca SET ?', [sppm]);
+      }else{
+        res.json({
+          msg: "Por favor asegurate de agregar correctamente el proveedor y la marca",
+          estado: true,
+        });
+
+      }
+      
+      /* DEVUELVE RESPUESTA AL FRONT LOS SIGUIENTES DATOS*/
+      res.json({
+        //data: reSql,
+        msg: "Servico/producto registrado exitosamente",
+        estado: true,
+      });
+      
+
+    }else{
+      res.json({
+        estado: false,
+        msg: "¡ERROR, no seleccionaste una categoría!, por favor selecciona una categoría"
+      });
+    }
+ 
+
+  } catch (error){
+    console.log("Error identificado:",error);
+    err = error;
+
+    res.json({
+     msg:'Error al agregar el servicio producto',
+     error:err
+   });
+  }
+
 };
 
 // Función para editar atributos en la tabla servicio_producto

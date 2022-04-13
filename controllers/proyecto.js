@@ -5,46 +5,55 @@ exports.insertProyectos = async (req, res) => {
   /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */
   const { id } = req.params
   //console.log("este es el id", id)
-  const insertProyectos = req.body;
+  const {proyecto_clave,proyecto_descripcion,proyecto_id_cliente,proyecto_plazo_meses} = req.body;
+  const dataEnviar = {
+    proyecto_clave,
+    proyecto_descripcion,
+    proyecto_id_cliente,
+    proyecto_plazo_meses
+  }
   console.log(req.body)
+  console.log(dataEnviar.proyecto_id_cliente)
   /* INSERCCION DE DATOS A TABLA PROYECTO */
   /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
-  
+
   let err;
   try {
-
-    //let proyecto;
-    //if(insertProyectos.proyecto_id_cliente !== ''){
-      const proyecto = await pool.query("INSERT INTO proyecto set ?", insertProyectos);
+    if (proyecto_id_cliente !== '') {
+      const proyecto = await pool.query("INSERT INTO proyecto set ?", dataEnviar);
 
       const user_p = {
         up_id_usuario: id,
-        up_id_proyecto:proyecto.insertId
+        up_id_proyecto: proyecto.insertId
       }
-
-      await pool.query("INSERT INTO usuarios_proyectos set ?", user_p);
-    // }else{
-      console.log('Es necesario insertar un cliente');
-    //}
-  } catch (error) {
-    console.log("Error identificado:",error);
-     err = error;
-
-     res.json({
-      msg:'Error al insertar un proyecto',
-      msg2:'Necesita seleccionar un cliente'
-    });
-  }
-  
   //console.log(id);
   //console.log(user_p);
   /* INSERCCION DE DATOS A LA TABLA USUARIOS_PROYECTOS  */
-  res.json({
-    msg: 'Proyecto agregado',
-    estado: true,
-    id_proyecto: proyecto.insertId,
-    error:err
-  });
+      await pool.query("INSERT INTO usuarios_proyectos set ?", user_p);
+      res.json({
+        msg: 'Proyecto agregado exitosamente',
+        estado: true,
+        id_proyecto: proyecto.insertId,
+        error: err
+      });
+    } else {
+      res.json({
+        estado: false,
+        msg: "¡ERROR!, Revisa que hayas seleccionado correctamente el cliente"
+      });
+    }
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+
+    res.json({
+      msg: 'Error al insertar un proyecto',
+      msg2: 'Necesita seleccionar un cliente'
+    });
+  }
+
+
+
 };
 
 exports.UpdateStatusProyectos = async (req, res) => {
@@ -70,27 +79,27 @@ exports.UpdateDivisa = async (req, res) => {
   const editDiv = {
     proyecto_valor_dolar
   };
-  try{
+  try {
     const reSql = await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
     res.json({
       data: reSql,
       msg: 'Divisa del proyecto modificada exitosamente',
       estado: true
-    }); 
+    });
   } catch (error) {
     console.log("Error identificado:", error);
     err = error;
     res.json({
-        estado: false,
-        msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
     });
-}
+  }
 
 };
 
 exports.updateProyectos = async (req, res) => {
   const { id } = req.params;
-  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente} = req.body;
+  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente } = req.body;
   const updateProyectos = {
     proyecto_clave,
     proyecto_descripcion,
@@ -125,8 +134,8 @@ exports.viewProyecto = async (req, res) => {
 */
 exports.viewAdmin = async (req, res) => {
   const reSql = await pool.query(
-    "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente," 
-    +"nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,proyecto_valor_dolar,proyecto_plazo_meses "
+    "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
+    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,proyecto_valor_dolar,proyecto_plazo_meses "
     + "FROM usuarios "
     + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
     + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
@@ -145,7 +154,7 @@ exports.viewVentas = async (req, res) => {
   const { usuario_id } = req.params;
   const reSql = await pool.query(
     "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
-    +"nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses "
+    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses "
     + "FROM usuarios "
     + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
     + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
@@ -156,7 +165,7 @@ exports.viewVentas = async (req, res) => {
   //console.log(reSql);
 };
 //ruta para asignar un proyecto a un usuario de ventas
-exports.insertUsuariosProyectos = async(req, res) => {
+exports.insertUsuariosProyectos = async (req, res) => {
   const { up_id_usuario, up_id_proyecto, password, validatorid } = req.body;
   let validaIdUsuario = parseInt(validatorid);
   let passwordBody = password.password;
@@ -186,23 +195,23 @@ exports.insertUsuariosProyectos = async(req, res) => {
 
     }
   })
-  
+
 };
 
 exports.viewModal = async (req, res) => {
   const { proyecto_id } = req.params;
   const reSql = await pool.query(
     "SELECT sp_id,partida_nombre, partida_descripcion, sp_no_parte, sp_meses, sp_semanas, sp_cantidad, categoria_nombre, precio_total, moneda_nombre "
-    +"FROM proyecto "
-    +"RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
-    +"RIGHT JOIN partida ON pp_id_partida = partida_id "
-    +"RIGHT JOIN psp ON psp_id_partida = partida_id "
-    +"RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
-    +"RIGHT JOIN precio ON sp_id_precio = precio_id "
-    +"RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
-    +"RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
-    +"WHERE proyecto_id = ? "
-    +"ORDER BY partida_id", [proyecto_id]);
+    + "FROM proyecto "
+    + "RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
+    + "RIGHT JOIN partida ON pp_id_partida = partida_id "
+    + "RIGHT JOIN psp ON psp_id_partida = partida_id "
+    + "RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
+    + "RIGHT JOIN precio ON sp_id_precio = precio_id "
+    + "RIGHT JOIN categoria ON sp_id_categoria = categoria_id "
+    + "RIGHT JOIN moneda ON precio_id_moneda = moneda_id "
+    + "WHERE proyecto_id = ? "
+    + "ORDER BY partida_id", [proyecto_id]);
   res.json({ reSql: reSql });
   //console.log({data:reSql});
 };

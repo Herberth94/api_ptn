@@ -46,8 +46,6 @@ exports.insertColaborador = async (req, res) => {
      msg:'Error al insertar un nuevo colaborador',
      error:err
    });
-
-
   }
 
 };
