@@ -56,6 +56,17 @@ formControl.viewUsersVenta = async (req, res) => {
     res.json({ reSql: reSql });
     //res.end();
 };
+
+formControl.viewUsersVentaP = async (req, res) => {
+    const {proyecto_id} = req.params;
+    const reSql = await pool.query(
+          'SELECT id_usuario,email FROM usuarios '
+        + 'LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario '
+        + 'LEFT JOIN proyecto ON up_id_proyecto = proyecto_id '
+        + 'WHERE rol = "venta" AND proyecto_id = ?',[proyecto_id]);
+    res.json({ reSql: reSql });
+};
+
 formControl.deleteForm = async (req, res) => {
     const { id } = req.params;
     await pool.query("DELETE FROM usuarios WHERE id_usuario = ?", [id]);
