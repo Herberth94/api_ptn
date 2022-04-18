@@ -65,12 +65,22 @@ exports.UpdateStatusProyectos = async (req, res) => {
   };
   //proyecto_estatus = 'En revision';
   /* INSERCCION DEL DATO proyecto_estatus A LATABLA PROYECTO */
-  await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [Pestatus, proyecto_id]);
-  /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
-  res.json({
-    msg: 'Estatus del proyecto agregado',
-    estado: true
-  });
+  try{
+    await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [Pestatus, proyecto_id]);
+    /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
+    res.json({
+      msg: 'Estatus del proyecto agregado',
+      estado: true
+    });
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+
+    res.json({
+      msg: 'Error al actualizar el estatus de un proyecto, revisa que hayas ingresado correctamente los datos',
+    });
+  }
+
 };
 
 exports.UpdateDivisa = async (req, res) => {
@@ -105,11 +115,21 @@ exports.updateProyectos = async (req, res) => {
     proyecto_descripcion,
     proyecto_id_cliente
   };
-  await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [updateProyectos, id]);
-  res.json({
-    msg: 'Proyectos  se estan modificando',
-    estado: true
-  })
+  try{
+    await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [updateProyectos, id]);
+    res.json({
+      msg: 'Proyecto modificando exitosamente',
+      estado: true
+    }) 
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+  }
+
 };
 
 exports.deleteProyectos = async (req, res) => {

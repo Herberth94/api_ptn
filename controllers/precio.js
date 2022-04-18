@@ -77,8 +77,18 @@ precio.updatePrecio = async (req, res) => {
 
   const editPrecio = {precio_lista,precio_unitario,precio_descuento, precio_total,precio_id_moneda};
 
-  await pool.query("UPDATE precio set ?  WHERE precio_id = ?", [editPrecio, precio_id]);
-  res.json({msg: "Precio agregado exitosamente",estado: true,});
+  try{
+    await pool.query("UPDATE precio set ?  WHERE precio_id = ?", [editPrecio, precio_id]);
+    res.json({msg: "Precio modificado exitosamente",estado: true});
+  }catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+  }
+
 };
 /*============================================================*/
 

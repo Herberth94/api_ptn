@@ -89,18 +89,28 @@ sp.update_sp = async (req, res) => {
     sp_cantidad,
     sp_id_categoria,
     sp_comentarios };
-  //editnew_sp1.sp_no_parte = 20; //Dato para prueba
-  await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
+
+    try{
+      await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
   
-  const editnewSPPM ={
-    sppm_id_proveedor,
-    sppm_id_marca
-  }
-  await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
-  res.json({
-    msg: "Producto editado exitosamente",
-    estado: true,
-  });
+      const editnewSPPM ={
+        sppm_id_proveedor,
+        sppm_id_marca
+      }
+      await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
+      res.json({
+        msg: "Servicio/Producto editado exitosamente",
+        estado: true,
+      });
+    } catch (error) {
+      console.log("Error identificado:", error);
+      err = error;
+      res.json({
+        estado: false,
+        msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+      });
+    }
+
 };
 
 // Función para editar el atributo sp_cantidad en la tabla servicio_producto
@@ -113,11 +123,21 @@ sp.update_sp_cant = async (req, res) => {
     sp_cantidad
 }
   //editnew_sp1.sp_no_parte = 20; //Dato para prueba
-  await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
-  res.json({
-    msg: "Producto editado exitosamente",
-    estado: true,
-  });
+  try{
+    await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
+    res.json({
+      msg: "Producto editado exitosamente",
+      estado: true,
+    });
+  }catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+  }
+
 };
 // Función para elimiar  atributos de la tabla servicio_producto
 sp.delete_sp = async (req, res) => {
