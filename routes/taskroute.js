@@ -119,6 +119,7 @@ module.exports= function(){
         //Update
         router.post('/catd/edit/:cd_id', cattController.updateCatsD);
         router.post('/catd/editCant/:cd_id', cattController.updateCdCant);
+        router.get('/catd/view/modal/:proyecto_id', cattController.ModalCt);
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
