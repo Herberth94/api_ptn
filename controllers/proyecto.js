@@ -5,7 +5,7 @@ exports.insertProyectos = async (req, res) => {
   /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */
   const { id } = req.params
   //console.log("este es el id", id)
-  const {proyecto_clave,proyecto_descripcion,proyecto_id_cliente,proyecto_plazo_meses} = req.body;
+  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_plazo_meses } = req.body;
   const dataEnviar = {
     proyecto_clave,
     proyecto_descripcion,
@@ -26,9 +26,9 @@ exports.insertProyectos = async (req, res) => {
         up_id_usuario: id,
         up_id_proyecto: proyecto.insertId
       }
-  //console.log(id);
-  //console.log(user_p);
-  /* INSERCCION DE DATOS A LA TABLA USUARIOS_PROYECTOS  */
+      //console.log(id);
+      //console.log(user_p);
+      /* INSERCCION DE DATOS A LA TABLA USUARIOS_PROYECTOS  */
       await pool.query("INSERT INTO usuarios_proyectos set ?", user_p);
       res.json({
         msg: 'Proyecto agregado exitosamente',
@@ -65,7 +65,7 @@ exports.UpdateStatusProyectos = async (req, res) => {
   };
   //proyecto_estatus = 'En revision';
   /* INSERCCION DEL DATO proyecto_estatus A LATABLA PROYECTO */
-  try{
+  try {
     await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [Pestatus, proyecto_id]);
     /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
     res.json({
@@ -115,12 +115,12 @@ exports.updateProyectos = async (req, res) => {
     proyecto_descripcion,
     proyecto_id_cliente
   };
-  try{
+  try {
     await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [updateProyectos, id]);
     res.json({
       msg: 'Proyecto modificando exitosamente',
       estado: true
-    }) 
+    })
   } catch (error) {
     console.log("Error identificado:", error);
     err = error;
@@ -186,35 +186,45 @@ exports.viewVentas = async (req, res) => {
 };
 //ruta para asignar un proyecto a un usuario de ventas
 exports.insertUsuariosProyectos = async (req, res) => {
-  const { up_id_usuario, up_id_proyecto, password, validatorid } = req.body;
-  let validaIdUsuario = parseInt(validatorid);
-  let passwordBody = password.password;
-  const dataEnviar = {
-    up_id_usuario,
-    up_id_proyecto
-  }
-  const contrasenaHasheadaGuardada = await pool.query('SELECT password FROM usuarios WHERE id_usuario = ?', [validaIdUsuario]);
-  const contrasenaHashDestructurada = contrasenaHasheadaGuardada[0].password;
-  // /* INSERCCION DE DATOS A TABLA COLABORADORES */
-  bcrypt.compare(passwordBody, contrasenaHashDestructurada).then((resX) => {
-    return resX
-  }).then((data) => {
-    if (data == true) {
-      console.log(dataEnviar)
-      const reSql = pool.query("INSERT INTO usuarios_proyectos set ? ", dataEnviar);
-      res.json({
-        msg: 'colaborador agregado',
-        estado: true,
-        data: reSql
-      });
-    } else {
-      res.json({
-        estado: false,
-        msg: "Usuario no registrado"
-      });
 
+  let err;
+  try {
+    const { up_id_usuario, up_id_proyecto, password, validatorid } = req.body;
+    let validaIdUsuario = parseInt(validatorid);
+    let passwordBody = password.password;
+    const dataEnviar = {
+      up_id_usuario,
+      up_id_proyecto
     }
-  })
+    const contrasenaHasheadaGuardada = await pool.query('SELECT password FROM usuarios WHERE id_usuario = ?', [validaIdUsuario]);
+    const contrasenaHashDestructurada = contrasenaHasheadaGuardada[0].password;
+    bcrypt.compare(passwordBody, contrasenaHashDestructurada).then((resX) => {
+      return resX
+    }).then((data) => {
+      if (data == true) {
+        console.log(dataEnviar)
+        const reSql = pool.query("INSERT INTO usuarios_proyectos set ? ", dataEnviar);
+        res.json({
+          msg: 'Asignación de proyecto a usuario realizada exitosamente',
+          estado: true,
+          data: reSql
+        });
+      } else {
+        res.json({
+          estado: false,
+          msg: "Usuario no registrado"
+        });
+
+      }
+    })
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      msg: 'Error al insertar el proyecto a un usuario',
+      error: err
+    });
+  }
 
 };
 
