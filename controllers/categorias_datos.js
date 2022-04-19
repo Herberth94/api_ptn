@@ -130,6 +130,21 @@ catd.updateCdCant = async (req, res) => {
 }
 
 };
+
+catd.ModalCt = async(req,res)=>{
+  const {proyecto_id} = req.params;
+  const reSql = await pool.query ( 
+    "SELECT cd_id,cat_nombre,cd_descripcion,cd_cantidad,cd_comentarios,precio_lista ,precio_unitario,moneda_nombre"
+    + " FROM proyecto " 
+    + " RIGHT JOIN proyectos_cat_d ON proyecto_id = pc_id_proyecto "
+    + " RIGHT JOIN categorias_datos ON pc_id_cat_d = cd_id " 
+    + "RIGHT JOiN precio ON cd_id_precio = precio_id "
+    + "RIGHT JOIN moneda ON moneda_id = precio_id_moneda "
+    + "RIGHT JOIN categorias_c_a_sptn_ma ON cd_id_cats = cat_id "
+    + "WHERE proyecto_id = ? "
+    + "ORDER BY cd_id_cats", [proyecto_id]);
+  res.json({data:reSql})
+};
 /*============================================================*/
 
 /*========================== Delete ==========================*/
