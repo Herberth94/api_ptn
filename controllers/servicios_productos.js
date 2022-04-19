@@ -181,8 +181,8 @@ sp.viewSpd = async (req, res) => {
 sp.update_sp = async (req, res) => {
   const { sp_id, sppm_id_proveedor, sppm_id_marca } = req.params;
   const{
-    sp_no_parte,
-    sp_descripcion,
+    sp_id_spnp,
+    sp_id_spd,
     sp_meses,
     sp_semanas,
     sp_cantidad,
@@ -190,8 +190,8 @@ sp.update_sp = async (req, res) => {
     sp_comentarios } = req.body;
 
   const editnew_sp = {
-    sp_no_parte,
-    sp_descripcion,
+    sp_id_spnp,
+    sp_id_spd,
     sp_meses,
     sp_semanas,
     sp_cantidad,
@@ -206,6 +206,7 @@ sp.update_sp = async (req, res) => {
         sppm_id_marca
       }
       await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
+
       res.json({
         msg: "Servicio/Producto editado exitosamente",
         estado: true,
@@ -229,7 +230,7 @@ sp.update_sp_cant = async (req, res) => {
 
   const editnew_sp = {
     sp_cantidad
-}
+  }
   //editnew_sp1.sp_no_parte = 20; //Dato para prueba
   try{
     await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
