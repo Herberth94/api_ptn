@@ -123,18 +123,37 @@ module.exports= function(){
         //Delete
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*=====TABLA DE SERVIVCIO_PRODUCTO ========*/
-        // Metodos para la tabla servicio_producto:
-        // Agregar 
+        /*======================== Rutas CRUD para la tabla servicio_productos ======================== */
+        /*=== Create ===*/
+        // Inserción a la tabla servicio_producto y sp_proveedor_marca
         router.post('/sp/agregar/:partida_id/:proveedor_id/:marca_id',spController.insert_sp);
-        // Editar 
+        // Inserción a la tabla sp_no_parte
+        router.post('/sp/agregarSpnp',spController.insert_spnp);
+        // Inserción a la tabla sp_descripcion
+        router.post('/sp/agregarSpd',spController.insert_spd);
+        /*=============*/
+
+        /*=== Read ===*/
+        // Consulta de los servicios/productos de una partida
+        router.get('/sp/viewPSP/:partida_id',spController.viewPSP);
+        // Consulta de todos los servicios/productos existentes 
+        router.get('/sp/viewFindSP',spController.viewFindSP);
+        // Consulta de todos los no de parte
+        router.get('/sp/viewSpnp',spController.viewSpnp);
+        // Consulta de todas las descripciones
+        router.get('/sp/viewSpd',spController.viewSpd);
+        /*============*/
+
+        /*=== Update ===*/
+        // Edición a la tabla servicio_producto y sp_proveedor_marca
         router.post('/sp/edit/:sp_id/:sppm_id_proveedor/:sppm_id_marca',spController.update_sp);
-        // Editar sp_cantidad
+        // Edición a la columna sp_cantidad de la tabla servicio_producto
         router.post('/sp/editCant/:sp_id',spController.update_sp_cant);
-        // Eliminar 
+        /*==============*/
+
+        // Delete 
         router.delete('/sp/delete/:id',spController.delete_sp);
-        //Consultar datos de un servicio
-        router.get('/partida/viewPSP/:partida_id',spController.viewPSP);
+        /*============================================================================================= */
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
