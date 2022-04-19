@@ -99,7 +99,7 @@ am.viewAMCategorias = async (req, res) => {
 //Función para consultar el dato de divisa de un determinado proyecto para realizar los cálculos AM
 am.viewDivisa = async (req, res) => {
     const { proyecto_id } = req.params;
-    const reSql = await pool.query("SELECT proyecto_plazo_meses,proyecto_valor_dolar FROM proyecto WHERE proyecto_id = ? ", [proyecto_id]);
+    const reSql = await pool.query("SELECT proyecto_clave,proyecto_descripcion,proyecto_plazo_meses,proyecto_valor_dolar FROM proyecto WHERE proyecto_id = ? ", [proyecto_id]);
     res.json({ data: reSql })
 };
 /*==========================================================*/
