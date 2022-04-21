@@ -3,10 +3,10 @@ const bcrypt = require("bcryptjs");
 const formControl = {};
 
 formControl.postForm = async (req, res) => {
-    const { email, password, rol, estado_login } = req.body;
+    const { email, password, usuario_id_rol, estado_login } = req.body;
     let passwordHash = await bcrypt.hash(password, 10)
     const newUser = {
-        rol,
+        usuario_id_rol,
         email,
         password: passwordHash,
         estado_login
@@ -46,13 +46,20 @@ formControl.postForm = async (req, res) => {
 };
 
 formControl.viewForm = async (req, res) => {
-    const reSql = await pool.query('SELECT id_usuario , rol , email,password FROM usuarios');
+    const reSql = await pool.query(
+         "SELECT id_usuario,usuario_id_rol,rol_nombre,email,password FROM usuarios "
+        +"INNER JOIN roles ON usuario_id_rol = rol_id"
+        );
     res.json({ reSql: reSql });
     //res.end();
 };
 
 formControl.viewUsersVenta = async (req, res) => {
-    const reSql = await pool.query('SELECT id_usuario , rol , email, password FROM usuarios WHERE rol = "venta"');
+    const reSql = await pool.query(
+          'SELECT id_usuario,usuario_id_rol,rol_nombre,email,password FROM usuarios '
+        + 'INNER JOIN roles ON usuario_id_rol = rol_id '
+        + 'WHERE rol_nombre = "venta"'
+        );
     res.json({ reSql: reSql });
     //res.end();
 };
@@ -60,10 +67,11 @@ formControl.viewUsersVenta = async (req, res) => {
 formControl.viewUsersVentaP = async (req, res) => {
     const {proyecto_id} = req.params;
     const reSql = await pool.query(
-          'SELECT id_usuario,up_id,email FROM usuarios '
-        + 'LEFT JOIN usuarios_proyectos ON up_id_usuario = id_usuario '
-        + 'LEFT JOIN proyecto ON up_id_proyecto = proyecto_id '
-        + 'WHERE rol = "venta" AND proyecto_id = ?',[proyecto_id]);
+          'SELECT usuario_id_rol,id_usuario,up_id,email FROM usuarios '
+        + 'INNER JOIN usuarios_proyectos ON up_id_usuario = id_usuario '
+        + 'INNER JOIN proyecto ON up_id_proyecto = proyecto_id '
+        + 'INNER JOIN roles ON usuario_id_rol = rol_id '
+        + 'WHERE rol_nombre = "venta" AND proyecto_id = ?',[proyecto_id]);
     res.json({ reSql: reSql });
 };
 
@@ -74,11 +82,11 @@ formControl.deleteForm = async (req, res) => {
 };
 formControl.editForm = async (req, res) => {
     const { id } = req.params;
-    const { email, password, rol, estado_login } = req.body;
+    const { email, password, usuario_id_rol, estado_login } = req.body;
     const editvalues =
     {
         email,
-        rol,
+        usuario_id_rol,
         estado_login
     };
     let err;
