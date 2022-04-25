@@ -109,11 +109,12 @@ exports.UpdateDivisa = async (req, res) => {
 
 exports.updateProyectos = async (req, res) => {
   const { id } = req.params;
-  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente } = req.body;
+  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_plazo_meses } = req.body;
   const updateProyectos = {
     proyecto_clave,
     proyecto_descripcion,
-    proyecto_id_cliente
+    proyecto_id_cliente,
+    proyecto_plazo_meses
   };
   try {
     await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [updateProyectos, id]);
