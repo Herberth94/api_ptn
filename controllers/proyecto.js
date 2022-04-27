@@ -109,11 +109,12 @@ exports.UpdateDivisa = async (req, res) => {
 
 exports.updateProyectos = async (req, res) => {
   const { id } = req.params;
-  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente } = req.body;
+  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_plazo_meses } = req.body;
   const updateProyectos = {
     proyecto_clave,
     proyecto_descripcion,
-    proyecto_id_cliente
+    proyecto_id_cliente,
+    proyecto_plazo_meses
   };
   try {
     await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [updateProyectos, id]);
@@ -154,12 +155,10 @@ exports.viewProyecto = async (req, res) => {
 */
 exports.viewAdmin = async (req, res) => {
   const reSql = await pool.query(
-    "SELECT id_usuario, email, proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
+    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
     + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,proyecto_valor_dolar,proyecto_plazo_meses "
-    + "FROM usuarios "
-    + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
-    + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
-    + "LEFT JOIN clientes ON proyecto_id_cliente = cliente_id "
+    + "FROM proyecto "
+    + "INNER JOIN clientes ON proyecto_id_cliente = cliente_id "
     + "ORDER BY proyecto_id"
   );
   res.json({ data: reSql });

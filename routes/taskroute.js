@@ -185,11 +185,13 @@ module.exports= function(){
 // Metodos para la tabla marca:
         // Agregar 
         router.post('/marca/agregar/:proveedor_id',marcaController.insert_marca);
+        router.post('/marca/agregarPM/:proveedor_id/:marca_id',marcaController.insert_provMarca);
         // Editar 
         router.post('/marca/edit/:marca_id',marcaController.update_marca);
         // Eliminar 
         router.delete('/marca/delete/:id',marcaController.delete_marca);
         // Consultar
+        router.get('/marca/view',marcaController.viewMarcas);
         router.get('/provmarcas/view/:proveedor_id',marcaController.viewProvMarca);
 /*--------------------------------------------------------------------------------------------------------------------*/
 
