@@ -5,15 +5,24 @@ exports.insertProyectos = async (req, res) => {
   /* ID DE USUARIO LOGEADO QUE INGRESA UN NUEVO PROYECTO */
   const { id } = req.params
   //console.log("este es el id", id)
-  const { proyecto_clave, proyecto_descripcion, proyecto_id_cliente, proyecto_plazo_meses } = req.body;
+  const { 
+    proyecto_clave, 
+    proyecto_descripcion, 
+    proyecto_id_cliente, 
+    proyecto_fecha_creacion,
+    proyecto_fecha_modificacion,
+    proyecto_plazo_meses } = req.body;
+
   const dataEnviar = {
     proyecto_clave,
     proyecto_descripcion,
     proyecto_id_cliente,
+    proyecto_fecha_creacion,
+    proyecto_fecha_modificacion,
     proyecto_plazo_meses
   }
-  console.log(req.body)
-  console.log(dataEnviar.proyecto_id_cliente)
+  // console.log(req.body)
+  // console.log(dataEnviar.proyecto_id_cliente)
   /* INSERCCION DE DATOS A TABLA PROYECTO */
   /* DATOS PARA INGRESAR EN LA TABLA USUARIOS_PROYECTOS  */
 
@@ -80,7 +89,31 @@ exports.UpdateStatusProyectos = async (req, res) => {
       msg: 'Error al actualizar el estatus de un proyecto, revisa que hayas ingresado correctamente los datos',
     });
   }
+};
 
+exports.UpdateFechaMod = async (req, res) => {
+  const { proyecto_id } = req.params
+
+  const { proyecto_fecha_modificacion } = req.body;
+
+  const editFM = {
+    proyecto_fecha_modificacion
+  };
+
+  try {
+    await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editFM, proyecto_id]);
+    res.json({
+      msg: 'Se actualizo la Fecha de modificación correctamente',
+      estado: true
+    });
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR! al actualizar la Fecha de modificación"
+    });
+  }
 };
 
 exports.UpdateDivisa = async (req, res) => {
@@ -104,7 +137,6 @@ exports.UpdateDivisa = async (req, res) => {
       msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
     });
   }
-
 };
 
 exports.updateProyectos = async (req, res) => {
