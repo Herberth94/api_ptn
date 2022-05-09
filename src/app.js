@@ -9,8 +9,8 @@ const app = express();
 app.use(cors());
 const corsOptions ={
 
- // origin:'http://localhost:3000', 
-   origin:'http://10.200.10.9:3000',  
+ origin:'http://localhost:3000', 
+   //origin:'http://10.200.10.9:3000',  
    credentials:true,            //access-control-allow-credentials:true
    optionSuccessStatus:200
 }
