@@ -1,3 +1,5 @@
+
+
 const express =  require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -9,10 +11,12 @@ const app = express();
 app.use(cors());
 const corsOptions ={
 
- origin:'http://localhost:3000', 
-   //origin:'http://10.200.10.9:3000',  
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200
+  origin:'http://localhost:3000',
+/*   origin:'http://oscarcm23.github.io/demo-final/',  
+    */
+   
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
 }
 //  para poder recibir respuest json 
 app.use(express.json({extend:true}));
@@ -26,3 +30,5 @@ app.use(morgan('dev'));
 
 //exportando app
 module.exports = app ;
+
+
