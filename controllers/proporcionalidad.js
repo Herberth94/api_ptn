@@ -3,8 +3,8 @@ const pool = require('../src/db');
 exports.insertProporcionalidad = async (req,res) => {
     const { idProyecto } = req.params;
     let id = parseInt(idProyecto)
-    console.log(req.params)
-    console.log(id)
+    //console.log(req.params)
+    //console.log(id)
     const {pd_tasa_interes, pd_anio_financiamiento, pd_pagos_anuales} = req.body;
     console.log(req.body);
     const dataEnviar = {
@@ -47,10 +47,10 @@ exports.insertProporcionalidad = async (req,res) => {
 
 exports.viewdpropd = async (req,res) => {
     const { idProyecto } = req.params;
-    console.log(req.params)
+    //console.log(req.params)
     const reSql = await pool.query("SELECT * FROM proporcionalidad WHERE pd_id_proyecto = ? ", [idProyecto]);
     res.json({data : reSql});
-    console.log(reSql)
+    //console.log(reSql)
 };
  exports.updateProporcionalidad = async (req, res) => {
      const { idProyecto } = req.params;
