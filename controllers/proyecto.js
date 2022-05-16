@@ -118,9 +118,10 @@ exports.UpdateFechaMod = async (req, res) => {
 
 exports.UpdateDivisa = async (req, res) => {
   const { proyecto_id } = req.params
-  const { proyecto_valor_dolar } = req.body;
+  const { proyecto_valor_dolar, proyecto_id_moneda } = req.body;
   const editDiv = {
-    proyecto_valor_dolar
+    proyecto_valor_dolar,
+    proyecto_id_moneda
   };
   try {
     const reSql = await pool.query("UPDATE proyecto set ? WHERE proyecto_id = ?", [editDiv, proyecto_id]);
@@ -187,10 +188,12 @@ exports.viewProyecto = async (req, res) => {
 */
 exports.viewAdmin = async (req, res) => {
   const reSql = await pool.query(
-    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
-    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,proyecto_valor_dolar,proyecto_plazo_meses "
+      "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
+    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,"
+    + "proyecto_valor_dolar,proyecto_plazo_meses,proyecto_id_moneda "
     + "FROM proyecto "
     + "INNER JOIN clientes ON proyecto_id_cliente = cliente_id "
+    + "INNER JOIN moneda ON moneda_id = proyecto_id_moneda "
     + "ORDER BY proyecto_id"
   );
   res.json({ data: reSql });
@@ -204,12 +207,14 @@ exports.viewAdmin = async (req, res) => {
 exports.viewVentas = async (req, res) => {
   const { usuario_id } = req.params;
   const reSql = await pool.query(
-    "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
-    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus, proyecto_valor_dolar, proyecto_plazo_meses "
+      "SELECT proyecto_id, proyecto_clave, proyecto_descripcion, proyecto_id_cliente,"
+    + "nombre_cliente, proyecto_fecha_creacion, proyecto_fecha_modificacion, proyecto_estatus,"
+    + "proyecto_valor_dolar,proyecto_plazo_meses,proyecto_id_moneda "
     + "FROM usuarios "
-    + "LEFT JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
-    + "RIGHT JOIN proyecto ON up_id_proyecto = proyecto_id "
-    + "LEFT JOIN clientes ON proyecto_id_cliente = cliente_id "
+    + "INNER JOIN usuarios_proyectos ON id_usuario = up_id_usuario "
+    + "INNER JOIN proyecto ON up_id_proyecto = proyecto_id "
+    + "INNER JOIN clientes ON proyecto_id_cliente = cliente_id "
+    + "INNER JOIN moneda ON moneda_id = proyecto_id_moneda "
     + "WHERE id_usuario = ? "
     + "ORDER BY proyecto_id", [usuario_id]);
   res.json({ data: reSql });

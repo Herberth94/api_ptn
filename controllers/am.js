@@ -100,9 +100,10 @@ am.viewAMCategorias = async (req, res) => {
 am.viewDivisa = async (req, res) => {
     const { proyecto_id } = req.params;
     const reSql = await pool.query(
-         "SELECT proyecto_clave,proyecto_descripcion,proyecto_plazo_meses,proyecto_valor_dolar,nombre_cliente "
+         "SELECT proyecto_clave,proyecto_descripcion,proyecto_plazo_meses,proyecto_valor_dolar,nombre_cliente,proyecto_id_moneda "
         +"FROM proyecto "
         +"INNER JOIN clientes ON cliente_id = proyecto_id_cliente "
+        +"INNER JOIN moneda ON moneda_id = proyecto_id_moneda "
         +"WHERE proyecto_id = ?", [proyecto_id]);
     res.json({ data: reSql })
 };
