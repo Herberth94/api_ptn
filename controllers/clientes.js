@@ -2,22 +2,32 @@ const pool = require("../src/db");
 
 exports.postClientes = async (req, res) => {
     const insertClientes = req.body;
-    console.log(req.body)
-    var err;
-    try {
-        await pool.query("INSERT INTO clientes set ?", insertClientes);
-        res.json({
-            msg: "Registro del cliente exitoso",
-            estado: true,
-        });
-    } catch (error) {
-        console.log("Error identificado:", error);
-        err = error;
-        res.json({
-            msg: 'Error al insertar un nuevo colaborador, revise que se ingresaron correctamemte todos los campos',
-            error: err
-        });
-    }
+
+   
+    
+        try {
+            const cliente = await pool.query(
+                'SELECT nombre_cliente FROM clientes WHERE nombre_cliente = ?',[insertClientes.nombre_cliente])
+            //console.log(cliente);
+            if(cliente == ''){
+            await pool.query("INSERT INTO clientes set ?", insertClientes);
+            res.json({
+                msg: "Registro del cliente exitoso",
+                estado: true,
+            });
+            }else{
+                res.json({
+                    msg: "Registro invalido, el Cliente ya se encuentra registrado"
+                });
+            }   
+        } catch (error) {
+            res.json({
+                msg: 'Error al insertar un nuevo Cliente, revise que se ingresaron correctamemte todos los campos',
+                error: error
+            });
+            
+        }
+     
 };
 
 exports.viewCliente = async (req, res) => {
@@ -28,24 +38,34 @@ exports.viewCliente = async (req, res) => {
 }
 exports.updateClientes = async (req, res) => {
     const { id } = req.params;
-    const updatUsuario = req.body;
+    const updateCliente = req.body;
     let err;
     try {
-        await pool.query("UPDATE clientes set ? WHERE cliente_id=?", [
-            updatUsuario,
-            id,
-        ]);
-        const link = `/clientes/update/${id} `;
-        res.json({
-            msg: 'Cliente modificado exitosamente',
-            estado: true,
-        });
+        const cliente = await pool.query(
+            'SELECT nombre_cliente FROM clientes WHERE nombre_cliente = ?',[updateCliente.nombre_cliente])
+        //console.log(cliente);
+        if(cliente == ''){
+            await pool.query("UPDATE clientes set ? WHERE cliente_id = ?", [
+                updateCliente,
+                id,
+            ]);
+            const link = `/clientes/update/${id} `;
+            res.json({
+                msg: 'Cliente modificado exitosamente',
+                estado: true,
+            });
+        }else{
+            res.json({
+                msg: "Modificación invalida, el Cliente ya se encuentra registrado"
+            });
+        }   
+        
     } catch (error) {
-        console.log("Error identificado:", error);
+        //console.log("Error identificado:", error);
         err = error;
         res.json({
             estado: false,
-            msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+            msg: "ERROR al modificar un Cliente, Revisa que hayas ingresado correctamente los datos"
         });
     }
 };

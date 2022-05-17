@@ -38,7 +38,7 @@ formControl.postForm = async (req, res) => {
         err = error;
 
         res.json({
-            msg: 'Error al insertar un nuevo colaborador',
+            msg: 'Error al insertar un nuevo Usuario',
             error: err
         });
     }
