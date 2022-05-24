@@ -118,6 +118,22 @@ exports.updatePartida = async (req, res) => {
 /*========================== Delete ==========================*/
 exports.deletePartida = async (req, res) => {
   const { id } = req.params;
+
+  var preciosId = await pool.query(
+      'SELECT sp_id_precio FROM partida '
+    + 'INNER JOIN psp ON partida_id = psp_id_partida '
+    + 'INNER JOIN servicio_producto ON psp_id_sp = sp_id '
+    + 'WHERE partida_id = ?', [id]);
+  
+ 
+  let i = Object.keys(preciosId);
+  i = i.length;
+
+  for(let c = 0 ; c < i ; c++){
+    // console.log(preciosId[c].sp_id_precio);
+    await pool.query('DELETE FROM precio WHERE precio_id = ?',[preciosId[c].sp_id_precio]);
+  }
+
   await pool.query("DELETE FROM partida WHERE partida_id= ?", [id]);
   res.json({
     msg: "se eliminado la partida correctamente"
