@@ -6,19 +6,11 @@ const sp = {};
 // Función para agregar atributos en la tabla servicio_producto y psp
 sp.insert_sp = async (req, res) => {
   const {partida_id, proveedor_id, marca_id} = req.params;
-  const new_sp= {
-    sp_id_spnp,
-    sp_id_spd,
-    sp_meses,
-    sp_semanas,
-    sp_cantidad, 
-    sp_id_categoria,
-    sp_comentarios,
-  } = req.body;
-  console.log(req.body)
+  const new_sp = req.body;
+  //console.log(req.body)
 
   try{
-    if(sp_id_spnp !=='' && sp_id_categoria !== ''){
+    if(new_sp.sp_id_spnp !=='' && new_sp.sp_id_categoria !== ''){
       const reSql = await pool.query('INSERT into servicio_producto set ?', [new_sp]);
  
       const psp ={
@@ -26,7 +18,7 @@ sp.insert_sp = async (req, res) => {
         psp_id_sp:reSql.insertId
       }
       //console.log(psp)
-      const reSql2 = await pool.query('INSERT INTO psp SET ?', [psp]);
+      await pool.query('INSERT INTO psp SET ?', [psp]);
     
       const sppm ={
         sppm_id_sp:reSql.insertId,
@@ -109,6 +101,385 @@ sp.insert_spd = async (req, res) => {
     });
   }   
 };
+
+
+sp.insertSP = async (req, res) =>{
+
+  let {proyecto_id} = req.params;
+
+  let newSP = req.body;
+
+  let resPartidasInsertadas = 0;
+  let resPpInsertados = 0;
+  let resSpInsertados = 0;
+  let resNpspInsertados = 0;
+  let resSpdInsertados = 0;
+  let resPspInsertados = 0;
+  let resPreciosInsertados = 0;
+  let resSppmInsertados = 0;
+
+  let errPartidasInsertadas = 0;
+  let errPpInsertados = 0;
+  let errSpInsertados = 0;
+  let errNpspInsertados = 0;
+  let errSpdInsertados = 0;
+  let errPspInsertados = 0;
+  let errPreciosInsertados = 0;
+  let errSppmInsertados = 0;
+
+  //Arrglo que contendra objetos los atributos de las distintas partidas
+  let newPartida = [];
+
+  //Objeto incial con los atributos de una partida
+  let partida = {
+    partida_nombre:'',
+    partida_descripcion:''
+  }
+  /* =============== Separación de partidas ===============*/
+    //Eliminación de nombres repetidos de las partidas
+    let partidas = Object.keys(newSP).map((k)=>{
+      return newSP[k].Partida;
+    });
+
+    let partidasUnicas = partidas.filter((v,i)=>{
+      return partidas.indexOf(v) === i;
+    });
+    //console.log('Partidas sin filtro',partidas);
+    //console.log('Partidas filtradas', partidasUnicas);
+
+    //Eliminación de descripciones repetidos de las partidas 
+    let descPartidas = Object.keys(newSP).map((k)=>{
+      return newSP[k].Descripcion_Partida;
+    });
+
+    let descPartidasUnicas = descPartidas.filter((v,i)=>{
+      return descPartidas.indexOf(v) === i;
+    });
+    //console.log('Descripciones de Partidas sin filtro',descPartidas);
+    //console.log('Descripciones de Partidas filtrados',descPartidasUnicas);
+
+    //Obtención del numero de partidas 
+    let nPartidas = Object.keys(partidasUnicas);
+    nPartidas = nPartidas.length;
+    //console.log('No. de partidas:',nPartidas);
+
+    //LLenado del arreglo con el objeto inicial
+    for(let c = 0 ; c < nPartidas ; c++){
+      newPartida[c] = partida;
+    }
+
+    //Llenado del arreglo con los datos de cada partida y inserción a la BD
+    function llenarObjetoPartidas(nombre, descripcion,c){
+      newPartida[c].partida_nombre = nombre;
+      newPartida[c].partida_descripcion = descripcion;
+    }
+
+    let partidas1 = [];
+    let idsPartidas = [];
+    for(let c = 0 ; c < nPartidas ; c++){
+      llenarObjetoPartidas(partidasUnicas[c],descPartidasUnicas[c],c);
+      //console.log(`Partida del del objeto ${c}`,newPartida[c]);
+      try {
+        partidas1 [c] = await pool.query("INSERT into partida set ?",[newPartida[c]]);
+        idsPartidas [c] = partidas1[c].insertId;
+        resPartidasInsertadas + 1;
+      } catch (error) {
+        errPartidasInsertadas + 1;
+      }
+      
+
+      //newPartida[c] = partida;
+    }
+    //console.log("ID's de las partidas insertadas",idsPartidas);
+    //console.log('Todas las partidas:', newPartida);
+  /* ======================================================*/
+  
+  /* =============== Separación de servicios/productos(sp) por partida ===============*/
+  //Obtención del numero total de sp
+  let kSP = Object.keys(newSP);
+  kSP = kSP.length;
+  
+  //Objeto inicial de los atributos de un precio
+  let precio = {
+    precio_lista:'',
+    precio_unitario:'',
+    precio_descuento:'',
+    precio_total:'',
+    precio_id_moneda:''
+  }
+  //Objeto incial de una marca 
+  let marca = {
+    marca_nombre:''
+  }
+  //Objeto inicial de un proveedor
+  let proveedor = {
+    proveedor_nombre:''
+  }
+  //Objeto inicial de los atributos de un SP
+  let sp = {
+    sp_id_spnp:'',
+    sp_id_spd:'',
+    sp_meses:'',
+    sp_semanas:'',
+    sp_cantidad:'',
+    sp_id_precio:'',
+    sp_id_categoria:'',
+    sp_comentarios:''
+  }
+
+  np = {
+    spnp_np:''
+  }
+
+  des = {
+    spd_des:''
+  } 
+
+  let pp = {
+    pp_id_partida:'',
+    pp_id_proyecto:''
+  }
+
+  let psp = {
+    psp_id_partida:'',
+    psp_id_sp:''
+  }
+
+  let sppm = {
+    sppm_id_sp:'',
+    sppm_id_marca:'',
+    sppm_id_proveedor:''
+  }
+
+  let newMarcas = [];
+  let newProveedores = [];
+  let newPrecios = [];
+  let newSP1 = [];
+  let newPP = [];
+  let newPSP = [];
+  let newSPPM = [];
+  let newSPNP = [];
+  let newSPD = [];
+
+  //Funciones - Calculo de precio unitario y total
+  let pUnitario = 0;
+
+  function limpiar(){
+    pUnitario = 0;
+  }
+
+  function precioUnitario(precioLista, Descuento) {
+      limpiar();
+      pUnitario = parseFloat(( parseFloat(precioLista) *  parseFloat(Descuento)) / 100);
+      pUnitario = precioLista - pUnitario;
+      return pUnitario;
+  }
+
+  function Total(precioUnitario, Cantidad) {
+    let Total= parseFloat(Cantidad * precioUnitario);
+    Total = Total.toFixed(3);
+    return Total;
+  }
+
+  for(let c = 0 ; c < nPartidas ; c++){
+
+    newPP[c] = pp;
+
+    newPP[c].pp_id_proyecto = proyecto_id;
+    newPP[c].pp_id_partida = idsPartidas[c];
+    try {
+      await pool.query("INSERT INTO pp SET ?",[newPP[c]]);
+      resPpInsertados + 1;
+    } catch (error) {
+      errPpInsertados + 1;
+    }
+    
+
+    for(let c1 = 0 ; c1 < kSP ; c1++){
+
+      newMarcas[c1] = marca;
+      newProveedores[c1] = proveedor;
+      newPrecios[c1] = precio;
+      newSP1[c1] = sp;
+      newPSP[c1] = psp;
+      newSPPM[c1] = sppm;
+      newSPNP[c1] = np;
+      newSPD[c1] = des;
+
+      
+
+      if(newSP[c1].Partida === partidasUnicas[c]){
+        //++spPorPartida[c];
+        if(newSP[c1].Moneda === 'MXN'){
+          newPrecios[c1].precio_id_moneda = 1; 
+        }else{
+          newPrecios[c1].precio_id_moneda = 2; 
+        }
+        newPrecios[c1].precio_descuento = newSP[c1].Descuento;
+        newPrecios[c1].precio_lista = newSP[c1].Precio_Lista;
+        newPrecios[c1].precio_unitario = precioUnitario(newSP[c1].Precio_Lista,newSP[c1].Descuento);
+        newPrecios[c1].precio_total = Total(newPrecios[c1].precio_unitario,newSP[c1].Cantidad); 
+
+        // let idsPrecios = [];
+        // let precios = [];
+        try {
+          let precios = await pool.query("INSERT INTO precio SET ?",[newPrecios[c1]]);
+          //idsPrecios[c1] = precios[c1].insertId;
+          newSP1[c1].sp_id_precio = precios.insertId; 
+          resPreciosInsertados + 1;
+        } catch (error) {
+          errPreciosInsertados + 1;
+        }
+        
+
+        //newSP1[c1].sp_id_precio = idsPrecios[c1];
+
+        let findSPNP = await pool.query("SELECT spnp_id FROM sp_no_parte where spnp_np = ?",[newSP[c1].No_Parte]);
+        if(findSPNP != '' && findSPNP != undefined){
+          newSP1[c1].sp_id_spnp = findSPNP[0].spnp_id;
+          //console.log(findMarca[c1][0].marca_id); 
+        }else{
+          try {
+            newSPNP.spnp_np = newSP[c1].No_Parte;
+            let insertNewSpnp = await pool.query("INSERT INTO sp_no_parte SET ?",[newSPNP[c1]]);
+            newSP1[c1].sp_id_spnp = insertNewSpnp.insertId;
+            resNpspInsertados + 1;
+          } catch (error) {
+            errNpspInsertados + 1;
+          }
+          
+        }
+
+        let findSPD = await pool.query("SELECT spd_id FROM sp_descripcion where spd_des = ?",[newSP[c1].Descipcion]);
+        if(findSPD != '' && findSPD != undefined){
+          newSP1[c1].sp_id_spd = findSPD[0].spd_id;
+          //console.log(findMarca[c1][0].marca_id); 
+        }else{
+          try {
+            newSPD.spd_des = newSP[c1].Descipcion;
+            let insertNewSpd = await pool.query("INSERT INTO sp_descripcion SET ?",[newSPD[c1]]);
+            newSP1[c1].sp_id_spd = insertNewSpd.insertId;
+            resSpdInsertados + 1;
+          } catch (error) {
+            errSpdInsertados + 1;
+          }
+          
+        }
+        
+        newSP1[c1].sp_meses = newSP[c1].Duracion;
+        newSP1[c1].sp_semanas = newSP[c1].Entega;
+        newSP1[c1].sp_cantidad = newSP[c1].Cantidad;
+        if( newSP[c1].Categoria === 'Tecnologia principal'){
+          newSP1[c1].sp_id_categoria = 1;
+        }else if( newSP[c1].Categoria === 'Subtecnologia'){
+          newSP1[c1].sp_id_categoria = 2;
+        }else if( newSP[c1].Categoria === 'Equipamiento'){
+          newSP1[c1].sp_id_categoria = 3;
+        }else if( newSP[c1].Categoria === 'Licencia'){
+          newSP1[c1].sp_id_categoria = 4;
+        }else if( newSP[c1].Categoria === 'Soporte'){
+          newSP1[c1].sp_id_categoria = 5;
+        }else if( newSP[c1].Categoria === 'Implementacion'){
+          newSP1[c1].sp_id_categoria = 6;
+        }
+        newSP1[c1].sp_comentarios = newSP[c1].Comentarios
+
+        let idsSP = [];  
+        let insertSP = [];
+
+        try {
+          insertSP[c1] = await pool.query("INSERT INTO servicio_producto SET ?",[newSP1[c1]]);
+          idsSP[c1] = insertSP[c1].insertId;
+          newSPPM[c1].sppm_id_sp = idsSP[c1];
+          newPSP[c1].psp_id_sp = idsSP[c1];
+          resSpInsertados + 1;
+        } catch (error) {
+          errSpInsertados + 1;
+        }
+        
+
+        newPSP[c1].psp_id_partida = idsPartidas[c];
+        //newPSP[c1].psp_id_sp = idsSP[c1];
+
+        //newSPPM[c1].sppm_id_sp = idsSP[c1];
+
+        try {
+          await pool.query("INSERT INTO psp SET ?",[newPSP[c1]]);
+          resPspInsertados + 1;
+        } catch (error) {
+          errPspInsertados + 1;
+        }
+        
+
+        
+        let findMarca = await pool.query("SELECT marca_id FROM marca where marca_nombre = ?",[newSP[c1].Marca]);
+        if(findMarca != '' && findMarca != undefined){
+          newSPPM[c1].sppm_id_marca =  findMarca[0].marca_id;
+          //newMarcas[c1] = findMarca[0].marca_id;
+          //console.log(findMarca[c1][0].marca_id); 
+        }else{
+          //newMarcas[c1] = '"Se tiene que agregar la marca"';
+        }
+
+        let findProoveedor = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = ?",[newSP[c1].Proveedor]);
+        if(findProoveedor != '' && findProoveedor != undefined){
+          newSPPM[c1].sppm_id_proveedor =  findProoveedor[0].proveedor_id;
+          //newProveedores[c1] = findProoveedor[0].proveedor_id;
+          //console.log(findMarca[c1][0].marca_id); 
+        }else{
+          //newProveedores[c1] = '"Se tiene que agregar el Proveedor"';
+        }
+        try {
+          await pool.query("INSERT INTO sp_proveedor_marca SET ?",[newSPPM[c1]]);
+          resSppmInsertados + 1;
+        } catch (error) {
+          errSppmInsertados + 1;
+        }
+        
+        //newMarcas[c1]
+        console.log('/=================================/','\n');
+        console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
+        console.log('/=================================/','\n');
+        console.log(`Servicio/Producto de la partida: ${c} `,newSP1[c1],'\n');
+        console.log('/=================================/','\n');
+        console.log(`Servicio/Producto ${c1} - Proveedor - Marca: `,'{',newSPPM[c1],'}','\n');
+        console.log('/=================================/','\n');
+        console.log(`Relacion Partida${c} - Servicio/Productos ${c1}: `,'{',newPSP[c1],'}','\n');
+        
+      }   
+      console.log('/=================================/','\n');
+      console.log(`Relacion Proyecto - Partida ${c}: `,'{',newPP[c],'}','\n');
+    }
+  }
+  //console.log(newSP1);
+  //console.log('Contador de sp por partida',spPorPartida);
+    
+
+
+  /* =============================================================================*/
+  console.log(
+    `Partidas insertadas:${resPartidasInsertadas}\n`
+    + `No_parte(s) de los Servicios/Productos insertados:${errNpspInsertados}\n`
+    + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}\n`
+    + `Precios de los Servicios/Productos insertados:${resPreciosInsertados}\n`
+    + `Servicios/Productos insertados:${resSpInsertados}\n`
+    + `Relaciones Proyecto - Partidas insertadas:${resPpInsertados}\n`
+    + `Relaciones Partidas - Servicios/Productos insertadas:${resPspInsertados}\n`
+    + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`
+  );
+
+  // res.json({
+  //   msg:`Partidas insertadas:${resPartidasInsertadas}`
+  //   + `No_parte(s) de los Servicios/Productos insertados:${resNpspInsertados}`
+  //   + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}`
+  //   + `Precios de los Servicios/Productos insertados:${resPreciosInsertados}`
+  //   + `Servicios/Productos insertados:${resSpInsertados}`
+  //   + `Relaciones Proyecto - Partidas insertadas:${resPpInsertados}`
+  //   + `Relaciones Partidas - Servicios/Productos insertadas:${resPspInsertados}`
+  //   + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}`
+  // })
+  
+}
 /*============================================================*/
 
 /*========================== Read ==========================*/
