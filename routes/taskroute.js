@@ -129,8 +129,10 @@ module.exports= function(){
         /*=== Create ===*/
         // Inserción a la tabla servicio_producto y sp_proveedor_marca
         router.post('/sp/agregar/:partida_id/:proveedor_id/:marca_id',spController.insert_sp);
-        //
+        //Inserción multiple Excel
         router.post('/sp/insertExcel/:proyecto_id',spController.insertSP);
+        //Inserción múltiple 
+        router.post('/sp/insercionMultiple/:partida_id',spController.multiSP);
         // Inserción a la tabla sp_no_parte
         router.post('/sp/agregarSpnp',spController.insert_spnp);
         // Inserción a la tabla sp_descripcion
