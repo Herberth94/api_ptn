@@ -438,19 +438,19 @@ sp.insertSP = async (req, res) =>{
         }
         
         //newMarcas[c1]
-      //   console.log('/=================================/','\n');
-      //   console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
-      //   console.log('/=================================/','\n');
-      //   console.log(`Servicio/Producto de la partida: ${c} `,newSP1[c1],'\n');
-      //   console.log('/=================================/','\n');
-      //   console.log(`Servicio/Producto ${c1} - Proveedor - Marca: `,'{',newSPPM[c1],'}','\n');
-      //   console.log('/=================================/','\n');
-      //   console.log(`Relacion Partida${c} - Servicio/Productos ${c1}: `,'{',newPSP[c1],'}','\n');
+        console.log('/=================================/','\n');
+        console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
+        console.log('/=================================/','\n');
+        console.log(`Servicio/Producto de la partida: ${c} `,newSP1[c1],'\n');
+        console.log('/=================================/','\n');
+        console.log(`Servicio/Producto ${c1} - Proveedor - Marca: `,'{',newSPPM[c1],'}','\n');
+        console.log('/=================================/','\n');
+        console.log(`Relacion Partida${c} - Servicio/Productos ${c1}: `,'{',newPSP[c1],'}','\n');
         
-      // }   
-      // console.log('/=================================/','\n');
-      // console.log(`Relacion Proyecto - Partida ${c}: `,'{',newPP[c],'}','\n');
+      //}   
     }
+    console.log('/=================================/','\n');
+    console.log(`Relacion Proyecto - Partida ${c}: `,'{',newPP[c],'}','\n');
   }
   //console.log(newSP1);
   //console.log('Contador de sp por partida',spPorPartida);
@@ -486,9 +486,9 @@ sp.insertSP = async (req, res) =>{
   }
     
 
-  res.json({
-    msg:msg
-  })
+  // res.json({
+  //   msg:msg
+  // })
   }
 }
 
