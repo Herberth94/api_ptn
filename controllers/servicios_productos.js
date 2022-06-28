@@ -749,9 +749,9 @@ sp.multiSP = async (req, res) =>{
     }
     
 
-  res.json({
-    msg:msg
-  })
+  // res.json({
+  //   msg:msg
+  // })
 
 
 }
