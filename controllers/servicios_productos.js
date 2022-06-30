@@ -733,27 +733,26 @@ sp.multiSP = async (req, res) =>{
         errPreciosInsertados !== 0 &&
         errSppmInsertados !== 0 
     ){
-      msg = `No_parte(s) de los Servicios/Productos No insertados:${errNpspInsertados}\n`
-      + `Descripciones de los Servicios/Productos No insertados:${errSpdInsertados}\n`
-      + `Precios de los Servicios/Productos Noinsertados:${errPreciosInsertados}\n`
-      + `Servicios/Productos No insertados:${errSpInsertados}\n`
-      + `Relaciones Partidas - Servicios/Productos No insertadas:${errPspInsertados}\n`
-      + `Relaciones Servicios/Procustos - Proveedores - Marcas No insertadas:${errSppmInsertados}\n`;
+      msg = `No_parte(s) de los Servicios/Productos No insertados: ${errNpspInsertados}\n`
+      + `Descripciones de los Servicios/Productos No insertados: ${errSpdInsertados}\n`
+      + `Precios de los Servicios/Productos Noinsertados: ${errPreciosInsertados}\n`
+      + `Servicios/Productos No insertados: ${errSpInsertados}\n`
+      + `Relaciones Partidas - Servicios/Productos No insertadas: ${errPspInsertados}\n`
+      + `Relaciones Servicios/Procustos - Proveedores - Marcas No insertadas: ${errSppmInsertados}\n`;
+      res.json({
+        msg:msg
+      })
     }else{
-      msg = `No_parte(s) de los Servicios/Productos insertados:${resNpspInsertados}\n`
-      + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}\n`
-      + `Precios de los Servicios/Productos insertados:${resPreciosInsertados}\n`
-      + `Servicios/Productos insertados:${resSpInsertados}\n`
-      + `Relaciones Partidas - Servicios/Productos insertadas:${resPspInsertados}\n`
-      + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`;
+      msg = `No_parte(s) de los Servicios/Productos insertados: ${resNpspInsertados}\n`
+      + `Descripciones de los Servicios/Productos insertados: ${resSpdInsertados}\n`
+      + `Precios de los Servicios/Productos insertados: ${resPreciosInsertados}\n`
+      + `Servicios/Productos insertados: ${resSpInsertados}\n`
+      + `Relaciones Partidas - Servicios/Productos insertadas: ${resPspInsertados}\n`
+      + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas: ${resSppmInsertados}\n`;
+      res.json({
+        msg:msg
+      })
     }
-    
-
-  // res.json({
-  //   msg:msg
-  // })
-
-
 }
 
 /*============================================================*/
