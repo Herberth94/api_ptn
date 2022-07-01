@@ -78,7 +78,7 @@ formControl.viewUsersVentaP = async (req, res) => {
 
 formControl.deleteForm = async (req, res) => {
     const { id } = req.params;
-    await pool.query("DELETE FROM usuarios_proyectos WHERE up_id = ?", [id]);
+    await pool.query("DELETE FROM usuarios_proyectos WHERE up_id_usuario = ?", [id]);
     res.end();
 };
 formControl.editForm = async (req, res) => {

@@ -55,18 +55,16 @@ catd.insertCatsD = async (req, res) => {
 // Función para agregar servicios/productos multiples
 catd.multiCD = async (req, res) =>{
 
-  let resCatDInsertados = 0;
-  let resPspInsertados = 0;
-  let resPreciosInsertados = 0;
-  let resSppmInsertados = 0;
+  let resAMC = 0;
+  let resCD = 0;
+  let resPC = 0;
+  let resPrecio = 0;
 
- 
-  let errSpInsertados = 0;
-  let errNpspInsertados = 0;
-  let errSpdInsertados = 0;
-  let errPspInsertados = 0;
-  let errPreciosInsertados = 0;
-  let errSppmInsertados = 0;
+  let errAMC = 0;
+  let errCD = 0;
+  let errPC = 0;
+  let errPrecio = 0;
+
 
   let {proyecto_id} = req.params;
   let newCatsD = req.body;
@@ -129,7 +127,13 @@ catd.multiCD = async (req, res) =>{
   for(let c = 0; c < 4 ; c++){
     c1 = c1 + 1;
     newAMC[c].amc_id_cats = c1;
-    await pool.query('INSERT INTO am_cats SET ?', [newAMC[c]]);
+    
+    try {
+      await pool.query('INSERT INTO am_cats SET ?', [newAMC[c]]);
+      resAMC = resAMC + 1;
+    } catch (error) {
+      errAMC = errAMC + 1;
+    }
     //console.log(`Arreglo newAMC ${c}: `,newAMC[c]);
   }
 
@@ -143,9 +147,9 @@ catd.multiCD = async (req, res) =>{
     try {
       let precios = await pool.query("INSERT INTO precio SET ?",[newPrecio[c]]);
       newCD[c].cd_id_precio = precios.insertId; 
-      resPreciosInsertados = resPreciosInsertados + 1;
+      resPrecio = resPrecio + 1;
     } catch (error) {
-      errPreciosInsertados = errPreciosInsertados + 1;
+      errPrecio = errPrecio + 1;
     }
 
     //console.log(`Arreglo newPrecio ${c}: `,newPrecio[c]); 
@@ -164,16 +168,16 @@ catd.multiCD = async (req, res) =>{
     try {
       let insertCD = await pool.query("INSERT INTO categorias_datos SET ?",[newCD[c]]);
       newPC[c].pc_id_cat_d = insertCD.insertId;
-      //resCatDInsertados = resSpInsertados + 1;
+      resCD = resCD + 1;
     } catch (error) {
-      //errSpInsertados = errSpInsertados + 1;
+      errCD = errCD + 1;
     }
 
     try {
       await pool.query("INSERT INTO proyectos_cat_d SET ?",[newPC[c]]);
-      //resCatDInsertados = resSpInsertados + 1;
+      resPC = resPC + 1;
     } catch (error) {
-      //errSpInsertados = errSpInsertados + 1;
+      errPC = errPC + 1;
     }
 
     // console.log(`Arreglo newPrecio ${c}:`,newPrecio[c]);
@@ -187,43 +191,30 @@ catd.multiCD = async (req, res) =>{
 
 
 /* =============================================================================*/
-// console.log(
-//   'Inserciones:\n'
-//   + `No_parte(s) de los Servicios/Productos insertados:${errNpspInsertados}\n`
-//   + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}\n`
-//   + `Precios de los Servicios/Productos insertados:${resPreciosInsertados}\n`
-//   + `Servicios/Productos insertados:${resSpInsertados}\n`
-//   + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`
-// );
-  // let msg;
-  //   if(
-  //       errSpInsertados !== 0 &&
-  //       errNpspInsertados !== 0 &&
-  //       errSpdInsertados !== 0 &&
-  //       errPspInsertados !== 0 &&
-  //       errPreciosInsertados !== 0 &&
-  //       errSppmInsertados !== 0 
-  //   ){
-  //     msg = `No_parte(s) de los Servicios/Productos No insertados: ${errNpspInsertados}\n`
-  //     + `Descripciones de los Servicios/Productos No insertados: ${errSpdInsertados}\n`
-  //     + `Precios de los Servicios/Productos Noinsertados: ${errPreciosInsertados}\n`
-  //     + `Servicios/Productos No insertados: ${errSpInsertados}\n`
-  //     + `Relaciones Partidas - Servicios/Productos No insertadas: ${errPspInsertados}\n`
-  //     + `Relaciones Servicios/Procustos - Proveedores - Marcas No insertadas: ${errSppmInsertados}\n`;
-  //     res.json({
-  //       msg:msg
-  //     })
-  //   }else{
-  //     msg = `No_parte(s) de los Servicios/Productos insertados: ${resNpspInsertados}\n`
-  //     + `Descripciones de los Servicios/Productos insertados: ${resSpdInsertados}\n`
-  //     + `Precios de los Servicios/Productos insertados: ${resPreciosInsertados}\n`
-  //     + `Servicios/Productos insertados: ${resSpInsertados}\n`
-  //     + `Relaciones Partidas - Servicios/Productos insertadas: ${resPspInsertados}\n`
-  //     + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas: ${resSppmInsertados}\n`;
-  //     res.json({
-  //       msg:msg
-  //     })
-  //   }
+
+  let msg;
+    if(
+        errAMC !== 0 &&
+        errCD !== 0 &&
+        errPC !== 0 &&
+        errPrecio !== 0 
+    ){
+      msg = `No. de Datos de categorias No insertados: ${errCD}`
+      + `No. de Datos AM de categorias NO insertados: ${errAMC}`
+      + `No. de Precios No insertados: ${errPrecio}`
+      + `No de Relaciones Proyecto - Datos categorias No insertadas: ${errPC}`
+      res.json({
+        msg:msg
+      })
+    }else{
+      msg = `No. de Datos de categorias insertados: ${resCD}`
+      + `No. de Datos AM de categorias insertados: ${resAMC}`
+      + `No. de Precios insertados: ${resPrecio}`
+      + `No de Relaciones Proyecto - Datos categorias insertadas: ${resPC}`
+      res.json({
+        msg:msg
+      })
+    }
 }
 /*============================================================*/
 
