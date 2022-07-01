@@ -136,6 +136,10 @@ sp.insertSP = async (req, res) =>{
     partida_nombre:'',
     partida_descripcion:''
   }
+
+  let amp = {
+    am_id_partida:''
+  }
   /* =============== Separación de partidas ===============*/
     //Eliminación de nombres repetidos de las partidas
     let partidas = Object.keys(newSP).map((k)=>{
@@ -177,15 +181,25 @@ sp.insertSP = async (req, res) =>{
 
     let partidas1 = [];
     let idsPartidas = [];
+    let newAMP = [];
+
     for(let c = 0 ; c < nPartidas ; c++){
+      newAMP[c] = amp;
       llenarObjetoPartidas(partidasUnicas[c],descPartidasUnicas[c],c);
       //console.log(`Partida del del objeto ${c}`,newPartida[c]);
       try {
         partidas1 [c] = await pool.query("INSERT into partida set ?",[newPartida[c]]);
         idsPartidas [c] = partidas1[c].insertId;
+        newAMP[c].am_id_partida = partidas1[c].insertId;
         resPartidasInsertadas + 1;
       } catch (error) {
         errPartidasInsertadas + 1;
+      }
+
+      try {
+        await pool.query("INSERT into am set ?",[newAMP[c]]);
+      } catch (error) {
+        
       }
       
 
@@ -252,6 +266,8 @@ sp.insertSP = async (req, res) =>{
     sppm_id_proveedor:''
   }
 
+  
+
   let newMarcas = [];
   let newProveedores = [];
   let newPrecios = [];
@@ -285,7 +301,6 @@ sp.insertSP = async (req, res) =>{
   for(let c = 0 ; c < nPartidas ; c++){
 
     newPP[c] = pp;
-
     newPP[c].pp_id_proyecto = proyecto_id;
     newPP[c].pp_id_partida = idsPartidas[c];
     try {
@@ -438,19 +453,19 @@ sp.insertSP = async (req, res) =>{
         }
         
         //newMarcas[c1]
-        console.log('/=================================/','\n');
-        console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
-        console.log('/=================================/','\n');
-        console.log(`Servicio/Producto de la partida: ${c} `,newSP1[c1],'\n');
-        console.log('/=================================/','\n');
-        console.log(`Servicio/Producto ${c1} - Proveedor - Marca: `,'{',newSPPM[c1],'}','\n');
-        console.log('/=================================/','\n');
-        console.log(`Relacion Partida${c} - Servicio/Productos ${c1}: `,'{',newPSP[c1],'}','\n');
+        // console.log('/=================================/','\n');
+        // console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
+        // console.log('/=================================/','\n');
+        // console.log(`Servicio/Producto de la partida: ${c} `,newSP1[c1],'\n');
+        // console.log('/=================================/','\n');
+        // console.log(`Servicio/Producto ${c1} - Proveedor - Marca: `,'{',newSPPM[c1],'}','\n');
+        // console.log('/=================================/','\n');
+        // console.log(`Relacion Partida${c} - Servicio/Productos ${c1}: `,'{',newPSP[c1],'}','\n');
         
       //}   
     }
-    console.log('/=================================/','\n');
-    console.log(`Relacion Proyecto - Partida ${c}: `,'{',newPP[c],'}','\n');
+    // console.log('/=================================/','\n');
+    // console.log(`Relacion Proyecto - Partida ${c}: `,'{',newPP[c],'}','\n');
   }
   //console.log(newSP1);
   //console.log('Contador de sp por partida',spPorPartida);
