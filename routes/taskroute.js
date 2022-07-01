@@ -115,9 +115,16 @@ module.exports= function(){
 
         /*======================== Rutas CRUD para la tabla categorias_datos ======================== */
         //Create
-        router.post('/catd/agregar/:proyecto_id',cattController.insertCatsD);
+                router.post('/catd/agregar/:proyecto_id',cattController.insertCatsD);
+                //Carga muliple 
+                router.post('/catd/multiInsert/:proyecto_id',cattController.multiCD);
         //Read
-        router.get('/catd/view/:proyecto_id', cattController.viewCatsD);
+                //Todos los datos
+                router.get('/catd/view/:proyecto_id', cattController.viewCatsD);
+                //No. de partes
+                router.get('/catd/viewNP', cattController.viewDataCatsNP);
+                //Descripciones
+                router.get('/catd/viewDes', cattController.viewDataCatsDes);
         //Update
         router.post('/catd/edit/:cd_id', cattController.updateCatsD);
         router.post('/catd/editCant/:cd_id', cattController.updateCdCant);
