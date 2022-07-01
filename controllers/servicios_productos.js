@@ -473,6 +473,14 @@ sp.insertSP = async (req, res) =>{
 
 
   /* =============================================================================*/
+  
+    
+
+  // res.json({
+  //   msg:msg
+  // })
+  }
+
   let msg;
   if(
       errPpInsertados !== 0 &&
@@ -490,6 +498,9 @@ sp.insertSP = async (req, res) =>{
     + `Relaciones Proyecto - Partidas No insertadas:${errPpInsertados}\n`
     + `Relaciones Partidas - Servicios/Productos No insertadas:${errPspInsertados}\n`
     + `Relaciones Servicios/Procustos - Proveedores - Marcas No insertadas:${errSppmInsertados}\n`;
+     res.json({
+    msg:msg
+     })
   }else{
     msg = `No_parte(s) de los Servicios/Productos insertados:${resNpspInsertados}\n`
     + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}\n`
@@ -498,12 +509,9 @@ sp.insertSP = async (req, res) =>{
     + `Relaciones Proyecto - Partidas insertadas:${resPpInsertados}\n`
     + `Relaciones Partidas - Servicios/Productos insertadas:${resPspInsertados}\n`
     + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`;
-  }
-    
-
-  // res.json({
-  //   msg:msg
-  // })
+    res.json({
+      msg:msg
+       })
   }
 }
 
