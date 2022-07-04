@@ -9,7 +9,6 @@ const routes = require('../routes/taskroute');
 const app = express();
 
 
-<<<<<<< HEAD
 const config = {
   application: {
     cors:{
@@ -21,14 +20,7 @@ const config = {
       ]
     }
   }
-=======
-  origin:'http://localhost:3000',
-/*   origin:'http://oscarcm23.github.io/demo-final/',  
-    */
-   
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200
->>>>>>> fd7f148c5a7e24e8c3e6fc64d79bf6ad0225e6a7
+
 }
 
 app.use(cors(
