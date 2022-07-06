@@ -104,13 +104,15 @@ sp.insert_spd = async (req, res) => {
 
 
 // Función para agregar Partidas y servicios/productos de la plantilla excel
-sp.insertSP = async (req, res) =>{
+sp.cargaExcel = async (req, res) =>{
 
   let {proyecto_id} = req.params;
 
   let newSP = req.body;
-
+  // ===== Contadores respuestas y errores de inserciones ===== //
+  //Inserciones
   let resPartidasInsertadas = 0;
+  let resAMPInsertados = 0;
   let resPpInsertados = 0;
   let resSpInsertados = 0;
   let resNpspInsertados = 0;
@@ -118,8 +120,18 @@ sp.insertSP = async (req, res) =>{
   let resPspInsertados = 0;
   let resPreciosInsertados = 0;
   let resSppmInsertados = 0;
+  let resProvsInsertados = 0;
+  let resMarcasInsertadas = 0;
+  let resPMInsertados = 0;
+  //Consultas
+  let resNPConsultados = 0;
+  let resDesConsultados = 0;
+  let resProvsConsultados = 0;
+  let resMarcasConsultadas = 0;
 
+  //Inserciones
   let errPartidasInsertadas = 0;
+  let errAMPInsertados = 0;
   let errPpInsertados = 0;
   let errSpInsertados = 0;
   let errNpspInsertados = 0;
@@ -127,7 +139,16 @@ sp.insertSP = async (req, res) =>{
   let errPspInsertados = 0;
   let errPreciosInsertados = 0;
   let errSppmInsertados = 0;
+  let errProvsInsertados = 0;
+  let errMarcasInsertadas = 0;
+  let errPMInsertados = 0;
+  //Consultas 
+  let errNPConsultados = 0;
+  let errDesConsultados = 0;
+  let errProvsConsultados = 0;
+  let errMarcasConsultadas = 0;
 
+  // ========================================================= //
   //Arrglo que contendra objetos los atributos de las distintas partidas
   let newPartida = [];
 
@@ -198,8 +219,9 @@ sp.insertSP = async (req, res) =>{
 
       try {
         await pool.query("INSERT into am set ?",[newAMP[c]]);
+        resAMPInsertados = resAMPInsertados + 1;
       } catch (error) {
-        
+        errAMPInsertados = errAMPInsertados + 1;
       }
       
 
@@ -230,6 +252,13 @@ sp.insertSP = async (req, res) =>{
   let proveedor = {
     proveedor_nombre:''
   }
+
+  //Objeto inicial de un proveedor_marca
+  let pm = {
+    pm_id_proveedor:'',
+    pm_id_marca:''
+  }
+
   //Objeto inicial de los atributos de un SP
   let sp = {
     sp_id_spnp:'',
@@ -277,6 +306,7 @@ sp.insertSP = async (req, res) =>{
   let newSPPM = [];
   let newSPNP = [];
   let newSPD = [];
+  let newPM = [];
 
   //Funciones - Calculo de precio unitario y total
   let pUnitario = 0;
@@ -321,6 +351,7 @@ sp.insertSP = async (req, res) =>{
       newSPPM[c1] = sppm;
       newSPNP[c1] = np;
       newSPD[c1] = des;
+      newPM[c1] = pm;
 
       
 
@@ -349,14 +380,20 @@ sp.insertSP = async (req, res) =>{
         
 
         //newSP1[c1].sp_id_precio = idsPrecios[c1];
-
-        let findSPNP = await pool.query("SELECT spnp_id FROM sp_no_parte where spnp_np = ?",[newSP[c1].No_Parte]);
+        let findSPNP;
+        try {
+          findSPNP = await pool.query("SELECT spnp_id FROM sp_no_parte where spnp_np = ?",[newSP[c1].No_Parte]);
+          resNPConsultados = resNPConsultados + 1;
+        } catch (error) {
+          errNPConsultados = errNPConsultados + 1;
+        }
+        
         if(findSPNP != '' && findSPNP != undefined){
           newSP1[c1].sp_id_spnp = findSPNP[0].spnp_id;
           //console.log(findMarca[c1][0].marca_id); 
         }else{
           try {
-            newSPNP.spnp_np = newSP[c1].No_Parte;
+            newSPNP[c1].spnp_np = newSP[c1].No_Parte;
             let insertNewSpnp = await pool.query("INSERT INTO sp_no_parte SET ?",[newSPNP[c1]]);
             newSP1[c1].sp_id_spnp = insertNewSpnp.insertId;
             resNpspInsertados + 1;
@@ -366,13 +403,20 @@ sp.insertSP = async (req, res) =>{
           
         }
 
-        let findSPD = await pool.query("SELECT spd_id FROM sp_descripcion where spd_des = ?",[newSP[c1].Descipcion]);
+        let findSPD;
+        try {
+          findSPD = await pool.query("SELECT spd_id FROM sp_descripcion where spd_des = ?",[newSP[c1].Descipcion]);
+          resDesConsultados = resDesConsultados + 1;
+        } catch (error) {
+          errDesConsultados = errDesConsultados + 1;
+        }
+        
         if(findSPD != '' && findSPD != undefined){
           newSP1[c1].sp_id_spd = findSPD[0].spd_id;
           //console.log(findMarca[c1][0].marca_id); 
         }else{
           try {
-            newSPD.spd_des = newSP[c1].Descipcion;
+            newSPD[c1].spd_des = newSP[c1].Descipcion;
             let insertNewSpd = await pool.query("INSERT INTO sp_descripcion SET ?",[newSPD[c1]]);
             newSP1[c1].sp_id_spd = insertNewSpd.insertId;
             resSpdInsertados + 1;
@@ -426,32 +470,103 @@ sp.insertSP = async (req, res) =>{
           errPspInsertados + 1;
         }
         
-
-        
-        let findMarca = await pool.query("SELECT marca_id FROM marca where marca_nombre = ?",[newSP[c1].Marca]);
-        if(findMarca != '' && findMarca != undefined){
-          newSPPM[c1].sppm_id_marca =  findMarca[0].marca_id;
-          //newMarcas[c1] = findMarca[0].marca_id;
-          //console.log(findMarca[c1][0].marca_id); 
+        if(newSP[c1].Proveedor === '' || newSP[c1].Proveedor === undefined){
+          newProveedores[c1].proveedor_nombre = 'N/A';
+          try {
+            let nwProv = await pool.query("INSERT INTO proveedor SET ?",[newProveedores[c1]]);
+            newPM[c1].pm_id_proveedor = nwProv.insertId
+            newSPPM[c1].sppm_id_proveedor = nwProv.insertId;
+            resProvsInsertados = resProvsInsertados + 1;
+          } catch (error) {
+            errProvsInsertados = errProvsInsertados + 1;
+          }
+          
         }else{
-          //newMarcas[c1] = '"Se tiene que agregar la marca"';
+          var findProoveedor;
+          try { 
+            findProoveedor = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = ?",[newSP[c1].Proveedor]);
+            resProvsConsultados = resProvsConsultados + 1;
+          } catch (error) {
+            errProvsConsultados = errProvsConsultados + 1;
+          }
+    
+          if(findProoveedor != '' && findProoveedor != undefined){
+            newPM[c1].pm_id_proveedor = findProoveedor[0].proveedor_id;
+            newSPPM[c1].sppm_id_proveedor = findProoveedor[0].proveedor_id;
+            //newProveedores[c1] = findProoveedor[0].proveedor_id;
+            //console.log(findMarca[c1][0].marca_id); 
+          }else{
+            newProveedores[c1].proveedor_nombre = newSP[c1].Proveedor;
+            try {
+              let nwProv = await pool.query("INSERT INTO proveedor SET ?",[newProveedores[c1]]);
+              newPM[c1].pm_id_proveedor = nwProv.insertId
+              newSPPM[c1].sppm_id_proveedor = nwProv.insertId;
+              resProvsInsertados = resProvsInsertados + 1;
+            } catch (error) {
+              errProvsInsertados = errProvsInsertados + 1;
+            }
+            
+          }
         }
 
-        let findProoveedor = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = ?",[newSP[c1].Proveedor]);
-        if(findProoveedor != '' && findProoveedor != undefined){
-          newSPPM[c1].sppm_id_proveedor =  findProoveedor[0].proveedor_id;
-          //newProveedores[c1] = findProoveedor[0].proveedor_id;
-          //console.log(findMarca[c1][0].marca_id); 
+        if(newSP[c1].Marca === '' || newSP[c1].Marca === undefined){
+          newMarcas[c1].marca_nombre = 'N/A';
+          try {
+            let nwMarca = await pool.query("INSERT INTO marca SET ?",[newMarcas[c1]]);
+            newPM[c1].pm_id_marca = nwMarca.insertId;
+            newSPPM[c1].sppm_id_marca = nwMarca.insertId;
+            resMarcasInsertadas = resMarcasInsertadas + 1;
+          } catch (error) {
+            errMarcasInsertadas = errMarcasInsertadas + 1;
+          }
+
+          try {
+            await pool.query("INSERT INTO proveedor_marca SET ?",[newPM[c1]]);
+            resPMInsertados = resPMInsertados + 1;
+          } catch (error) {
+            errPMInsertados = errPMInsertados + 1;
+          }
         }else{
-          //newProveedores[c1] = '"Se tiene que agregar el Proveedor"';
+          let findMarca;
+          try {
+            findMarca = await pool.query("SELECT marca_id FROM marca where marca_nombre = ?",[newSP[c1].Marca]);
+            resMarcasConsultadas = resMarcasConsultadas + 1;
+          } catch (error) {
+            errMarcasConsultadas = errMarcasConsultadas + 1;
+          }
+          
+          if(findMarca != '' && findMarca != undefined){
+            newSPPM[c1].sppm_id_marca =  findMarca[0].marca_id;
+            //newMarcas[c1] = findMarca[0].marca_id;
+            //console.log(findMarca[c1][0].marca_id); 
+          }else{
+            newMarcas[c1].marca_nombre = newSP[c1].Marca;
+            try {
+              let nwMarca = await pool.query("INSERT INTO marca SET ?",[newMarcas[c1]]);
+              newPM[c1].pm_id_marca = nwMarca.insertId;
+              newSPPM[c1].sppm_id_marca = nwMarca.insertId;
+              resMarcasInsertadas = resMarcasInsertadas + 1;
+            } catch (error) {
+              errMarcasInsertadas = errMarcasInsertadas + 1;
+            }
+
+            try {
+              await pool.query("INSERT INTO proveedor_marca SET ?",[newPM[c1]]);
+              resPMInsertados = resPMInsertados + 1;
+            } catch (error) {
+              errPMInsertados = errPMInsertados + 1;
+            }
+          }
         }
+
+
+
         try {
           await pool.query("INSERT INTO sp_proveedor_marca SET ?",[newSPPM[c1]]);
           resSppmInsertados + 1;
         } catch (error) {
           errSppmInsertados + 1;
         }
-        
         //newMarcas[c1]
         // console.log('/=================================/','\n');
         // console.log(`Precios del Servicio/Producto: ${c1}`,newPrecios[c1],'\n');
@@ -481,6 +596,7 @@ sp.insertSP = async (req, res) =>{
   // })
   }
   let msg;
+  let msg1;
   if(
       errPpInsertados !== 0 &&
       errSpInsertados !== 0 &&
@@ -490,27 +606,54 @@ sp.insertSP = async (req, res) =>{
       errPreciosInsertados !== 0 &&
       errSppmInsertados !== 0 
   ){
-    msg = `No_parte(s) de los Servicios/Productos No insertados:${errNpspInsertados}\n`
+    msg = 
+      `Partidas No insertadas: ${errPartidasInsertadas}\n`
+    + `Datos AM de Partidas No insertados: ${errAMPInsertados}\n`
+    + `No_parte(s) de los Servicios/Productos No insertados:${errNpspInsertados}\n`
     + `Descripciones de los Servicios/Productos No insertados:${errSpdInsertados}\n`
-    + `Precios de los Servicios/Productos Noinsertados:${errPreciosInsertados}\n`
+    + `Precios de los Servicios/Productos No insertados:${errPreciosInsertados}\n`
     + `Servicios/Productos No insertados:${errSpInsertados}\n`
+    + `Proveedores No insertados: ${errProvsInsertados}\n`
+    + `Marcas No insertadas: ${errMarcasInsertadas}\n\n`
     + `Relaciones Proyecto - Partidas No insertadas:${errPpInsertados}\n`
     + `Relaciones Partidas - Servicios/Productos No insertadas:${errPspInsertados}\n`
-    + `Relaciones Servicios/Procustos - Proveedores - Marcas No insertadas:${errSppmInsertados}\n`;
+    + `Relaciones Proveedor - Marca No insertadas: ${errPMInsertados}\n`
+    + `Relaciones Servicios/Productos - Proveedores - Marcas No insertadas:${errSppmInsertados}\n`;
      res.json({
     msg:msg
      })
+
+     msg1 = 
+       `No. de consultas no exitosas: \n`
+     + `--(No. de partes): ${errNPConsultados}\n`
+     + `--(Descripciones): ${errDesConsultados}\n`
+     + `--(Proveedores): ${errProvsConsultados}\n`
+     + `--(Marcas): ${errMarcasConsultadas}\n`
+     console.log(msg1);
   }else{
-    msg = `No_parte(s) de los Servicios/Productos insertados:${resNpspInsertados}\n`
-    + `Descripciones de los Servicios/Productos insertados:${resSpdInsertados}\n`
-    + `Precios de los Servicios/Productos insertados:${resPreciosInsertados}\n`
-    + `Servicios/Productos insertados:${resSpInsertados}\n`
+      `Partidas insertadas: ${resPartidasInsertadas}\n`
+    + `Datos AM de Partidas insertados: ${resAMPInsertados}\n`
+    + `No_parte(s) de los Servicios/Productos insertados: ${resNpspInsertados}\n`
+    + `Descripciones de los Servicios/Productos insertados: ${resSpdInsertados}\n`
+    + `Precios de los Servicios/Productos insertados: ${resPreciosInsertados}\n`
+    + `Servicios/Productos insertados: ${resSpInsertados}\n`
+    + `Proveedores insertados: ${resProvsInsertados}\n`
+    + `Marcas insertadas: ${resMarcasInsertadas}\n\n`
     + `Relaciones Proyecto - Partidas insertadas:${resPpInsertados}\n`
     + `Relaciones Partidas - Servicios/Productos insertadas:${resPspInsertados}\n`
-    + `Relaciones Servicios/Procustos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`;
+    + `Relaciones Proveedor - Marca insertadas: ${resPMInsertados}\n`
+    + `Relaciones Servicios/Productos - Proveedores - Marcas insertadas:${resSppmInsertados}\n`;
     res.json({
       msg:msg
        })
+
+    msg1 = 
+       `No. de consultas exitosas: \n`
+     + `--(No. de partes): ${resNPConsultados}\n`
+     + `--(Descripciones): ${resDesConsultados}\n`
+     + `--(Proveedores): ${resProvsConsultados}\n`
+     + `--(Marcas): ${resMarcasConsultadas}\n`
+     console.log(msg1);
   }
 }
 
