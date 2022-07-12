@@ -49,7 +49,7 @@ formControl.viewForm = async (req, res) => {
     const reSql = await pool.query(
          "SELECT id_usuario,usuario_id_rol,rol_nombre,email,password FROM usuarios "
         +"INNER JOIN roles ON usuario_id_rol = rol_id "
-        +"WHERE email != 'admin@delfos369.com'" 
+        +"WHERE email != 'admin@delfos369.com' AND email != 'angelica.yanez@palotinto.com' AND email != 'rodrigoh@palotinto.com'" 
         ); 
     res.json({ reSql: reSql });
     //res.end();
