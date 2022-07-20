@@ -1,6 +1,6 @@
 const express= require('express')
 const router = express.Router();
-const {postForm , viewForm, viewUsersVenta , viewUsersVentaP, deleteForm, editForm , editPass} = require('../controllers/usuario');
+const {postForm , viewForm, viewForm1,viewUsersVenta , viewUsersVentaP, deleteForm, editForm , editPass} = require('../controllers/usuario');
 const {getForm} = require('../controllers/login');
 const pool = require('../src/db');
 const partidaController = require('../controllers/Partida');
@@ -33,6 +33,7 @@ module.exports= function(){
         router.route('/registro')
                 .post(postForm)
                 .get(viewForm);
+        router.get('/users/view',viewForm1);
         //Ruta para obtener los usuarios de venta
         router.get('/viewUsersVenta',viewUsersVenta);  
         //Ruta para obtener los usuarios de venta de un determinado proyecto

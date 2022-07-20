@@ -55,6 +55,15 @@ formControl.viewForm = async (req, res) => {
     //res.end();
 };
 
+formControl.viewForm1 = async (req, res) => {
+    const reSql = await pool.query(
+         "SELECT id_usuario,usuario_id_rol,rol_nombre,email,password FROM usuarios "
+        +"INNER JOIN roles ON usuario_id_rol = rol_id"
+        ); 
+    res.json({ reSql: reSql });
+    //res.end();
+};
+
 formControl.viewUsersVenta = async (req, res) => {
     const reSql = await pool.query(
           'SELECT id_usuario,usuario_id_rol,rol_nombre,email,password FROM usuarios '
