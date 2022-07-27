@@ -92,7 +92,9 @@ module.exports= function(){
          // Ruta modal
          router.get('/proyecto/viewModal/:proyecto_id',proyectosController.viewModal);
          //ruta para asignar un proyecto a un usuario de ventas
-         router.post('/proyecto/insertUsuariosProyectos', proyectosController.insertUsuariosProyectos)  
+         router.post('/proyecto/insertUsuariosProyectos', proyectosController.insertUsuariosProyectos) 
+         // ruta - Vizualizar todos los datos de un proyecto
+         router.get('/proyecto/viewPlantilla/:proyecto_id',proyectosController.viewPlantilla); 
 /*--------------------------------------------------------------------------------------------------------------------*/
         /*======================== Rutas CRUD para la tabla colaboradores ======================== */
         //Create
