@@ -37,15 +37,20 @@ am.insertAMCategorias = async (req, res) => {
 am.viewTotalesPartida = async (req, res) => {
     const { proyecto_id } = req.params;
     const reSql = await pool.query(
-        "SELECT partida_id,partida_nombre,partida_descripcion,sp_cantidad,sp_id_precio, precio_total,"
-        + "precio_id_moneda,moneda_nombre,precio_unitario, precio_lista,precio_descuento "
+          "SELECT * "
         + "FROM proyecto "
-        + "RIGHT JOIN pp ON pp_id_proyecto = proyecto_id "
-        + "RIGHT JOIN partida ON pp_id_partida = partida_id "
-        + "RIGHT JOIN psp ON partida_id = psp_id_partida "
-        + "RIGHT JOIN servicio_producto ON psp_id_sp = sp_id "
-        + "RIGHT JOIN precio ON sp_id_precio = precio_id "
-        + "RIGHT JOIN moneda ON moneda_id = precio_id_moneda "
+        + "INNER JOIN pp ON pp_id_proyecto = proyecto_id "
+        + "INNER JOIN partida ON pp_id_partida = partida_id "
+        + "INNER JOIN psp ON psp_id_partida = partida_id "
+        + "INNER JOIN servicio_producto ON psp_id_sp = sp_id "
+        + "INNER JOIN sp_proveedor_marca ON sp_id = sppm_id_sp "
+        + "INNER JOIN proveedor ON proveedor_id = sppm_id_proveedor "
+        + "INNER JOIN marca ON marca_id = sppm_id_marca "
+        + "INNER JOIN sp_no_parte ON spnp_id = sp_id_spnp "
+        + "INNER JOIN sp_descripcion ON spd_id = sp_id_spd "
+        + "INNER JOIN precio ON sp_id_precio = precio_id "
+        + "INNER JOIN categoria ON sp_id_categoria = categoria_id "
+        + "INNER JOIN moneda ON precio_id_moneda = moneda_id "
         + "WHERE proyecto_id = ? "
         + "ORDER BY partida_id", [proyecto_id]);
     res.json({ data: reSql });
