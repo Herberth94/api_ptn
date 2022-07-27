@@ -102,7 +102,6 @@ sp.insert_spd = async (req, res) => {
   }   
 };
 
-
 // Función para agregar Partidas y servicios/productos de la plantilla excel
 sp.cargaExcel = async (req, res) =>{
 
@@ -469,8 +468,17 @@ sp.cargaExcel = async (req, res) =>{
         } catch (error) {
           errPspInsertados + 1;
         }
+
         
-        if(newSP[c1].Proveedor === '' || newSP[c1].Proveedor === undefined){
+        let findProv;
+        try {
+          findProv = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = 'N/A'");
+          resProvsConsultados = resProvsConsultados + 1;
+        } catch (error) {
+          errProvsConsultados = errProvsConsultados + 1;
+        }
+
+        if((newSP[c1].Proveedor === '' && newSP[c1].Proveedor === undefined) && (findProv === '' && findProv === undefined)){
           newProveedores[c1].proveedor_nombre = 'N/A';
           try {
             let nwProv = await pool.query("INSERT INTO proveedor SET ?",[newProveedores[c1]]);
@@ -509,7 +517,15 @@ sp.cargaExcel = async (req, res) =>{
           }
         }
 
-        if(newSP[c1].Marca === '' || newSP[c1].Marca === undefined){
+        let findMarca1;
+        try {
+          findMarca1 = await pool.query("SELECT marca_id FROM marca where marca_nombre = 'N/A'",);
+          resMarcasConsultadas = resMarcasConsultadas + 1;
+        } catch (error) {
+          errMarcasConsultadas = errMarcasConsultadas + 1;
+        }
+
+        if(newSP[c1].Marca === '' && newSP[c1].Marca === undefined && findMarca1 === '' && findMarca1 === undefined){
           newMarcas[c1].marca_nombre = 'N/A';
           try {
             let nwMarca = await pool.query("INSERT INTO marca SET ?",[newMarcas[c1]]);
@@ -991,46 +1007,128 @@ sp.viewSpd = async (req, res) => {
 // Función para editar atributos en la tabla servicio_producto
 sp.update_sp = async (req, res) => {
   const { sp_id, sppm_id_proveedor, sppm_id_marca } = req.params;
-  const{
-    sp_id_spnp,
-    sp_id_spd,
-    sp_meses,
-    sp_semanas,
-    sp_cantidad,
-    sp_id_categoria,
-    sp_comentarios } = req.body;
+  const newSP = req.body;
 
-  const editnew_sp = {
-    sp_id_spnp,
-    sp_id_spd,
-    sp_meses,
-    sp_semanas,
-    sp_cantidad,
-    sp_id_categoria,
-    sp_comentarios };
-
-    try{
-      await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [editnew_sp,sp_id]);
+  //console.log(newSP);
   
-      const editnewSPPM ={
-        sppm_id_proveedor,
-        sppm_id_marca
-      }
-      await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
+  let newSP1 = {
+    sp_id_spnp:'',
+    sp_id_spd:'',
+    sp_meses:'',
+    sp_semanas:'',
+    sp_id_categoria:'',
+    sp_comentarios:''
+  };
 
-      res.json({
-        msg: "Servicio/Producto editado exitosamente",
-        estado: true,
-      });
+  let newNP = {
+    spnp_np:''
+  };
+
+  let newDes = {
+    spd_des:''
+  };
+  
+  let findSP;
+
+  try {
+    findSP = await pool.query(
+      "SELECT spnp_id,spnp_np,spd_id,spd_des,sp_meses,sp_semanas,sp_id_categoria,sp_comentarios "
+    + "FROM servicio_producto "
+    + "INNER JOIN sp_no_parte ON spnp_id = sp_id_spnp "
+    + "INNER JOIN sp_descripcion ON spd_id = sp_id_spd "
+    + "INNER JOIN categoria ON sp_id_categoria = categoria_id "
+    + "WHERE sp_id = ?",[sp_id]);
+    console.log('Consulta del SP exitosa');
+  } catch (error) {
+    console.log('Error al consultar el SP');
+  }
+
+  if(findSP[0].spnp_np != '' && findSP[0].spnp_np != undefined &&  newSP.sp_no_parte != findSP[0].spnp_np ){
+    newNP.spnp_np = newSP.sp_no_parte;
+    var findNP;
+    try {
+      findNP = await pool.query('SELECT spnp_id FROM sp_no_parte WHERE spnp_np = ?',[newSP.sp_no_parte]);
+      console.log('Consulta del No. de Parte exitosa');
     } catch (error) {
-      console.log("Error identificado:", error);
-      err = error;
-      res.json({
-        estado: false,
-        msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
-      });
+      console.log('Error al consultar el No. de Parte');
     }
+    
+    //console.log(findNP)
+    if(findNP == '' || findNP == undefined){
+      try {
+        let np = await pool.query('INSERT INTO sp_no_parte SET ?',[newNP]);
+        newSP1.sp_id_spnp = np.insertId;
+        console.log('Se inserto un nuevo No. de Parte');
+      } catch (error) {
+        console.log('Error al insertar un nuevo No. de Parte');
+      }
+    }else if(findNP != '' || findNP != undefined){
+      //console.log('findSP-spnp_id',findSP[0].spnp_id);
+      newSP1.sp_id_spnp = findNP[0].spnp_id;
+    }    
+  }else{
+    //console.log('findSP-spnp_id',findSP[0].spnp_id);
+    newSP1.sp_id_spnp = findSP[0].spnp_id;
+  }
+  
+  //console.log('findSP-spd_des',findSP[0].spd_des);
+  //console.log('newSP - sp_descripcion',newSP.sp_descripcion);
+  if(findSP[0].spd_des != '' && findSP[0].spd_des != undefined && newSP.sp_descripcion != findSP[0].spd_des ){
+    newDes.spd_des = newSP.sp_descripcion;
+    var findDes;
+    try {
+      findDes = await pool.query('SELECT spd_id FROM sp_descripcion WHERE spd_des = ?',[newSP.sp_descripcion]);
+      console.log('Consulta de la Descripción exitosa');
+    } catch (error) {
+      console.log('Error al consultar la Descripción');
+    } 
+    
+    console.log('findDes:',findDes);
+    console.log('newDes:',newDes);
+    if(findDes == '' || findDes == undefined){
+      try {
+        let desc = await pool.query('INSERT INTO sp_descripcion SET ?',[newDes]);
+        newSP1.sp_id_spd = desc.insertId;
+        console.log('Se inserto una nueva Descripción');
+      } catch (error) {
+        console.log('Error al insertar una nueva Descripción');
+      }
+    }else if (findDes != '' || findDes != undefined){
+      //console.log('findSP-spd_des',findSP[0].spd_id);
+      newSP1.sp_id_spd = findDes[0].spd_id;
+    }
+  }else{
+    //console.log('findSP-spd_des',findSP[0].spd_id);
+    newSP1.sp_id_spd = findSP[0].spd_id;
+  }
 
+  newSP1.sp_meses = newSP.sp_meses;
+  newSP1.sp_semanas = newSP.sp_semanas;
+  newSP1.sp_id_categoria = newSP.sp_id_categoria;
+  newSP1.sp_comentarios = newSP.sp_comentarios;
+  //console.log(findSP[0].spnp_np);
+  //console.log(newSP)
+  try{
+    await pool.query("UPDATE servicio_producto set ?  WHERE sp_id = ?", [newSP1,sp_id]);
+
+    const editnewSPPM ={
+      sppm_id_proveedor,
+      sppm_id_marca
+    }
+    await pool.query("UPDATE sp_proveedor_marca set ?  WHERE sppm_id_sp = ?", [editnewSPPM,sp_id]);
+
+    res.json({
+      msg: "Servicio/Producto editado exitosamente",
+      estado: true,
+    });
+  } catch (error) {
+    console.log("Error identificado:", error);
+    err = error;
+    res.json({
+      estado: false,
+      msg: "¡ERROR!, Revisa que hayas ingresado correctamente los datos"
+    });
+  }
 };
 
 // Función para editar el atributo sp_cantidad en la tabla servicio_producto
