@@ -472,14 +472,16 @@ sp.cargaExcel = async (req, res) =>{
         
         let findProv;
         try {
-          findProv = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = 'N/A'");
+          findProv = await pool.query("SELECT proveedor_id FROM proveedor where proveedor_nombre = ?",['N/A']);
           resProvsConsultados = resProvsConsultados + 1;
         } catch (error) {
           errProvsConsultados = errProvsConsultados + 1;
         }
-
-        if((newSP[c1].Proveedor === '' && newSP[c1].Proveedor === undefined) && (findProv === '' && findProv === undefined)){
+        // console.log(typeof(findProv));
+        // console.log('findProv',findProv[0]);
+        if(newSP[c1].Proveedor == undefined && findProv == ''){
           newProveedores[c1].proveedor_nombre = 'N/A';
+          // console.log('Se ingreso al if');
           try {
             let nwProv = await pool.query("INSERT INTO proveedor SET ?",[newProveedores[c1]]);
             newPM[c1].pm_id_proveedor = nwProv.insertId
@@ -498,13 +500,13 @@ sp.cargaExcel = async (req, res) =>{
             errProvsConsultados = errProvsConsultados + 1;
           }
     
-          if(findProoveedor != '' && findProoveedor != undefined){
+          if(findProoveedor != null && findProoveedor != '' && findProoveedor != undefined){
             newPM[c1].pm_id_proveedor = findProoveedor[0].proveedor_id;
             newSPPM[c1].sppm_id_proveedor = findProoveedor[0].proveedor_id;
             //newProveedores[c1] = findProoveedor[0].proveedor_id;
             //console.log(findMarca[c1][0].marca_id); 
-          }else{
-            newProveedores[c1].proveedor_nombre = newSP[c1].Proveedor;
+          }else if(newSP[c1].Proveedor != undefined && findProoveedor == ''){
+            newProveedores[c1].proveedor_nombre = newSP[c1].Proveedor.toUpperCase();
             try {
               let nwProv = await pool.query("INSERT INTO proveedor SET ?",[newProveedores[c1]]);
               newPM[c1].pm_id_proveedor = nwProv.insertId
@@ -525,7 +527,7 @@ sp.cargaExcel = async (req, res) =>{
           errMarcasConsultadas = errMarcasConsultadas + 1;
         }
 
-        if(newSP[c1].Marca === '' && newSP[c1].Marca === undefined && findMarca1 === '' && findMarca1 === undefined){
+        if(newSP[c1].Marca == undefined && findMarca1 == ''){
           newMarcas[c1].marca_nombre = 'N/A';
           try {
             let nwMarca = await pool.query("INSERT INTO marca SET ?",[newMarcas[c1]]);
@@ -551,12 +553,12 @@ sp.cargaExcel = async (req, res) =>{
             errMarcasConsultadas = errMarcasConsultadas + 1;
           }
           
-          if(findMarca != '' && findMarca != undefined){
+          if(findMarca != null && findMarca != '' && findMarca != undefined){
             newSPPM[c1].sppm_id_marca =  findMarca[0].marca_id;
             //newMarcas[c1] = findMarca[0].marca_id;
             //console.log(findMarca[c1][0].marca_id); 
-          }else{
-            newMarcas[c1].marca_nombre = newSP[c1].Marca;
+          }else if (newSP[c1].Marca != undefined && findMarca == ''){
+            newMarcas[c1].marca_nombre = newSP[c1].Marca.toUpperCase();
             try {
               let nwMarca = await pool.query("INSERT INTO marca SET ?",[newMarcas[c1]]);
               newPM[c1].pm_id_marca = nwMarca.insertId;
@@ -1038,9 +1040,9 @@ sp.update_sp = async (req, res) => {
     + "INNER JOIN sp_descripcion ON spd_id = sp_id_spd "
     + "INNER JOIN categoria ON sp_id_categoria = categoria_id "
     + "WHERE sp_id = ?",[sp_id]);
-    console.log('Consulta del SP exitosa');
+    // console.log('Consulta del SP exitosa');
   } catch (error) {
-    console.log('Error al consultar el SP');
+    // console.log('Error al consultar el SP');
   }
 
   if(findSP[0].spnp_np != '' && findSP[0].spnp_np != undefined &&  newSP.sp_no_parte != findSP[0].spnp_np ){
@@ -1048,9 +1050,9 @@ sp.update_sp = async (req, res) => {
     var findNP;
     try {
       findNP = await pool.query('SELECT spnp_id FROM sp_no_parte WHERE spnp_np = ?',[newSP.sp_no_parte]);
-      console.log('Consulta del No. de Parte exitosa');
+      // console.log('Consulta del No. de Parte exitosa');
     } catch (error) {
-      console.log('Error al consultar el No. de Parte');
+      // console.log('Error al consultar el No. de Parte');
     }
     
     //console.log(findNP)
@@ -1058,9 +1060,9 @@ sp.update_sp = async (req, res) => {
       try {
         let np = await pool.query('INSERT INTO sp_no_parte SET ?',[newNP]);
         newSP1.sp_id_spnp = np.insertId;
-        console.log('Se inserto un nuevo No. de Parte');
+        // console.log('Se inserto un nuevo No. de Parte');
       } catch (error) {
-        console.log('Error al insertar un nuevo No. de Parte');
+        // console.log('Error al insertar un nuevo No. de Parte');
       }
     }else if(findNP != '' || findNP != undefined){
       //console.log('findSP-spnp_id',findSP[0].spnp_id);
@@ -1078,20 +1080,20 @@ sp.update_sp = async (req, res) => {
     var findDes;
     try {
       findDes = await pool.query('SELECT spd_id FROM sp_descripcion WHERE spd_des = ?',[newSP.sp_descripcion]);
-      console.log('Consulta de la Descripción exitosa');
+      // console.log('Consulta de la Descripción exitosa');
     } catch (error) {
-      console.log('Error al consultar la Descripción');
+      // console.log('Error al consultar la Descripción');
     } 
     
-    console.log('findDes:',findDes);
-    console.log('newDes:',newDes);
+    // console.log('findDes:',findDes);
+    // console.log('newDes:',newDes);
     if(findDes == '' || findDes == undefined){
       try {
         let desc = await pool.query('INSERT INTO sp_descripcion SET ?',[newDes]);
         newSP1.sp_id_spd = desc.insertId;
-        console.log('Se inserto una nueva Descripción');
+        // console.log('Se inserto una nueva Descripción');
       } catch (error) {
-        console.log('Error al insertar una nueva Descripción');
+        // console.log('Error al insertar una nueva Descripción');
       }
     }else if (findDes != '' || findDes != undefined){
       //console.log('findSP-spd_des',findSP[0].spd_id);
