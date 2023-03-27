@@ -43,8 +43,8 @@ exports.updateClientes = async (req, res) => {
     try {
         const cliente = await pool.query(
             'SELECT nombre_cliente FROM clientes WHERE nombre_cliente = ?',[updateCliente.nombre_cliente])
-        //console.log(cliente);
-        if(cliente == ''){
+        console.log(cliente);
+        if(cliente !== ''){
             await pool.query("UPDATE clientes set ? WHERE cliente_id = ?", [
                 updateCliente,
                 id,
