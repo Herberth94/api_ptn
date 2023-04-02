@@ -177,9 +177,10 @@ sp.cargaExcel = async (req, res) =>{
       return newSP[k].Descripcion_Partida;
     });
 
-    let descPartidasUnicas = descPartidas.filter((v,i)=>{
-      return descPartidas.indexOf(v) === i;
-    });
+    //let descPartidasUnicas = descPartidas.filter((v,i)=>{
+      //return descPartidas.indexOf(v) === i;
+    //});
+    let descPartidasUnicas = descPartidas
     //console.log('Descripciones de Partidas sin filtro',descPartidas);
     //console.log('Descripciones de Partidas filtrados',descPartidasUnicas);
 
@@ -206,7 +207,8 @@ sp.cargaExcel = async (req, res) =>{
     for(let c = 0 ; c < nPartidas ; c++){
       newAMP[c] = amp;
       llenarObjetoPartidas(partidasUnicas[c],descPartidasUnicas[c],c);
-      //console.log(`Partida del del objeto ${c}`,newPartida[c]);
+      console.log(`Partida del del objeto ${c}`,newPartida[c]);
+     
       try {
         partidas1 [c] = await pool.query("INSERT into partida set ?",[newPartida[c]]);
         idsPartidas [c] = partidas1[c].insertId;
