@@ -8,7 +8,7 @@ marca.insert_marca = async (req, res) => {
   const { proveedor_id } = req.params;
   const new_marca = req.body;
   var err;
-  //console.log(req.body)
+  console.log(req.body)
   //new_marca.marca_nombre = "PTN"; //Dato para prueba 
   try {
     const resMarca = await pool.query('INSERT INTO marca SET ?', [new_marca]);
@@ -135,8 +135,9 @@ marca.update_marca = async (req, res) => {
 //Función para eliminar atributos en la tabla marca---------------------------------------------------
 marca.delete_marca = async (req, res) => {
   //const { marca_id = 3 } = req.params; //Dato para prueba
-  const { marca_id } = req.params;
-  await pool.query("DELETE FROM marca WHERE marca_id = ?", [marca_id]);
+  const { id } = req.params;
+  console.log(id);
+  await pool.query("DELETE FROM marca WHERE marca_id = ?", [id]);
   res.json({
     msg: "Marca eliminada exitosamente",
     estado: true,
