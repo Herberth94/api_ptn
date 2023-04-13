@@ -428,7 +428,7 @@ sp.cargaExcel = async (req, res) =>{
         }
         
         newSP1[c1].sp_meses = newSP[c1].Duracion;
-        newSP1[c1].sp_semanas = newSP[c1].Entega;
+        newSP1[c1].sp_semanas = newSP[c1].Entrega;
         newSP1[c1].sp_cantidad = newSP[c1].Cantidad;
         if( newSP[c1].Categoria === 'Tecnologia principal'){
           newSP1[c1].sp_id_categoria = 1;
