@@ -63,11 +63,13 @@ proveedor.update_prov = async (req, res) => {
 //Función para eliminar atributos en la tabla proveedor---------------------------------------------------
 proveedor.delete_prov = async (req, res) => {
   //const { proveedor_id = 3 } = req.params; //Dato para prueba
-  const { proveedor_id } = req.params;
-  await pool.query("DELETE FROM proveedor WHERE proveedor_id = ?", [proveedor_id]);
+  const { id } = req.params;
+  console.log(id)
+  const resq= await pool.query("DELETE FROM proveedor WHERE proveedor_id = ?", [id]);
   res.json({
     msg: "Producto eliminado exitosamente",
     estado: true,
+    data: resq
   });
 };
 //--------------------------------------------------------------------------------------------------------
