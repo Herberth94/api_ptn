@@ -169,6 +169,7 @@ catd.multiCD = async (req, res) =>{
       let insertCD = await pool.query("INSERT INTO categorias_datos SET ?",[newCD[c]]);
       newPC[c].pc_id_cat_d = insertCD.insertId;
       resCD = resCD + 1;
+      console.log(true);
     } catch (error) {
       errCD = errCD + 1;
     }
