@@ -39,6 +39,7 @@ exports.viewCliente = async (req, res) => {
 exports.updateClientes = async (req, res) => {
     const { id } = req.params;
     const updateCliente = req.body;
+    console.log(updateCliente);
     let err;
     try {
         const cliente = await pool.query(
