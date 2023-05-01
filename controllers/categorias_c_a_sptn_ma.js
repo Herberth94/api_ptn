@@ -10,7 +10,7 @@ const pool = require("../src/db");
 /*========================== Read ==========================*/
 
 exports.viewCategoriasMa = async (req, res) => {
-    const reSql = await pool.query('SELECT * FROM `categorias_c_a_sptn_ma` ORDER BY `cat_id` DESC');
+    const reSql = await pool.query('SELECT * FROM `categorias_c_a_sptn_ma` ORDER BY `categorias_c_a_sptn_ma`.`cat_id` ASC');
     res.json({ reSql: reSql });
 }
 
