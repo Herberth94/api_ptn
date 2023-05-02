@@ -9,9 +9,9 @@ module.exports = {
 
    database: {
         host:'delfosco_delfos369',
-        user: 'delfos_db_cotizador',
-        password: '',
-        database: 'db_cotizador'
+        user: 'delfosco_marvilop',
+        password: 'delfos369',
+        database: 'delfosco_marvilop'
     }
 
 };
