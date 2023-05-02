@@ -8,9 +8,9 @@ module.exports = {
     } */
 
    database: {
-        host:'containers-us-west-111.railway.app',
-        user: 'root',
-        password: 'P7ORQsGAuq0fWo5F4VyY',
+        host:'delfosco_delfos369',
+        user: 'delfos_db_cotizador',
+        password: '',
         database: 'db_cotizador'
     }
 
