@@ -1,17 +1,17 @@
 module.exports = {
 
-    database: {
+    /* database: {
         host:'localhost',
         user: 'root',
         password: '',
         database: 'db_cotizador'
-    }
+    } */
 
-  /*  database: {
-        host:'delfosco_delfos369',
-        user: 'delfos_db_cotizador',
-        password: '',
+   database: {
+        host:'containers-us-west-111.railway.app',
+        user: 'root',
+        password: 'P7ORQsGAuq0fWo5F4VyY',
         database: 'db_cotizador'
-    }*/
+    }
 
 };
