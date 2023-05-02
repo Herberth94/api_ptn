@@ -18,9 +18,11 @@ const amController=  require('../controllers/am');
 const colaboradoresController =require('../controllers/colaboradores');
 const ciController = require('../controllers/costos_indirectos');
 const proporcionalidadController = require('../controllers/proporcionalidad');
+const categiriasMaController = require('../controllers/categorias_c_a_sptn_ma');
 
 const { route } = require('express/lib/application');
 const categorias = require('../controllers/categorias_c_a_sptn_ma');
+const categoria = require('../controllers/categoria');
 
 //rutas  para cada tarea
 module.exports= function(){
@@ -111,6 +113,9 @@ module.exports= function(){
         /*======================== Rutas CRUD para la tabla categorias_c_a_sptn_ma ======================== */
         //Create
         //Read
+        router.get('/categoriasma/view',categiriasMaController.viewCategoriasMa);
+        //Update
+        //Delete
         //Update
         //Delete
 
@@ -158,6 +163,9 @@ module.exports= function(){
         router.get('/sp/viewSpnp',spController.viewSpnp);
         // Consulta de todas las descripciones
         router.get('/sp/viewSpd',spController.viewSpd);
+        // Consulta de todas las categorias de servicios y productos
+        router.get('/categoriassp/view',categoria.view_cat_sp);
+
         /*============*/
 
         /*=== Update ===*/
