@@ -22,6 +22,7 @@ const categiriasMaController = require('../controllers/categorias_c_a_sptn_ma');
 
 const { route } = require('express/lib/application');
 const categorias = require('../controllers/categorias_c_a_sptn_ma');
+const categoria = require('../controllers/categoria');
 
 //rutas  para cada tarea
 module.exports= function(){
@@ -162,6 +163,9 @@ module.exports= function(){
         router.get('/sp/viewSpnp',spController.viewSpnp);
         // Consulta de todas las descripciones
         router.get('/sp/viewSpd',spController.viewSpd);
+        // Consulta de todas las categorias de servicios y productos
+        router.get('/categoriassp/view',categoria.view_cat_sp);
+
         /*============*/
 
         /*=== Update ===*/
