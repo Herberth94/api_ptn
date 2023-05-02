@@ -1,3 +1,4 @@
+require ('dotenv').config();
 module.exports = {
 
     /* database: {
@@ -8,10 +9,10 @@ module.exports = {
     } */
 
    database: {
-        host:'delfosco_delfos369',
-        user: 'delfos_db_cotizador',
-        password: '',
-        database: 'db_cotizador'
-    }
+        host:process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password:process.env.DB_PASS,
+        database: process.env.DB_DB
+   }
 
 };
