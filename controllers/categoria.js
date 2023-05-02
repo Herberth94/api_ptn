@@ -33,6 +33,11 @@ categoria.update_cat = async (req, res) => {
   };
 //--------------------------------------------------------------------------------------------------
 
+//Función para consultar los datos de las categorias de un determinado proyecto
+categoria.view_cat_sp = async (req, res) => {
+  const reSql = await pool.query('SELECT * FROM `categoria` ORDER BY `categoria`.`categoria_id` ASC');
+  res.json({ reSql: reSql });
+};
 //Función para eliminar atributos en la tabla categoria---------------------------------------------------
 categoria.delete_cat = async (req, res) => {
     //const { categoria_id = 1 } = req.params; //Dato para prueba
